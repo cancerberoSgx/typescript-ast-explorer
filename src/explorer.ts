@@ -66,8 +66,7 @@ export function buildExplorer(options: Options) {
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
-
-;  (tree as any).setData(rootNode)
+  ;(tree as any).setData(rootNode)
   updateTreeNodeStyles(tree)
   tree.on('select', function(n: TreeNode) {
     selectTreeNode(n)

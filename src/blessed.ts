@@ -127,7 +127,8 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
 
 export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selectedNode: T) => void) {
   tree.rows.key(['down', 'up'], k => {
-    const selectedNode =  tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
+    const selectedNode =
+      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
     if (selectedNode) {
       fn(selectedNode)
     }
@@ -145,7 +146,6 @@ export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void
     fn()
   })
 }
-
 
 // function updateNodeLines(node: blessed.Widgets.BlessedElement, fn: (l: string) => string) {
 //   node.getLines().forEach((l, i) => {

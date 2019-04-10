@@ -1,5 +1,5 @@
-import { Driver } from 'cli-driver';
-import { Helper } from './interactionHelper';
+import { Driver } from 'cli-driver'
+import { Helper } from './interactionHelper'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000
 
@@ -23,7 +23,7 @@ describe('astExplorerSpec', () => {
   })
 
   it('should quit with q', async done => {
-    client.enter('npx ts-node src/cliMain')
+    client.enter('npx ts-node src/cli/cliMain')
     expect(await helper.waitForStrippedDataToInclude('Files and Nodes'))
     expect(await helper.waitForStrippedDataToInclude('ViewCode'))
     await client.enter('q')

@@ -61,8 +61,7 @@ export function buildCodeAst(options: Options) {
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNodew = { extended: true, ...buildTreeNode(node.getSourceFile()) }
-
-;  (tree as any).setData(rootNodew)
+  ;(tree as any).setData(rootNodew)
   tree.on('select', function(n: TreeNode) {
     selectTreeNode(n)
   })
