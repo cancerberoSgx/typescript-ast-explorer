@@ -1,5 +1,8 @@
 import { ansi, Driver } from 'cli-driver'
 import { Helper } from './interactionHelper'
+import { Ansi } from 'cli-driver/lib/src/ansi';
+
+jasmine.DEFAULT_TIMEOUT_INTERVAL=20000
 
 describe('astExplorerSpec', () => {
   let client: Driver
@@ -20,19 +23,13 @@ describe('astExplorerSpec', () => {
     done()
   })
 
-  it('should ...', async done => {
-    // await client.enterAndWaitForData('npx ts-node spec/astExplorer/test1.ts', 'Animal')
-    // await client.enterAndWaitForData('', 'selectedNode')
-    // expect(client.getStrippedDataFromLastWrite()).toContain(`{ selectedNode: 'Animal' }`)
-    // await helper.expectLastExitCode(true)
-
-    // await client.enterAndWaitForData('npx ts-node spec/astExplorer/test1.ts', 'Animal')
-    // await client.writeAndWaitForData(ansi.cursor.down(2), 'class')
-    // await client.enterAndWaitForData('', 'selectedNode')
-    // expect(client.getStrippedDataFromLastWrite()).toContain(`{ selectedNode: 'name' }`)
-    // await helper.expectLastExitCode(true)
-    expect(1).toBe(1)
+  it('should quit with q', async done => {
+    client.enter('npx ts-node src/cliMain')
+    expect(await helper.waitForStrippedDataToInclude('Files and Nodes'))
+    expect(await helper.waitForStrippedDataToInclude('ViewCode'))
+    await client.enter('q')
+    await helper.expectLastExitCode(true)
     done()
   })
- 
 })
+
