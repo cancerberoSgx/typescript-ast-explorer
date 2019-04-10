@@ -7,7 +7,7 @@ import {
   installExitKeys,
   installFocusHandler,
   isBlessedElement,
-  modal,
+  showInModal,
   onButtonClicked,
   onTreeNodeFocus,
   visitDescendantElements
@@ -23,13 +23,14 @@ interface Options {
 
 export function buildExplorer(options: Options) {
   let { screen, project } = options
-  const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen })
+  const grid = new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0})
+  const rows = process.stdout.rows || 24
+  const offset = rows< 20 ? 3 : rows< 40 ? 2 : 1
 
-  const viewCodeButton: blessed.Widgets.ButtonElement = grid.set(0, 6, 1, 3, blessed.button, {
+  const viewCodeButton: blessed.Widgets.ButtonElement = grid.set(0, 6, offset, 3, blessed.button, {
     mouse: true,
     clickable: true,
     keys: true,
-    name: 'ViewCode',
     content: 'View Code',
     align: 'center',
     valign: 'middle'
@@ -45,17 +46,17 @@ export function buildExplorer(options: Options) {
     }
   })
 
-  const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, 1, 3, blessed.button, {
+  const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, offset, 3, blessed.button, {
     mouse: true,
     clickable: true,
     keys: true,
-    name: 'options',
+    hoverText: 'Options',
     content: 'Options',
     align: 'center',
-    valign: 'middle'
-  })
+    valign: 'middle' 
+  } as blessed.Widgets.ButtonOptions)
   onButtonClicked(optionsButton, () => {
-    modal(screen, 'hello')
+    showInModal(screen, 'hello')
   })
 
   const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12, 6, contrib.tree, {
@@ -73,7 +74,7 @@ export function buildExplorer(options: Options) {
   })
   updateTreeNodeStyles(tree)
 
-  const table: contrib.Widgets.TableElement = grid.set(1, 6, 11, 6, contrib.table, {
+  const table: contrib.Widgets.TableElement = grid.set(offset, 6, 12 - offset, 6, contrib.table, {
     keys: true,
     label: 'Details',
     columnWidth: [8, 200],

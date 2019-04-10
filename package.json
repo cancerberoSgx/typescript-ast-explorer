@@ -4,7 +4,7 @@
   "description": "Command line tool to explore TypeScript projects and SourceFile abstract syntax tree interactively",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "bin": "bin/typescript-ast-explorer.js",
+  "bin": ".bin/typescript-ast-explorer.js",
   "scripts": {
     "watch": "tsc --watch",
     "build": "tsc",
@@ -18,7 +18,6 @@
   "author": "Sebastian Gurin",
   "license": "MIT",
   "dependencies": {
-    "@phenomnomnominal/tsquery": "^3.0.0",
     "ansi-escape-sequences": "^4.1.0",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.12",

@@ -3,6 +3,7 @@ import { main } from './cli';
 export interface Options {
   help?: boolean
 }
+
 function cliMain() {
   const options = require('yargs-parser')(process.argv.slice(2)) as Options
   if (options.help) {

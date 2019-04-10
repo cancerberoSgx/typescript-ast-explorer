@@ -1,12 +1,15 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
-import { installExitKeys, installFocusHandler, modal, onButtonClicked, onTreeNodeFocus } from './blessed'
+import { installExitKeys, installFocusHandler, showInModal, onButtonClicked, onTreeNodeFocus } from './blessed'
 import { buildTreeNode } from './common'
 import { buildExplorer } from './explorer'
 const ansi = require('ansi-escape-sequences')
 
 export function buildCodeAst(options: Options) {
+  const rows = process.stdout.rows || 24
+  const offset = rows< 20 ? 3 : rows< 40 ? 2 : 1
+
   const focusStyle = {
     border: {
       type: 'line',
@@ -16,7 +19,7 @@ export function buildCodeAst(options: Options) {
   let { screen, project, node } = options
   const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen })
 
-  const fileExplorerButton: blessed.Widgets.ButtonElement = grid.set(0, 6, 1, 3, blessed.button, {
+  const fileExplorerButton: blessed.Widgets.ButtonElement = grid.set(0, 6, offset, 3, blessed.button, {
     mouse: true,
     clickable: true,
     keys: true,
@@ -35,7 +38,8 @@ export function buildCodeAst(options: Options) {
     buildExplorer({ screen, project })
     screen.render()
   })
-  const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, 1, 3, blessed.button, {
+
+  const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, offset, 3, blessed.button, {
     mouse: true,
     clickable: true,
     keys: true,
@@ -47,8 +51,9 @@ export function buildCodeAst(options: Options) {
     margin: 0
   })
   onButtonClicked(optionsButton, () => {
-    modal(screen, 'Some options')
+    showInModal(screen, 'Some options')
   })
+
   const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12, 6, contrib.tree, {
     template: { lines: true },
     label: node.getSourceFile().getBaseName()
@@ -62,7 +67,7 @@ export function buildCodeAst(options: Options) {
     selectTreeNode(n)
   })
 
-  const editor: blessed.Widgets.ScrollableTextElement = grid.set(1, 6, 11, 6, blessed.scrollabletext, {
+  const editor: blessed.Widgets.ScrollableTextElement = grid.set(offset, 6, 12-offset, 6, blessed.scrollabletext, {
     alwaysScroll: true,
     scrollable: true,
     clickable: true,
@@ -75,7 +80,7 @@ export function buildCodeAst(options: Options) {
     }
   } as blessed.Widgets.ScrollableTextOptions)
   editor.on('click', function(data: any) {
-    modal(screen, JSON.stringify(data) + '  ' + JSON.stringify(editor.position))
+    showInModal(screen, JSON.stringify(data) + '  ' + JSON.stringify(editor.position))
   })
 
   installExitKeys(screen)
@@ -89,7 +94,7 @@ export function buildCodeAst(options: Options) {
       ansi.format(text.substring(n.astNode.getFullStart(), n.astNode.getEnd()), ['blue']) +
       text.substring(n.astNode.getEnd())
     if (n.astNode.getStartLineNumber() !== undefined) {
-      editor.setScroll(Math.max(0, n.astNode.getStartLineNumber() - 3))
+      editor.setScroll(Math.max(0, n.astNode.getStartLineNumber()) - offset)
     }
     editor.setContent(text)
     screen.render()

@@ -80,7 +80,7 @@ export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen:
   })
 }
 
-export function modal(screen: blessed.Widgets.Screen, s: string | blessed.Widgets.BlessedElement) {
+export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.Widgets.BlessedElement) {
   if (!modalInstance) {
     modalInstance = blessed.prompt({
       mouse: true,
