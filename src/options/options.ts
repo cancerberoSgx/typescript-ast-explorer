@@ -1,10 +1,10 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { buildExplorer } from './explorer'
+import { buildExplorer } from '../explorer'
 import { Project, Node } from 'ts-morph'
-import { showInModal } from './modal'
+import { showInModal } from '../../util/modal'
 import { help } from './help'
-import { buildCodeAst } from './codeAst'
+import { buildCodeAst } from '../codeAst'
 
 export function optionsForm(
   grid: contrib.Widgets.GridElement,

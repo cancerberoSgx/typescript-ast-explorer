@@ -12,3 +12,8 @@ WIP
  * query elements across the project using CSS-like language (tsquery)
  * filter nodes by kind or name  or query
  * apply refactors interactively
+ * tree expand all - collapse all
+
+### Issues
+
+ * when switching from files view to code view it should open in last viewed node and viceversa - auto-expanding the tree

@@ -10,12 +10,12 @@ import {
   visitDescendantElements,
   onTreeNodeFocus,
   installExitKeys
-} from './blessed'
+} from '../util/blessed'
 import { buildCodeAst } from './codeAst'
-import { buildTreeNode, focusStyle } from './common'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
-import { showInModal } from './modal'
-import { optionsForm } from './options'
+import { buildTreeNode, focusStyle } from '../util/common'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from '../util/project'
+import { showInModal } from '../util/modal'
+import { optionsForm } from './options/options'
 
 interface Options {
   project: Project
