@@ -4,7 +4,7 @@
   "description": "Command line tool to explore TypeScript projects and SourceFile abstract syntax tree interactively",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
-  "bin": "bin/typescript-ast-explorer",
+  "bin": "bin/typescript-ast-explorer.js",
   "scripts": {
     "watch": "tsc --watch",
     "build": "tsc",
@@ -46,7 +46,7 @@
     "jasmine": "^3.3.1",
     "prettier": "^1.16.4",
     "ts-node": "^7.0.1",
-    "typescript": "^3.4.2"
+    "typescript": "^3.4.1"
   },
   "keywords": [
     "TypeScript",

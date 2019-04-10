@@ -1,7 +1,7 @@
 import { Project } from 'ts-morph';
-import { longText } from '../../less/text';
-import { buildCodeAst } from './codeAst';
+import { buildCodeAst } from '../src/codeAst';
 import * as blessed from 'blessed';
+import { longText } from './text';
 
   var screen = blessed.screen({ smartCSR: true });
   const project = new Project();
