@@ -4,17 +4,17 @@ import { pwd } from 'shelljs'
 import { Node, Project } from 'ts-morph'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra'
 import {
-  installExitKeys,
   installFocusHandler,
   isBlessedElement,
-  showInModal,
   onButtonClicked,
+  visitDescendantElements,
   onTreeNodeFocus,
-  visitDescendantElements
+  installExitKeys
 } from './blessed'
 import { buildCodeAst } from './codeAst'
 import { buildTreeNode, focusStyle } from './common'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
+import { showInModal } from './modal'
 
 interface Options {
   project: Project

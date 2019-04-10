@@ -1,6 +1,7 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { focusStyle } from './common'
+import { closeModal, isModalVisible } from './modal'
 
 export function isBlessedElement(n: any): n is blessed.Widgets.BlessedElement {
   return n && n.screenshot && n.enableDrag
@@ -71,48 +72,16 @@ export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen:
     c.style = { ...(c.style || {}), ...focusStyle }
   })
 }
-
-export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.Widgets.BlessedElement) {
-  if (!modalInstance) {
-    modalInstance = blessed.prompt({
-      mouse: true,
-      parent: screen,
-      top: 'center',
-      left: 'center',
-      height: 'shrink',
-      width: 'shrink',
-      keys: true,
-      vi: true,
-      tags: true,
-      border: 'line',
-      hidden: true
-    })
-    ;[modalInstance, ...modalInstance.children].forEach(c => c.on('click', data => modalInstance!.hide()))
-  }
-  if (typeof s === 'string') {
-    modalInstance.setContent(s)
-  } else {
-    if (lastModalContent) {
-      modalInstance.remove(lastModalContent)
-    }
-    lastModalContent = s
-    modalInstance.append(s)
-  }
-  modalInstance.show()
-  screen.render()
-}
-let modalInstance: blessed.Widgets.PromptElement | undefined
-let lastModalContent: blessed.Widgets.BlessedElement | undefined
-
-export function closeModal(screen: blessed.Widgets.Screen) {
-  if (modalInstance) {
-    modalInstance.hide()
-  }
-  screen.render()
-}
-
-export function isModalVisible() {
-  return modalInstance && modalInstance.visible
+export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
+  b.on('pressed', e => {
+    fn()
+  })
+  b.key(['enter', 'space'], e => {
+    fn()
+  })
+  b.on('click', e => {
+    fn()
+  })
 }
 
 export function installExitKeys(screen: blessed.Widgets.Screen) {
@@ -124,7 +93,6 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
     }
   })
 }
-
 export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selectedNode: T) => void) {
   tree.rows.key(['down', 'up'], k => {
     const selectedNode =
@@ -132,18 +100,6 @@ export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selec
     if (selectedNode) {
       fn(selectedNode)
     }
-  })
-}
-
-export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
-  b.on('pressed', e => {
-    fn()
-  })
-  b.key(['enter', 'space'], e => {
-    fn()
-  })
-  b.on('click', e => {
-    fn()
   })
 }
 
