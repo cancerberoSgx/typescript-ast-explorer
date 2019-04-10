@@ -1,8 +1,7 @@
-import { ansi, Driver } from 'cli-driver'
-import { Helper } from './interactionHelper'
-import { Ansi } from 'cli-driver/lib/src/ansi';
+import { Driver } from 'cli-driver';
+import { Helper } from './interactionHelper';
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL=20000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 20000
 
 describe('astExplorerSpec', () => {
   let client: Driver
@@ -32,4 +31,3 @@ describe('astExplorerSpec', () => {
     done()
   })
 })
-

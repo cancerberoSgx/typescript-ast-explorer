@@ -18,6 +18,7 @@
   "author": "Sebastian Gurin",
   "license": "MIT",
   "dependencies": {
+    "@phenomnomnominal/tsquery": "^3.0.0",
     "ansi-escape-sequences": "^4.1.0",
     "blessed": "^0.1.81",
     "blessed-contrib": "^4.8.12",

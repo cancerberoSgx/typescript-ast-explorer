@@ -18,6 +18,7 @@ export function buildTreeNode(n: GeneralNode) {
     astNode: n
   }
 }
+
 export const focusStyle = {
   border: {
     type: 'line',

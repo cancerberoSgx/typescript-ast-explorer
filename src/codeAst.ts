@@ -8,7 +8,7 @@ const ansi = require('ansi-escape-sequences')
 
 export function buildCodeAst(options: Options) {
   const rows = process.stdout.rows || 24
-  const offset = rows< 20 ? 3 : rows< 40 ? 2 : 1
+  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
 
   const focusStyle = {
     border: {
@@ -61,13 +61,13 @@ export function buildCodeAst(options: Options) {
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNodew = { extended: true, ...buildTreeNode(node.getSourceFile()) }
-  // @ts-ignore
-  tree.setData(rootNodew)
+
+;  (tree as any).setData(rootNodew)
   tree.on('select', function(n: TreeNode) {
     selectTreeNode(n)
   })
 
-  const editor: blessed.Widgets.ScrollableTextElement = grid.set(offset, 6, 12-offset, 6, blessed.scrollabletext, {
+  const editor: blessed.Widgets.ScrollableTextElement = grid.set(offset, 6, 12 - offset, 6, blessed.scrollabletext, {
     alwaysScroll: true,
     scrollable: true,
     clickable: true,

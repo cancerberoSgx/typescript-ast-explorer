@@ -6,16 +6,6 @@ export function isBlessedElement(n: any): n is blessed.Widgets.BlessedElement {
   return n && n.screenshot && n.enableDrag
 }
 
-function updateNodeLines(node: blessed.Widgets.BlessedElement, fn: (l: string) => string) {
-  node.getLines().forEach((l, i) => {
-    node.setLine(i, fn(l))
-  })
-  node.children.forEach(c => {
-    if (isBlessedElement(c)) {
-      updateNodeLines(c, fn)
-    }
-  })
-}
 function visitDescendantNodes(node: blessed.Widgets.BlessedElement, fn: (l: blessed.Widgets.Node) => boolean) {
   let stop: boolean = false
   node.children.forEach(c => {
@@ -31,12 +21,14 @@ function visitDescendantNodes(node: blessed.Widgets.BlessedElement, fn: (l: bles
     }
   })
 }
+
 export function visitDescendantElements(
   node: blessed.Widgets.BlessedElement,
   fn: (l: blessed.Widgets.BlessedElement) => boolean
 ) {
   return visitDescendantNodes(node, n => (isBlessedElement(n) ? fn(n) : false))
 }
+
 export function findDescendantNode(node: blessed.Widgets.BlessedElement, fn: (l: blessed.Widgets.Node) => boolean) {
   var found: blessed.Widgets.Node | undefined
   visitDescendantNodes(node, c => {
@@ -118,6 +110,7 @@ export function closeModal(screen: blessed.Widgets.Screen) {
   }
   screen.render()
 }
+
 export function isModalVisible() {
   return modalInstance && modalInstance.visible
 }
@@ -134,9 +127,7 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
 
 export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selectedNode: T) => void) {
   tree.rows.key(['down', 'up'], k => {
-    const selectedNode =
-      // @ts-ignore
-      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex(tree.rows.selected || 0)] as any)
+    const selectedNode =  tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
     if (selectedNode) {
       fn(selectedNode)
     }
@@ -154,3 +145,15 @@ export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void
     fn()
   })
 }
+
+
+// function updateNodeLines(node: blessed.Widgets.BlessedElement, fn: (l: string) => string) {
+//   node.getLines().forEach((l, i) => {
+//     node.setLine(i, fn(l))
+//   })
+//   node.children.forEach(c => {
+//     if (isBlessedElement(c)) {
+//       updateNodeLines(c, fn)
+//     }
+//   })
+// }

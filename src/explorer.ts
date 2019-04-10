@@ -23,9 +23,9 @@ interface Options {
 
 export function buildExplorer(options: Options) {
   let { screen, project } = options
-  const grid = new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0})
+  const grid = new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
   const rows = process.stdout.rows || 24
-  const offset = rows< 20 ? 3 : rows< 40 ? 2 : 1
+  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
 
   const viewCodeButton: blessed.Widgets.ButtonElement = grid.set(0, 6, offset, 3, blessed.button, {
     mouse: true,
@@ -53,7 +53,7 @@ export function buildExplorer(options: Options) {
     hoverText: 'Options',
     content: 'Options',
     align: 'center',
-    valign: 'middle' 
+    valign: 'middle'
   } as blessed.Widgets.ButtonOptions)
   onButtonClicked(optionsButton, () => {
     showInModal(screen, 'hello')
@@ -66,8 +66,8 @@ export function buildExplorer(options: Options) {
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
-  // @ts-ignore
-  tree.setData(rootNode)
+
+;  (tree as any).setData(rootNode)
   updateTreeNodeStyles(tree)
   tree.on('select', function(n: TreeNode) {
     selectTreeNode(n)
