@@ -72,6 +72,7 @@ export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen:
     c.style = { ...(c.style || {}), ...focusStyle }
   })
 }
+
 export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
   b.on('pressed', e => {
     fn()
@@ -93,6 +94,7 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
     }
   })
 }
+
 export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selectedNode: T) => void) {
   tree.rows.key(['down', 'up'], k => {
     const selectedNode =
@@ -102,14 +104,3 @@ export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selec
     }
   })
 }
-
-// function updateNodeLines(node: blessed.Widgets.BlessedElement, fn: (l: string) => string) {
-//   node.getLines().forEach((l, i) => {
-//     node.setLine(i, fn(l))
-//   })
-//   node.children.forEach(c => {
-//     if (isBlessedElement(c)) {
-//       updateNodeLines(c, fn)
-//     }
-//   })
-// }

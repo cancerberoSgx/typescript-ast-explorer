@@ -25,7 +25,7 @@ describe('astExplorerSpec', () => {
   it('should quit with q', async done => {
     client.enter('npx ts-node src/cli/cliMain')
     expect(await helper.waitForStrippedDataToInclude('Files and Nodes'))
-    expect(await helper.waitForStrippedDataToInclude('ViewCode'))
+    expect(await helper.waitForStrippedDataToInclude('View Code'))
     await client.enter('q')
     await helper.expectLastExitCode(true)
     done()

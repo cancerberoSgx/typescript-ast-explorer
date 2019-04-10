@@ -15,6 +15,7 @@ import { buildCodeAst } from './codeAst'
 import { buildTreeNode, focusStyle } from './common'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
 import { showInModal } from './modal'
+import { optionsForm } from './options'
 
 interface Options {
   project: Project
@@ -27,39 +28,10 @@ export function buildExplorer(options: Options) {
   const rows = process.stdout.rows || 24
   const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
 
-  const viewCodeButton: blessed.Widgets.ButtonElement = grid.set(0, 6, offset, 3, blessed.button, {
-    mouse: true,
-    clickable: true,
-    keys: true,
-    content: 'View Code',
-    align: 'center',
-    valign: 'middle'
-  })
-  onButtonClicked(viewCodeButton, () => {
-    if (lastSelectedNode) {
-      screen.clearRegion(0, parseInt(screen.width + ''), 0, parseInt(screen.height + ''))
-      screen.render()
-      screen.destroy()
-      screen = blessed.screen({ smartCSR: true })
-      buildCodeAst({ screen, node: lastSelectedNode, project })
-      screen.render()
-    }
-  })
+  let lastSelectedNode: Node | undefined
+  const bar = optionsForm(grid, screen, project, offset, () => lastSelectedNode)
 
-  const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, offset, 3, blessed.button, {
-    mouse: true,
-    clickable: true,
-    keys: true,
-    hoverText: 'Options',
-    content: 'Options',
-    align: 'center',
-    valign: 'middle'
-  } as blessed.Widgets.ButtonOptions)
-  onButtonClicked(optionsButton, () => {
-    showInModal(screen, 'hello')
-  })
-
-  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12, 6, contrib.tree, {
+  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
     label: 'Files and Nodes Tree'
   })
@@ -69,11 +41,11 @@ export function buildExplorer(options: Options) {
   ;(tree as any).setData(rootNode)
   updateTreeNodeStyles(tree)
   tree.on('select', function(n: TreeNode) {
+    updateTreeNodeStyles(tree)
     selectTreeNode(n)
   })
-  updateTreeNodeStyles(tree)
 
-  const table: contrib.Widgets.TableElement = grid.set(offset, 6, 12 - offset, 6, contrib.table, {
+  const table: contrib.Widgets.TableElement = grid.set(0, 6, 12 - offset, 6, contrib.table, {
     keys: true,
     label: 'Details',
     columnWidth: [8, 200],
@@ -89,7 +61,7 @@ export function buildExplorer(options: Options) {
   table.setData({ headers: ['Property', 'Value'], data: [[]] })
 
   installExitKeys(screen)
-  installFocusHandler([tree, table, viewCodeButton, optionsButton], screen)
+  installFocusHandler([tree, table, bar], screen)
   screen.render()
 
   function selectTreeNode(n: TreeNode) {
@@ -108,7 +80,6 @@ export function buildExplorer(options: Options) {
     }
     screen.render()
   }
-  let lastSelectedNode: Node | undefined
 }
 
 interface TreeNode {
@@ -118,7 +89,7 @@ interface TreeNode {
 export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement) {
   visitDescendantElements(tree, e => {
     const content = e.getContent()
-    if (content.includes('/ [') || content.trim().endsWith('/') || content.includes('.')) {
+    if (content.includes('Directory ') || content.includes('SourceFile ')) {
       e.style.fg = 'yellow'
     } else {
       e.style.fg = 'white'

@@ -9,8 +9,6 @@ import {
 } from 'ts-simple-ast-extra'
 import Project, { TypeGuards, Node } from 'ts-morph'
 
-// TODO: move to -extra
-
 export function getGeneralNodeKindName(c: GeneralNode) {
   return isDirectory(c) ? 'Directory' : c.getKindName()
 }
@@ -78,14 +76,11 @@ export function getRelativePath(source: string, target: string) {
     filename = targetArr.pop(),
     targetPath = targetArr.join(sep),
     relativePath = ''
-
   while (targetPath.indexOf(sourceArr.join(sep)) === -1) {
     sourceArr.pop()
     relativePath += '..' + sep
   }
-
   var relPathArr = targetArr.slice(sourceArr.length)
   relPathArr.length && (relativePath += relPathArr.join(sep) + sep)
-
   return relativePath + filename
 }

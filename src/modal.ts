@@ -36,12 +36,14 @@ export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.
 }
 let modalInstance: blessed.Widgets.BoxElement | undefined
 let lastModalContent: blessed.Widgets.BlessedElement | undefined
+
 export function closeModal(screen: blessed.Widgets.Screen) {
   if (modalInstance) {
     modalInstance.hide()
   }
   screen.render()
 }
+
 export function isModalVisible() {
   return modalInstance && modalInstance.visible
 }

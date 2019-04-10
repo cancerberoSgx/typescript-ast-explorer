@@ -21,44 +21,9 @@ export function buildCodeAst(options: Options) {
   let { screen, project, node } = options
   const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen })
 
-  // const fileExplorerButton: blessed.Widgets.ButtonElement = grid.set(0, 6, offset, 3, blessed.button, {
-  //   mouse: true,
-  //   clickable: true,
-  //   keys: true,
-  //   name: 'fileExplorer',
-  //   content: 'File Explorer',
-  //   align: 'center',
-  //   valign: 'middle',
-  //   padding: 0,
-  //   margin: 0
-  // })
-  // onButtonClicked(fileExplorerButton, () => {
-  //   screen.clearRegion(0, parseInt(screen.width + ''), 0, parseInt(screen.height + ''))
-  //   screen.render()
-  //   screen.destroy()
-  //   screen = blessed.screen({ smartCSR: true })
-  //   buildExplorer({ screen, project })
-  //   screen.render()
-  // })
+  const bar = optionsForm(grid, screen, project, offset)
 
-  // const optionsButton: blessed.Widgets.ButtonElement = grid.set(0, 9, offset, 3, blessed.button, {
-  //   mouse: true,
-  //   clickable: true,
-  //   keys: true,
-  //   name: 'options',
-  //   content: 'Options',
-  //   align: 'center',
-  //   valign: 'middle',
-  //   padding: 0,
-  //   margin: 0
-  // })
-  // onButtonClicked(optionsButton, () => {
-  //   showInModal(screen, optionsForm(screen))
-  // })
-
-  const bar = optionsForm(grid, screen, project)
-
-  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 11, 6, contrib.tree, {
+  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
     label: node.getSourceFile().getBaseName()
   } as contrib.Widgets.TreeOptions)
@@ -70,7 +35,7 @@ export function buildCodeAst(options: Options) {
     selectTreeNode(n)
   })
 
-  const editor: blessed.Widgets.ScrollableTextElement = grid.set(offset, 6, 11 - offset, 6, blessed.scrollabletext, {
+  const editor: blessed.Widgets.ScrollableTextElement = grid.set(0, 6, 12 - offset, 6, blessed.scrollabletext, {
     alwaysScroll: true,
     scrollable: true,
     clickable: true,
