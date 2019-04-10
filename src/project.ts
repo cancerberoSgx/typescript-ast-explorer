@@ -1,5 +1,13 @@
-import { GeneralNode, isDirectory, isSourceFile, getChildrenForEachChild,  File, buildAstPath, printAstPath } from 'ts-simple-ast-extra';
-import Project, { TypeGuards, Node } from 'ts-morph';
+import {
+  GeneralNode,
+  isDirectory,
+  isSourceFile,
+  getChildrenForEachChild,
+  File,
+  buildAstPath,
+  printAstPath
+} from 'ts-simple-ast-extra'
+import Project, { TypeGuards, Node } from 'ts-morph'
 
 // TODO: move to -extra
 export function getGeneralNodeKindName(c: GeneralNode) {
@@ -10,43 +18,44 @@ export function getGeneralNodeKindName(c: GeneralNode) {
 //     return isDirectory(c) ? c.getBaseName() : isSourceFile(c) ? c.getBaseName()  : c ?getName(c) : ''
 //   } catch (error) {
 //     console.log(error);
-    
+
 //   return  ''
 //   }
 // }
 export function getGeneralNodeName(c: GeneralNode) {
   try {
-    return isDirectory(c) ? c.getBaseName() : isSourceFile(c) ? c.getBaseName()  : c ?getName(c) : ''
+    return isDirectory(c) ? c.getBaseName() : isSourceFile(c) ? c.getBaseName() : c ? getName(c) : ''
   } catch (error) {
-    console.log(error);
-    
-  return  ''
+    console.log(error)
+
+    return ''
   }
 }
-
 
 /**
  *  Try to call n.getName or returns empty string if there is no such method
  */
 export function getName(n: Node) {
-try {
-  return TypeGuards.hasName(n) ? n.getName() : TypeGuards.isIdentifier(n) ? n.getText() : undefined
-} catch (error) {
-  return undefined
-}
+  try {
+    return TypeGuards.hasName(n) ? n.getName() : TypeGuards.isIdentifier(n) ? n.getText() : undefined
+  } catch (error) {
+    return undefined
+  }
 }
 /**
  * Returns immediate children. In case of Nodes, children are obtained using forEachChild instead of getChildren method
  */
 export function getGeneralNodeChildren(f: GeneralNode, project: Project): GeneralNode[] {
   return isDirectory(f)
-    ? (f.getDirectories().filter(d=>project.getDirectory(d.getPath())) as GeneralNode[]).concat(f.getSourceFiles() as GeneralNode[])
+    ? (f.getDirectories().filter(d => project.getDirectory(d.getPath())) as GeneralNode[]).concat(
+        f.getSourceFiles() as GeneralNode[]
+      )
     : getChildrenForEachChild(f)
 }
 /**
  * Directories and SourceFile path is given by getPath* methods. For nodes we use AstPath for defining their path.
  */
-export function getGeneralNodePath(f: GeneralNode, relativeTo?: string, includeNodeKind=false): string | undefined {
+export function getGeneralNodePath(f: GeneralNode, relativeTo?: string, includeNodeKind = false): string | undefined {
   if (isDirectory(f) || isSourceFile(f)) {
     return relativeTo ? getRelativePath(relativeTo, getFilePath(f)) : getFilePath(f)
   } else {
@@ -62,7 +71,6 @@ export function getGeneralNodePath(f: GeneralNode, relativeTo?: string, includeN
 export function getFilePath(f: File) {
   return isSourceFile(f) ? f.getFilePath() : f.getPath()
 }
-
 
 /**
  * Given a source directory and a target filename, return the relative
@@ -89,7 +97,6 @@ export function getRelativePath(source: string, target: string) {
 
   return relativePath + filename
 }
-
 
 // import { join, relative } from 'path'
 // import { Directory, Project, SourceFile, Node, TypeGuards } from 'ts-morph'
@@ -150,8 +157,7 @@ export function getRelativePath(source: string, target: string) {
 //   return f && f.getDescendantSourceFiles && f.getDescendantDirectories
 // }
 
-
-// // generalNode : everything - directories, sourceFiles, and nodes. 
+// // generalNode : everything - directories, sourceFiles, and nodes.
 // export type GeneralNode = Node|Directory
 
 // export function getGeneralChildren(f: GeneralNode): GeneralNode[]{

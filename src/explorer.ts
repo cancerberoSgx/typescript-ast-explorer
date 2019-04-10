@@ -1,12 +1,20 @@
-import * as blessed from 'blessed';
-import * as contrib from 'blessed-contrib';
-import { pwd } from 'shelljs';
-import { Node, Project } from 'ts-morph';
-import { GeneralNode, isNode } from 'ts-simple-ast-extra';
-import { installExitKeys, installFocusHandler, isBlessedElement, modal, onButtonClicked, onTreeNodeFocus, visitDescendantElements } from './blessed';
-import { buildCodeAst } from './codeAst';
-import { buildTreeNode, focusStyle } from './common';
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project';
+import * as blessed from 'blessed'
+import * as contrib from 'blessed-contrib'
+import { pwd } from 'shelljs'
+import { Node, Project } from 'ts-morph'
+import { GeneralNode, isNode } from 'ts-simple-ast-extra'
+import {
+  installExitKeys,
+  installFocusHandler,
+  isBlessedElement,
+  modal,
+  onButtonClicked,
+  onTreeNodeFocus,
+  visitDescendantElements
+} from './blessed'
+import { buildCodeAst } from './codeAst'
+import { buildTreeNode, focusStyle } from './common'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
 
 interface Options {
   project: Project
@@ -24,14 +32,14 @@ export function buildExplorer(options: Options) {
     name: 'ViewCode',
     content: 'View Code',
     align: 'center',
-    valign: 'middle',
+    valign: 'middle'
   })
   onButtonClicked(viewCodeButton, () => {
     if (lastSelectedNode) {
       screen.clearRegion(0, parseInt(screen.width + ''), 0, parseInt(screen.height + ''))
       screen.render()
       screen.destroy()
-      screen = blessed.screen({ smartCSR: true });
+      screen = blessed.screen({ smartCSR: true })
       buildCodeAst({ screen, node: lastSelectedNode, project })
       screen.render()
     }
@@ -54,17 +62,17 @@ export function buildExplorer(options: Options) {
     template: { lines: true },
     label: 'Files and Nodes Tree'
   })
-  tree.rows.style = { ...tree.rows.style || {}, ...focusStyle }
+  tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
   // @ts-ignore
-  tree.setData(rootNode);
-  updateTreeNodeStyles(tree);
-  tree.on('select', function (n: TreeNode) {
-    selectTreeNode(n);
-  });
-  updateTreeNodeStyles(tree);
-  
+  tree.setData(rootNode)
+  updateTreeNodeStyles(tree)
+  tree.on('select', function(n: TreeNode) {
+    selectTreeNode(n)
+  })
+  updateTreeNodeStyles(tree)
+
   const table: contrib.Widgets.TableElement = grid.set(1, 6, 11, 6, contrib.table, {
     keys: true,
     label: 'Details',
@@ -73,9 +81,11 @@ export function buildExplorer(options: Options) {
       fg: 'green'
     }
   })
-  table.children.filter(isBlessedElement).forEach(c => c.key('enter', function (ch, key) {
-    console.log(table.children.filter(isBlessedElement).map(c => c.getText()));
-  }))
+  table.children.filter(isBlessedElement).forEach(c =>
+    c.key('enter', function(ch, key) {
+      console.log(table.children.filter(isBlessedElement).map(c => c.getText()))
+    })
+  )
   table.setData({ headers: ['Property', 'Value'], data: [[]] })
 
   installExitKeys(screen)
@@ -93,10 +103,10 @@ export function buildExplorer(options: Options) {
         ['Position', isNode(n.astNode) ? n.astNode.getPos() + '' : ''],
         ['Path', getGeneralNodePath(n.astNode, pwd()) || ''],
         ['Text', isNode(n.astNode) ? n.astNode.getText().replace(/\n/gm, '\\n') || '' : '']
-      ];
-      table.setData({ headers: ['Property', 'Value'], data });
+      ]
+      table.setData({ headers: ['Property', 'Value'], data })
     }
-    screen.render();
+    screen.render()
   }
   let lastSelectedNode: Node | undefined
 }
@@ -107,13 +117,12 @@ interface TreeNode {
 
 export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement) {
   visitDescendantElements(tree, e => {
-    const content = e.getContent();
+    const content = e.getContent()
     if (content.includes('/ [') || content.trim().endsWith('/') || content.includes('.')) {
-      e.style.fg = 'yellow';
+      e.style.fg = 'yellow'
+    } else {
+      e.style.fg = 'white'
     }
-    else {
-      e.style.fg = 'white';
-    }
-    return false;
-  });
+    return false
+  })
 }
