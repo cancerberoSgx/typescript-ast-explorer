@@ -11,7 +11,7 @@
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "test-debug": "node --inspect-brk node_modules/ts-node/dist/bin node_modules/jasmine/bin/jasmine.js",
     "prepare": "tsc",
-    "prettier": "npx prettier  --write --arrow-parens avoid --parser typescript --use-tabs false --no-semi true --single-quote true --tab-width 2 --trailing-comma none --end-of-line lf --prose-wrap preserve --print-width 120  --jsx-bracket-same-line true \"src/**/*.ts*\" \"spec/**/*Spec.ts*\"",
+    "prettier": "npx ts-refactor organizeImports \"src/**/*.ts*\" \"spec/**/*.ts*\" --dontAsk && npx prettier  --write --arrow-parens avoid --parser typescript --use-tabs false --no-semi true --single-quote true --tab-width 2 --trailing-comma none --end-of-line lf --prose-wrap preserve --print-width 120  --jsx-bracket-same-line true \"src/**/*.ts*\" \"spec/**/*.ts*\"",
     "clean": "rm -rf dist",
     "all": "npm run clean && npm run prettier && npm run build && npm test"
   },
@@ -37,7 +37,7 @@
     "jasmine": "^3.3.1",
     "prettier": "^1.16.4",
     "ts-node": "^7.0.1",
-    "ts-refactor": "0.0.1",
+    "ts-refactor": "0.0.2",
     "typescript": "^3.4.1"
   },
   "keywords": [

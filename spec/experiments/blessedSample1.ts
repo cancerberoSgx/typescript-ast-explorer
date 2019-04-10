@@ -1,12 +1,12 @@
 import * as blessed from 'blessed'
-import { longText } from '../text';
+import { longText } from '../text'
 
 // Create a screen object.
 var screen = blessed.screen({
   smartCSR: true
-});
+})
 
-screen.title = 'my window title';
+screen.title = 'my window title'
 
 // Create a box perfectly centered horizontally and vertically.
 var box = blessed.box({
@@ -15,10 +15,10 @@ var box = blessed.box({
   width: '90%',
   mouse: true,
   height: '90%',
-  content: longText(),// 'Hello {bold}world{/bold}!',
+  content: longText(), // 'Hello {bold}world{/bold}!',
   tags: true,
   scrollable: true,
-  
+
   alwaysScroll: true,
   scrollbar: {
     ch: ' ',
@@ -39,31 +39,28 @@ var box = blessed.box({
       bg: 'blue',
       bold: true
     }
-  },
-});
+  }
+})
 
 // Append our box to the screen.
-screen.append(box);
+screen.append(box)
 
 // If our box is clicked, change the content.
 box.on('click', function(data) {
   box.insertTop(JSON.stringify(data))
-  data.
-  
-  screen.render();
-});
+  data.screen.render()
+})
 
 // Quit on Escape, q, or Control-C.
 screen.key(['escape', 'q', 'C-c'], function(ch, key) {
-  return process.exit(0);
-});
+  return process.exit(0)
+})
 screen.cursorShape(true, true)
 // Focus our element.
-box.focus();
+box.focus()
 
 // Render the screen.
-screen.render();
-
+screen.render()
 
 var list = blessed.list({
   parent: screen,
@@ -100,12 +97,11 @@ var list = blessed.list({
   },
   search: function(callback) {
     prompt.input('Search:', '', function(err, value) {
-      if (err) return;
-      return callback(null, value);
-    });
+      if (err) return
+      return callback(null, value)
+    })
   }
-});
-
+})
 
 var prompt = blessed.prompt({
   parent: screen,
@@ -119,4 +115,4 @@ var prompt = blessed.prompt({
   tags: true,
   border: 'line',
   hidden: true
-});
+})

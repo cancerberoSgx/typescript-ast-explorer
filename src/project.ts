@@ -1,13 +1,13 @@
+import Project, { Node, TypeGuards } from 'ts-morph'
 import {
+  buildAstPath,
+  File,
   GeneralNode,
+  getChildrenForEachChild,
   isDirectory,
   isSourceFile,
-  getChildrenForEachChild,
-  File,
-  buildAstPath,
   printAstPath
 } from 'ts-simple-ast-extra'
-import Project, { TypeGuards, Node } from 'ts-morph'
 
 export function getGeneralNodeKindName(c: GeneralNode) {
   return isDirectory(c) ? 'Directory' : c.getKindName()

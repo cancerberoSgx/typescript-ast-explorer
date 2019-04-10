@@ -1,13 +1,12 @@
 import * as blessed from 'blessed'
 
-
-var auto = false;
+var auto = false
 
 let screen = blessed.screen({
   // dump: __dirname + '/logs/listbar.log',
-  autoPadding: auto,
+  autoPadding: auto
   // warnings: true
-});
+})
 
 var box = blessed.box({
   parent: screen,
@@ -16,7 +15,7 @@ var box = blessed.box({
   width: 'shrink',
   height: 'shrink',
   content: '...'
-});
+})
 
 var bar = blessed.listbar({
   //parent: screen,
@@ -35,7 +34,7 @@ var bar = blessed.listbar({
       bg: 'red',
       hover: {
         bg: 'blue'
-      },
+      }
       //focus: {
       //  bg: 'blue'
       //}
@@ -45,79 +44,79 @@ var bar = blessed.listbar({
     }
   } as any,
   commands: {
-    'one': {
+    one: {
       keys: ['a'],
       callback: function() {
-        box.setContent('Pressed one.');
-        screen.render();
+        box.setContent('Pressed one.')
+        screen.render()
       }
     },
-    'two': function() {
-      box.setContent('Pressed two.');
-      screen.render();
+    two: function() {
+      box.setContent('Pressed two.')
+      screen.render()
     },
-    'three': function() {
-      box.setContent('Pressed three.');
-      screen.render();
+    three: function() {
+      box.setContent('Pressed three.')
+      screen.render()
     },
-    'four': function() {
-      box.setContent('Pressed four.');
-      screen.render();
+    four: function() {
+      box.setContent('Pressed four.')
+      screen.render()
     },
-    'five': function() {
-      box.setContent('Pressed five.');
-      screen.render();
+    five: function() {
+      box.setContent('Pressed five.')
+      screen.render()
     },
-    'six': function() {
-      box.setContent('Pressed six.');
-      screen.render();
+    six: function() {
+      box.setContent('Pressed six.')
+      screen.render()
     },
-    'seven': function() {
-      box.setContent('Pressed seven.');
-      screen.render();
+    seven: function() {
+      box.setContent('Pressed seven.')
+      screen.render()
     },
-    'eight': function() {
-      box.setContent('Pressed eight.');
-      screen.render();
+    eight: function() {
+      box.setContent('Pressed eight.')
+      screen.render()
     },
-    'nine': function() {
-      box.setContent('Pressed nine.');
-      screen.render();
+    nine: function() {
+      box.setContent('Pressed nine.')
+      screen.render()
     },
-    'ten': function() {
-      box.setContent('Pressed ten.');
-      screen.render();
+    ten: function() {
+      box.setContent('Pressed ten.')
+      screen.render()
     },
-    'eleven': function() {
-      box.setContent('Pressed eleven.');
-      screen.render();
+    eleven: function() {
+      box.setContent('Pressed eleven.')
+      screen.render()
     },
-    'twelve': function() {
-      box.setContent('Pressed twelve.');
-      screen.render();
+    twelve: function() {
+      box.setContent('Pressed twelve.')
+      screen.render()
     },
-    'thirteen': function() {
-      box.setContent('Pressed thirteen.');
-      screen.render();
+    thirteen: function() {
+      box.setContent('Pressed thirteen.')
+      screen.render()
     },
-    'fourteen': function() {
-      box.setContent('Pressed fourteen.');
-      screen.render();
+    fourteen: function() {
+      box.setContent('Pressed fourteen.')
+      screen.render()
     },
-    'fifteen': function() {
-      box.setContent('Pressed fifteen.');
-      screen.render();
+    fifteen: function() {
+      box.setContent('Pressed fifteen.')
+      screen.render()
     }
   } as any,
   items: []
-}) as any;
+}) as any
 
-screen.append(bar);
+screen.append(bar)
 
-bar.focus();
+bar.focus()
 
 screen.key('q', function() {
-  return screen.destroy();
-});
+  return screen.destroy()
+})
 
-screen.render();
+screen.render()

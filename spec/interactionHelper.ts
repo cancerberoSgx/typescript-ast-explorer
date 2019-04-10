@@ -1,8 +1,6 @@
-import { ansi, Driver } from 'cli-driver';
-import { ClientRequest } from 'http';
+import { ansi, Driver } from 'cli-driver'
 
 export class Helper {
-
   constructor(protected client: Driver) {}
 
   async expectLastExitCode(zeroExitCode?: boolean) {
@@ -30,9 +28,13 @@ export class Helper {
   }
 
   async focusFile(codeFix: string) {
-    return this.arrowUntilFocused(this.client, codeFix, s => s.includes(` ❯◯ ${codeFix}`) || s.includes(` ❯◉ ${codeFix}`))
+    return this.arrowUntilFocused(
+      this.client,
+      codeFix,
+      s => s.includes(` ❯◯ ${codeFix}`) || s.includes(` ❯◉ ${codeFix}`)
+    )
   }
-  
+
   async focusListItem(label: string) {
     return this.arrowUntilFocused(this.client, label, s => s.includes(`❯ ${label}`))
   }
@@ -41,10 +43,10 @@ export class Helper {
     return this.arrowUntilFocused(this.client, label, s => s.includes(`❯◯ ${label}`))
   }
 
-  async down(n:number){
-    for (let i = 0; i <n; i++) {
-     await this.client.write(ansi.cursor.down())
-     await this.client.time(10)
+  async down(n: number) {
+    for (let i = 0; i < n; i++) {
+      await this.client.write(ansi.cursor.down())
+      await this.client.time(10)
     }
   }
 
@@ -108,16 +110,15 @@ export class Helper {
     return result && result[1]
   }
 
-  async waitForStrippedDataToInclude(s:string){
-    return await this.client.waitUntil(async ()=>(await this.client.getStrippedDataFromLastWrite()).includes(s))
-
+  async waitForStrippedDataToInclude(s: string) {
+    return await this.client.waitUntil(async () => (await this.client.getStrippedDataFromLastWrite()).includes(s))
   }
 }
 /**
-   * strips ANSI codes from a string. From https://github.com/xpl/ansicolor/blob/master/ansicolor.js
-   * @param {string} s a string containing ANSI escape codes.
-   * @return {string} clean string.
-   */
-  function strip(s: string) {
-    return s.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g, '') // hope V8 caches the regexp
-  }
+ * strips ANSI codes from a string. From https://github.com/xpl/ansicolor/blob/master/ansicolor.js
+ * @param {string} s a string containing ANSI escape codes.
+ * @return {string} clean string.
+ */
+function strip(s: string) {
+  return s.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g, '') // hope V8 caches the regexp
+}

@@ -1,7 +1,6 @@
 import * as blessed from 'blessed'
 
-const screen = blessed.screen({
-});
+const screen = blessed.screen({})
 var box = blessed.textarea({
   parent: screen,
   style: {
@@ -13,19 +12,19 @@ var box = blessed.textarea({
   left: 0,
   tags: true,
   mouse: true,
-  clickable: true,
-});
+  clickable: true
+})
 
-screen.render();
+screen.render()
 
 screen.key('q', function() {
-  screen.destroy();
-});
+  screen.destroy()
+})
 
 screen.key('i', function() {
-  box.readInput(function() {});
-});
+  box.readInput(function() {})
+})
 
 screen.key('e', function() {
-  box.readEditor(function() {});
-});
+  box.readEditor(function() {})
+})

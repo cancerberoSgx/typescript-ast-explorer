@@ -1,23 +1,22 @@
 import * as blessed from 'blessed'
-import { longText } from '../text';
-
+import { longText } from '../text'
 
 // Create a screen object.
 var screen = blessed.screen({
   smartCSR: true
-});
+})
 
-screen.title = 'my window title';
+screen.title = 'my window title'
 
 const editor = blessed.scrollabletext({
   content: longText(),
   alwaysScroll: true,
   scrollable: true,
   clickable: true,
-  focusable: true, 
+  focusable: true,
   hoverText: 'hshshs',
   mouse: true,
-  
+
   scrollbar: {
     ch: ' ',
     track: {
@@ -39,27 +38,26 @@ const editor = blessed.scrollabletext({
     }
   },
   top: 0,
-  left: 0, width: '100%', height: '100%',
+  left: 0,
+  width: '100%',
+  height: '100%'
 })
-screen.append(editor);
+screen.append(editor)
 
-editor.on('click', function (data) {
+editor.on('click', function(data) {
   alert(JSON.stringify(data) + '  ' + JSON.stringify(editor.position))
-  screen.render();
-});
+  screen.render()
+})
 
 // editor.sele
 
 // Quit on Escape, q, or Control-C.
-screen.key(['escape', 'q', 'C-c'], function (ch, key) {
-  return process.exit(0);
-});
-editor.focus();
+screen.key(['escape', 'q', 'C-c'], function(ch, key) {
+  return process.exit(0)
+})
+editor.focus()
 
-screen.render();
-
-
-
+screen.render()
 
 let p: blessed.Widgets.PromptElement | undefined
 function alert(s: string) {
@@ -76,8 +74,8 @@ function alert(s: string) {
       tags: true,
       border: 'line',
       hidden: true
-    });
-    p.on('click', data=>p!.hide())
+    })
+    p.on('click', data => p!.hide())
   }
   p.setContent(s)
   p.show()

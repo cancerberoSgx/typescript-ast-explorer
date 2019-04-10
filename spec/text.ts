@@ -329,5 +329,5 @@ export const nodeKinds = [
 
 
 
-  `;
+  `
 }

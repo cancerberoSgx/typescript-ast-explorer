@@ -4,18 +4,15 @@ import { pwd } from 'shelljs'
 import { Node, Project } from 'ts-morph'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra'
 import {
+  installExitKeys,
   installFocusHandler,
   isBlessedElement,
-  onButtonClicked,
-  visitDescendantElements,
   onTreeNodeFocus,
-  installExitKeys
-} from '../util/blessed'
-import { buildCodeAst } from './codeAst'
-import { buildTreeNode, focusStyle } from '../util/common'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from '../util/project'
-import { showInModal } from '../util/modal'
+  visitDescendantElements
+} from './blessed'
+import { buildTreeNode, focusStyle } from './common'
 import { optionsForm } from './options/options'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
 
 interface Options {
   project: Project

@@ -1,12 +1,11 @@
 import * as blessed from 'blessed'
 
-
-const screen =  blessed.screen({
+const screen = blessed.screen({
   // dump: __dirname + '/logs/dock.log',
   smartCSR: true,
   dockBorders: true,
   warnings: true
-});
+})
 
 var topleft = blessed.box({
   parent: screen,
@@ -24,7 +23,7 @@ var topleft = blessed.box({
   },
   // border: 'line',
   content: 'Foo'
-});
+})
 
 var topright = blessed.box({
   parent: screen,
@@ -42,7 +41,7 @@ var topright = blessed.box({
   },
   // border: 'line',
   content: 'Bar'
-});
+})
 
 var bottomleft = blessed.box({
   parent: screen,
@@ -57,10 +56,10 @@ var bottomleft = blessed.box({
     right: false,
     bottom: false
   },
-    //@ts-ignore
+  //@ts-ignore
   border: 'line',
   content: 'Foo'
-});
+})
 
 var bottomright = blessed.listtable({
   parent: screen,
@@ -95,15 +94,15 @@ var bottomright = blessed.listtable({
     }
   },
   data: [
-    [ 'Animals',  'Foods',  'Times',   'Numbers' ],
-    [ 'Elephant', 'Apple',  '1:00am',  'One'     ],
-    [ 'Bird',     'Orange', '2:15pm',  'Two'     ],
-    [ 'T-Rex',    'Taco',   '8:45am',  'Three'   ],
-    [ 'Mouse',    'Cheese', '9:05am',  'Four'    ]
+    ['Animals', 'Foods', 'Times', 'Numbers'],
+    ['Elephant', 'Apple', '1:00am', 'One'],
+    ['Bird', 'Orange', '2:15pm', 'Two'],
+    ['T-Rex', 'Taco', '8:45am', 'Three'],
+    ['Mouse', 'Cheese', '9:05am', 'Four']
   ]
-});
+})
 
-bottomright.focus();
+bottomright.focus()
 
 var over = blessed.box({
   parent: screen,
@@ -121,10 +120,10 @@ var over = blessed.box({
     bottom: true
   },
   content: 'Drag Me'
-});
+})
 
 screen.key('q', function() {
-  return screen.destroy();
-});
+  return screen.destroy()
+})
 
-screen.render();
+screen.render()

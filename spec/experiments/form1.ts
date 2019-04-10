@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-const screen = blessed.screen({smartCSR: true })
+const screen = blessed.screen({ smartCSR: true })
 
 var form = blessed.form({
   parent: screen,
@@ -10,7 +10,7 @@ var form = blessed.form({
   height: 4,
   bg: 'green',
   content: 'Submit or cancel?'
-});
+})
 
 var submit = blessed.button({
   parent: form,
@@ -35,7 +35,7 @@ var submit = blessed.button({
       bg: 'red'
     }
   }
-});
+})
 
 var cancel = blessed.button({
   parent: form,
@@ -60,28 +60,28 @@ var cancel = blessed.button({
       bg: 'red'
     }
   }
-});
+})
 
 submit.on('press', function() {
-  form.submit();
-});
+  form.submit()
+})
 
 cancel.on('press', function() {
-  form.reset();
-});
+  form.reset()
+})
 
 form.on('submit', function(data: any) {
-  form.setContent('Submitted.');
-  screen.render();
-});
+  form.setContent('Submitted.')
+  screen.render()
+})
 
 form.on('reset', function(data: any) {
-  form.setContent('Canceled.');
-  screen.render();
-});
+  form.setContent('Canceled.')
+  screen.render()
+})
 
 screen.key('q', function() {
-  process.exit(0);
-});
+  process.exit(0)
+})
 
-screen.render();
+screen.render()
