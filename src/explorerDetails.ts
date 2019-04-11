@@ -3,14 +3,30 @@ import * as contrib from 'blessed-contrib'
 import { buildNodeActions } from './nodeActions'
 import { isBlessedElement } from './util/blessed'
 import { scrollableOptions } from './util/common'
+import { GeneralNode, isNode, selectNode } from 'ts-simple-ast-extra';
+import { Store, ActionType, ActionListener, ActionListenerType, getCurrentView } from './state';
+import { Statement } from 'ts-morph';
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project';
+import { pwd } from 'shelljs';
+import { toEditorSettings } from 'typescript/lib/tsserverlibrary';
 
 export function buildDetails(
-  grid: contrib.grid,
-  screen: blessed.Widgets.Screen,
-  offset: number,
-  getLastTableData: () => string[][] | undefined
+  // grid: contrib.grid,
+  store: Store,
+  // screen: blessed.Widgets.Screen,
+  // row: number, column: number, rowSpan: number, columnSpan: number,
+  // getLastTableData?: ()=>GeneralNode|undefined
+  // showValueBox?: boolean
+
 ) {
-  const box: blessed.Widgets.BoxElement = grid.set(0, 6, 12 - offset, 6, blessed.box, {
+  const {screen, project} = store.state
+  const view = getCurrentView(store.state)
+  const {grid, verticalOffset: offset} = view
+  
+  // const showValue = store.state.currentView !== 'code'
+  // const offset =showValue ? store.state.fileView.verticalOffset : store.state.codeView.verticalOffset
+  // const [row, column, rowSpan, columnSpan] = 
+  const box: blessed.Widgets.BoxElement = grid.set(...offset? [ 6, 0, 12 - offset, 6] : [ 0, 6, 12 - offset, 6], blessed.box, {
     height: '100%',
     width: '100%',
     label: 'Details',
@@ -24,39 +40,100 @@ export function buildDetails(
     // ...scrollableOptions,// HEADS UP : THis break its
     clickable: true,
     keys: true,
-    focusable: true,
+    focusable: true, 
+    draggable: true,
     mouse: true,
-    height: '32%',
-    top: '0%',
+    height: '33%',
+    top: 0,
     padding: 1,
     border: 'line',
     columnWidth: [8, 30],
     label: 'Selection',
     data: { headers: ['Property', 'Value'], data: [[]] }
-  } as contrib.Widgets.TableOptions)
+  } )
   box.append(table)
-  ;[table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
-    c.key('enter', () => {
-      if (table.rows.selected) {
-        const data = getLastTableData()
-        const selected = data && data[table.rows.selected]
-        if (selected && selected[1]) {
-          value.setContent(selected[1])
-          screen.render()
+  
+  let value : blessed.Widgets.BoxElement|undefined
+
+    // const updateValueAndTableAfterNodeSelected: ActionListener<ActionType.NODE_SELECTION> = {
+    //   listenerType: ActionListenerType.afterWrite,
+    //   actionType: ActionType.NODE_SELECTION,
+    //   handle(a, s){
+    //     if(value){
+    //                 value.setContent(isNode(a.node) ? a.node.getFullText() : '')
+    //     }
+    //     const data = [
+    //       ['Kind', getGeneralNodeKindName(a.node) || ''],
+    //       ['Name', getGeneralNodeName(a.node) || ''],
+    //       ['Position', isNode(a.node) ? a.node.getPos() + '' : ''],
+    //       ['Path', getGeneralNodePath(a.node, pwd()) || ''],
+    //       [
+    //         'Text',
+    //         isNode(a.node)
+    //           ? a.node
+    //               .getFullText()
+    //               .substring(0, Math.max(a.node.getFullText().length, 200))
+    //               .replace(/\n/gm, '\\n') || ''
+    //           : ''
+    //       ]
+    //     ]
+    //   table.setData({ headers: ['Property', 'Value'], data })
+
+    //   }
+    // }
+    store.addActionListener({
+      listenerType: ActionListenerType.afterWrite,
+      actionType: ActionType.NODE_SELECTION,
+      handle(a, s){
+        if(value){
+                    value.setContent(isNode(a.node) ? a.node.getFullText() : '')
         }
+        const data = [
+          ['Kind', getGeneralNodeKindName(a.node) || ''],
+          ['Name', getGeneralNodeName(a.node) || ''],
+          ['Position', isNode(a.node) ? a.node.getPos() + '' : ''],
+          ['Path', getGeneralNodePath(a.node, pwd()) || ''],
+          [
+            'Text',
+            isNode(a.node)
+              ? a.node
+                  .getFullText()
+                  .substring(0, Math.max(a.node.getFullText().length, 200))
+                  .replace(/\n/gm, '\\n') || ''
+              : ''
+          ]
+        ]
+      table.setData({ headers: ['Property', 'Value'], data })
+
       }
     })
-  )
-  const value = blessed.scrollabletext({
-    ...scrollableOptions,
-    label: 'Value',
-    width: '100%',
-    top: '33%',
-    height: '33%',
-    padding: 1,
+
+
+    // [table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
+    //   c.key('enter', () => {
+    //     if (table.rows.selected) {
+    //       const node = getLastTableData()
+    //       // const selected = data && data[table.rows.selected]
+    //       // if (selected && selected[1]&& value) {
+    //         value.setContent(isNode(node) ? node.getFullText() : '')
+    //         screen.render()
+    //       // }
+    //     }
+    //   })
+    // )
+    if(store.state.currentView!=='code'){
+    value = blessed.scrollabletext({
+      ...scrollableOptions,
+      label: 'Full Value',
+      width: '100%',
+      top: '33%',
+      height: '33%',
+      padding: 1,
+    draggable: true,
     border: 'line'
-  })
-  box.prepend(value)
-  const actions = buildNodeActions(screen, box)
-  return { box, table, actions, value }
+    })
+    box.prepend(value)
+  }
+  const actions = buildNodeActions(store.state.screen, box,'66%', '33%')
+  return  { box, table, actions,value}
 }

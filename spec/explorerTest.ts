@@ -1,11 +1,9 @@
 import * as blessed from 'blessed'
 import { Project } from 'ts-morph'
 import { buildExplorer } from '../src/explorer'
+import { createStore } from '../src/state';
+import { createInitialState } from '../src/util/common';
 
-var screen = blessed.screen({
-  smartCSR: true
-  // , sendFocus: true
-})
-const project = new Project({ tsConfigFilePath: './tsconfig.json', addFilesFromTsConfig: true })
-buildExplorer({ project, screen })
-screen.render()
+var store = createStore()
+buildExplorer(store )
+store.state.screen.render()

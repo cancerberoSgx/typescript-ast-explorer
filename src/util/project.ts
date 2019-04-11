@@ -84,3 +84,9 @@ export function getRelativePath(source: string, target: string) {
   relPathArr.length && (relativePath += relPathArr.join(sep) + sep)
   return relativePath + filename
 }
+
+
+
+export function notUndefined<T>(a: T): a is Exclude<T, undefined> {
+  return typeof a !== 'undefined'
+}

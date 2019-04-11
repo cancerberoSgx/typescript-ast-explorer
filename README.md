@@ -18,5 +18,6 @@ WIP
 
  * in file view - remove details parent and leave the children only.
  * should we add the code view in the file view?
+ * currently, because of custom  .d.ts, the project needs to declare the types in its own ts.config.json
  * file view: expand first folder automatically.
  * when switching from files view to code view it should open in last viewed node and viceversa - auto-expanding the tree
