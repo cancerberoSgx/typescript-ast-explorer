@@ -16,7 +16,7 @@ export function optionsForm(
 ): blessed.Widgets.ListbarElement {
   const currentView: 'fileExplorer' | 'viewCode' = getLastSelectedNode ? 'fileExplorer' : 'viewCode'
 
-  const bar: blessed.Widgets.ListbarElement = grid.set(12 - offset, 0, offset, 12, blessed.listbar, {
+  const bar = grid.set(12 - offset, 0, offset, 12, blessed.listbar, {
     height: 'shrink',
     mouse: true,
     keys: true,
@@ -50,18 +50,8 @@ export function optionsForm(
           screen.render()
         }
       }
-    } as any
-    // items: {
-    //   'File Explorer': {
-    //     thirteen: function() {
-    //       screen.render()
-    //     },
-    //     fourteen: function() {
-    //       screen.render()
-    //     }
-    //   }
-    // }
-  } as any)
+    }
+  })
 
   bar.focus()
   screen.render()

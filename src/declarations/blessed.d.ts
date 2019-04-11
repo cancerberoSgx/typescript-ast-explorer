@@ -519,7 +519,7 @@ export namespace Widgets {
     type TAlign = 'left' | 'center' | 'right'
 
     interface ListbarCommand {
-      key: string
+      key?: string
       callback(): void
     }
 
@@ -2542,13 +2542,13 @@ export namespace Widgets {
      * Set buttons using an object with keys as titles of buttons, containing of objects
      * containing keys of keys and callback.
      */
-    commands: Types.ListbarCommand[]
-    items: Types.ListbarCommand[]
+    commands: (Types.ListbarCommand[]) | ({ [name: string]: Types.ListbarCommand })
+    items?: Types.ListbarCommand[]
 
     /**
      * Automatically bind list buttons to keys 0-9.
      */
-    autoCommandKeys: boolean
+    autoCommandKeys?: boolean
   }
 
   class ListbarElement extends BoxElement implements IHasOptions<ListbarOptions> {

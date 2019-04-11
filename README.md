@@ -16,4 +16,7 @@ WIP
 
 ### Issues
 
+ * in file view - remove details parent and leave the children only.
+ * should we add the code view in the file view?
+ * file view: expand first folder automatically.
  * when switching from files view to code view it should open in last viewed node and viceversa - auto-expanding the tree

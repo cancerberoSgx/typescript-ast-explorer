@@ -1,7 +1,7 @@
 import * as blessed from 'blessed'
 import { Project } from 'ts-morph'
 import { buildCodeAst } from '../src/codeAst'
-import { longText } from './text'
+import { longText } from './assets/project1/src/text'
 try {
   var screen = blessed.screen({ smartCSR: true })
   const project = new Project()
