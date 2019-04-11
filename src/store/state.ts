@@ -4,12 +4,10 @@
 
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
+import Project from 'ts-morph'
+import { GeneralNode } from 'ts-simple-ast-extra'
 
-import { GeneralNode } from 'ts-simple-ast-extra';
-import Project, { SourceFile, Node } from 'ts-morph';
-import { listeners } from 'cluster';
-
-// 
+//
 
 /**
  * the state is mutable and not serializable (to follow best practices :)
@@ -18,13 +16,13 @@ export interface State {
   project: Project
   // selectedSourceFile?: SourceFile
   offset?: number
-  screen: blessed.Widgets.Screen,
+  screen: blessed.Widgets.Screen
   currentView?: ViewType
-  fileView: View,
+  fileView: View
   codeView: View
 }
-type ViewType = 'file'|'code'
-export interface View{
+type ViewType = 'file' | 'code'
+export interface View {
   /**a number that depends on the height of the terminal - changes the grid to accommodate small children */
   verticalOffset: number
   selectedNode?: GeneralNode
@@ -32,12 +30,6 @@ export interface View{
   name: ViewType
 }
 
-
-
-
-export function getCurrentView(state:State){
-  return state.currentView==='code' ? state.codeView : state.fileView
+export function getCurrentView(state: State) {
+  return state.currentView === 'code' ? state.codeView : state.fileView
 }
-
-
-

@@ -1,29 +1,26 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { pwd } from 'shelljs'
-import { Node, Project } from 'ts-morph'
-import { GeneralNode, isNode } from 'ts-simple-ast-extra'
+import { GeneralNode } from 'ts-simple-ast-extra'
 import { detailsPanel } from './explorerDetails'
 import { mainMenu } from './mainMenu'
+import { ActionType } from './store/actions'
+import { getCurrentView, View } from './store/state'
+import { Store } from './store/store'
 import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './util/blessed'
 import { buildTreeNode, focusStyle } from './util/common'
 import { installFocusHandler } from './util/focus'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath, notUndefined } from './util/project'
-import {  getCurrentView, View } from './store/state';
-import { Store } from './store/store';
-import { ActionType } from './store/actions';
+import { notUndefined } from './util/project'
 
 // interface Options {
-  // project: Project
-  // store: Store
-  // screen: blessed.Widgets.Screen
+// project: Project
+// store: Store
+// screen: blessed.Widgets.Screen
 // }
 
-
 export function getVerticalOffset() {
-  const rows = process.stdout.rows || 24;
-  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1;
-  return offset;
+  const rows = process.stdout.rows || 24
+  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
+  return offset
 }
 
 /**
@@ -33,26 +30,25 @@ export function buildFileView(screen: blessed.Widgets.Screen): View {
   return {
     verticalOffset: getVerticalOffset(),
     name: 'file',
-    grid:  new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
-  };
+    grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
+  }
 }
 
 export function buildExplorer(store: Store) {
   // let { screen, store } = options
-  const {screen, project} = store.state
+  const { screen, project } = store.state
   const view = getCurrentView(store.state)
   // const project = store.state.project
   // const grid =  getCurrentView(store.state) project.new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
-  const {grid, verticalOffset: offset} = view//getVerticalOffset();
+  const { grid, verticalOffset: offset } = view //getVerticalOffset();
 
   // let lastSelectedNode: GeneralNode | undefined
   // const optionsListBar = optionsForm(view.grid, screen, project, offset, () => lastSelectedNode)
   const optionsListBar = mainMenu(store)
 
-
   const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
-    label: 'Files and Nodes Tree'
+    label: 'Project View'
   } as contrib.Widgets.TreeOptions<TreeNode>)
 
   // TODO:the following should be done in a Dispatcher
@@ -67,23 +63,26 @@ export function buildExplorer(store: Store) {
       type: ActionType.NODE_SELECTION,
       node: n.astNode
     })
-        // selectTreeNode(n)
+    // selectTreeNode(n)
   })
 
-  
   // const { table, value, actions } = buildDetails(grid, screen, 0, 6, 12 - offset, 6)
   const { table, value, actions } = detailsPanel(store)
 
-
-
   // console.log('value', !!value);
-  
+
   screen.render()
   installExitKeys(screen)
 
-  installFocusHandler('fileExplorer', [tree, table, value, actions, optionsListBar]
-  .filter(notUndefined), screen, undefined, true, true)
-  onTreeNodeFocus(tree, n=>{
+  installFocusHandler(
+    'fileExplorer',
+    [tree, table, value, actions, optionsListBar].filter(notUndefined),
+    screen,
+    undefined,
+    true,
+    true
+  )
+  onTreeNodeFocus(tree, n => {
     store.dispatch({
       type: ActionType.NODE_SELECTION,
       node: n.astNode

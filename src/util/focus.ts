@@ -72,15 +72,15 @@ export function setOnFocusChangeInterval(t: number) {
 let onFocusChangeTimer: NodeJS.Timeout | undefined = undefined
 
 // don't do this!
-let lastFocused: blessed.Widgets.BlessedElement|undefined
+let lastFocused: blessed.Widgets.BlessedElement | undefined
 
 let lastFocus: { [id: string]: number } = {}
 
-export function resetFocusManager(){
-  lastFocused=undefined
+export function resetFocusManager() {
+  lastFocused = undefined
   onFocusChangeTimer && clearInterval(onFocusChangeTimer)
-  lastFocus={}
-  onFocusChangeListeners.length=0
+  lastFocus = {}
+  onFocusChangeListeners.length = 0
 }
 
 export function uninstallFocusHandler(focusId: string) {

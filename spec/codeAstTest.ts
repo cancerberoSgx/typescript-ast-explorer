@@ -1,13 +1,9 @@
-import * as blessed from 'blessed'
-import { Project } from 'ts-morph'
 import { buildCodeAst } from '../src/codeAst'
-import { longText } from './assets/project1/src/text'
-import { createStore } from '../src/store/store';
+import { createStore } from '../src/store/store'
 try {
-
-var store = createStore()
-buildCodeAst(store )
-store.state.screen.render()
+  var store = createStore()
+  buildCodeAst(store)
+  store.state.screen.render()
 
   // var screen = blessed.screen({ smartCSR: true })
   // const project = new Project()

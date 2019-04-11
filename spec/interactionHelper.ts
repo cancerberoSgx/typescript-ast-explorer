@@ -1,6 +1,13 @@
 import { ansi, Driver } from 'cli-driver'
 
 export class Helper {
+  async getStrippedALlData() {
+    const s = await this.client.getAllData()
+    return strip(s)
+  }
+  async clear() {
+    await this.client.enter(ansi.erase.display(2))
+  }
   constructor(protected client: Driver) {}
 
   async expectLastExitCode(zeroExitCode?: boolean) {
@@ -111,7 +118,7 @@ export class Helper {
   }
 
   async waitForStrippedDataToInclude(s: string) {
-    return await this.client.waitUntil(async () => (await this.client.getStrippedDataFromLastWrite()).includes(s))
+    return await this.client.waitUntil(async () => (await this.client.getStrippedDataFromLastWrite()).includes(s) && s)
   }
 }
 /**

@@ -1,14 +1,13 @@
 const ansi = require('ansi-escape-sequences')
-import { GeneralNode, getGeneralNodeChildren, isDirectory } from 'ts-simple-ast-extra'
-import * as contrib from 'blessed-contrib'
-import { getGeneralNodeKindName, getGeneralNodeName } from './project'
 import * as blessed from 'blessed'
-import Project from 'ts-morph';
-import { State, getCurrentView } from '../store/state';
-import { Store } from '../store/store';
-import { buildFileView } from '../explorer';
-import { buildCodeView } from '../codeAst';
-import { resetFocusManager } from './focus';
+import Project from 'ts-morph'
+import { GeneralNode, getGeneralNodeChildren, isDirectory } from 'ts-simple-ast-extra'
+import { buildCodeView } from '../codeAst'
+import { buildFileView } from '../explorer'
+import { State } from '../store/state'
+import { Store } from '../store/store'
+import { resetFocusManager } from './focus'
+import { getGeneralNodeKindName, getGeneralNodeName } from './project'
 
 export function buildTreeNode(n: GeneralNode) {
   const children: any = {}
@@ -63,14 +62,13 @@ export const buttonStyle = {
   }
 }
 
-
 export function createInitialState(): State {
   var screen = blessed.screen({
     smartCSR: true
   })
   const project = new Project({ tsConfigFilePath: './tsconfig.json', addFilesFromTsConfig: true })
   return {
-    project, 
+    project,
     screen,
     // TODO: we are building the two UIs only showing 1
     fileView: buildFileView(screen),
@@ -78,21 +76,28 @@ export function createInitialState(): State {
   }
 }
 
-
 /**
  * it will create a new screen , destroy the current one and regenerate everything, with the exception of the Project
  */
-export function resetScreen(store: Store){
+export function resetScreen(store: Store) {
   resetFocusManager()
-  store.state.screen.clearRegion(0, parseInt(store.state.screen.width + ''), 0, parseInt(store.state.screen.height + ''))
+  store.state.screen.clearRegion(
+    0,
+    parseInt(store.state.screen.width + ''),
+    0,
+    parseInt(store.state.screen.height + '')
+  )
   store.state.screen.render()
   store.state.screen.destroy()
   var screen = blessed.screen({ smartCSR: true })
-  Object.assign(store.state, {...store.state,
-    screen, 
+  Object.assign(store.state, {
+    ...store.state,
+    screen,
     fileView: {
-      ...store.state.fileView,...buildFileView(screen)},
-    codeView: {...store.state.codeView, ...buildCodeView(screen)}
+      ...store.state.fileView,
+      ...buildFileView(screen)
+    },
+    codeView: { ...store.state.codeView, ...buildCodeView(screen) }
   })
   // store.state.screen = screen
 }

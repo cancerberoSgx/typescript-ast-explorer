@@ -1,23 +1,14 @@
 import * as blessed from 'blessed'
-import * as contrib from 'blessed-contrib'
-import { Node, Project } from 'ts-morph'
+import { isNode } from 'ts-simple-ast-extra'
 import { buildCodeAst } from './codeAst'
 import { buildExplorer } from './explorer'
+import { help } from './options/help'
+import { getCurrentView } from './store/state'
+import { Store } from './store/store'
 import { buttonStyle, resetScreen } from './util/common'
 import { showInModal } from './util/modal'
-import { help } from './options/help'
-import { GeneralNode, isNode } from 'ts-simple-ast-extra';
-import { getCurrentView } from './store/state';
-import { Store } from './store/store';
 
-export function mainMenu(
-  // grid: contrib.Widgets.GridElement,
-  store: Store,
-  // getLastSelectedNode?: () => GeneralNode | undefined
-)
-// : blessed.Widgets.ListbarElement 
-{
-  // const currentView: 'fileExplorer' | 'viewCode' = getLastSelectedNode ? 'fileExplorer' : 'viewCode'
+export function mainMenu(store: Store) {
   const view = getCurrentView(store.state)
   const { verticalOffset: offset, grid } = view
   let { screen, currentView } = store.state
@@ -36,7 +27,7 @@ export function mainMenu(
           screen.render()
         }
       },
-      [`${view.name==='file' ? 'Code' : 'File'} View`]: {
+      [`${view.name === 'file' ? 'Code' : 'File'} View`]: {
         keys: ['v'],
         callback() {
           try {
@@ -45,17 +36,20 @@ export function mainMenu(
               // TODO: ACTION AND DISPATCHER for this:
               if (isNode(view.selectedNode)) {
                 resetScreen(store)
-                store.state.currentView='code'
+                store.state.currentView = 'code'
                 buildCodeAst(store)
                 store.state.screen.render()
               } else {
-                showInModal(screen, 'You must select some SourceFile or Node to activate this view')
+                showInModal(
+                  screen,
+                  'You must select a file or node before activating the code view. Do it in the tree and try again. '
+                )
                 // buildExplorer({ screen, project })
               }
             } else {
               // showInModal(store.state.screen, 'about to change')
               resetScreen(store)
-              store.state.currentView='file'
+              store.state.currentView = 'file'
 
               // showInModal(store.state.screen, 'clean')
 
@@ -66,7 +60,7 @@ export function mainMenu(
               store.state.screen.render()
             }
           } catch (error) {
-            console.log('ERROR', error);
+            console.log('ERROR', error)
             showInModal(store.state.screen, `${error} ERROR`)
           }
         }
