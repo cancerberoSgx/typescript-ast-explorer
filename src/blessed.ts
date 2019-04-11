@@ -51,15 +51,27 @@ export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen:
   screen.key(['tab'], function(ch, key) {
     try {
       if (screen.focused) {
-        ;[f[lastFocus], f[lastFocus].parent, ...(f[lastFocus].children || [])].filter(isBlessedElement).forEach(c => {
-          c.style = { ...(c.style || {}), border: {} }
-        })
+        ;[
+          f[lastFocus],
+          //  f[lastFocus].parent,
+          ...(f[lastFocus].children || [])
+        ]
+          .filter(isBlessedElement)
+          .forEach(c => {
+            c.style = { ...(c.style || {}), border: {} }
+          })
       }
       lastFocus = lastFocus >= f.length - 1 ? 0 : lastFocus + 1
       f[lastFocus].focus()
-      ;[f[lastFocus], f[lastFocus].parent, ...(f[lastFocus].children || [])].filter(isBlessedElement).forEach(c => {
-        c.style = { ...(c.style || {}), ...focusStyle }
-      })
+      ;[
+        f[lastFocus],
+        // f[lastFocus].parent,
+        ...(f[lastFocus].children || [])
+      ]
+        .filter(isBlessedElement)
+        .forEach(c => {
+          c.style = { ...(c.style || {}), ...focusStyle }
+        })
       f[lastFocus].key
       screen.render()
     } catch (error) {
@@ -68,9 +80,15 @@ export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen:
     }
   })
   f[0].focus()
-  ;[f[0], f[0].parent, ...(f[0].children || [])].filter(isBlessedElement).forEach(c => {
-    c.style = { ...(c.style || {}), ...focusStyle }
-  })
+  ;[
+    f[0],
+    // f[0].parent,
+    ...(f[0].children || [])
+  ]
+    .filter(isBlessedElement)
+    .forEach(c => {
+      c.style = { ...(c.style || {}), ...focusStyle }
+    })
 }
 
 export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
@@ -95,12 +113,12 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
   })
 }
 
-export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement, fn: (selectedNode: T) => void) {
+export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement<T>, fn: (selectedNode: T) => void) {
   tree.rows.key(['down', 'up'], k => {
-    const selectedNode =
-      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
-    if (selectedNode) {
-      fn(selectedNode)
-    }
+    // const selectedNode =      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
+    // const selectedNode =      tree.nodeLines && tree.rows && tree.rows.selected && tree.nodeLines[tree.rows.getItemIndex(tree.rows.selected)]
+    // if (selectedNode) {
+    // fn(selectedNode)
+    // }
   })
 }

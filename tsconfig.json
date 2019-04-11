@@ -10,10 +10,22 @@
     "rootDir": ".",
     "declaration": true,
     "strict": true,
+    "baseUrl": ".",
     // "noImplicitAny": false
+    // "types":   ["src/declarations/blessed.d.ts",  "src/declarations/blessed-contrib.d.ts"],
+
+    "paths": {
+      "blessed-contrib": ["src/declarations/blessed-contrib"],      
+      "blessed": ["src/declarations/blessed"]
+    },
+
+    // "types": ["src/declarations/blessed.d.ts", "src/declarations/contrib-blessed.d.ts"],
     "skipLibCheck": true
   },
   "include": [
     "src", "spec"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

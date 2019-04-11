@@ -51,13 +51,14 @@ var bottomleft = blessed.box({
   height: '50%+1',
   border: {
     type: 'line',
+    //@ts-ignore
     left: false,
     top: true,
     right: false,
     bottom: false
   },
-  //@ts-ignore
-  border: 'line',
+  // @ts-ig nore
+  // border: 'line',
   content: 'Foo'
 })
 

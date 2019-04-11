@@ -25,3 +25,32 @@ export const focusStyle = {
     fg: 'red'
   }
 }
+
+export const scrollableOptions = {
+  // alwaysScroll: true,
+  scrollable: true,
+  clickable: true,
+  keys: true,
+  focusable: true,
+  mouse: true,
+  scrollbar: {
+    style: {
+      inverse: true
+    }
+  }
+}
+
+export const buttonStyle = {
+  item: {
+    bg: 'black',
+    hover: {
+      bg: 'yellow'
+    },
+    focus: {
+      bg: 'cyan'
+    }
+  },
+  selected: {
+    bg: 'blue'
+  }
+}
