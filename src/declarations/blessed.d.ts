@@ -81,6 +81,11 @@ export class BlessedProgram extends EventEmitter {
   response(name: string, callback?: Function): boolean
 
   write(text: string): boolean
+  /**
+   * Example: `program.write('Hello world', 'blue fg')`
+   */
+  write(text: string, style: string): boolean
+
   flush(): void
   print(text: string, attr?: boolean): boolean
   echo(text: string, attr?: boolean): boolean
@@ -215,7 +220,7 @@ export class BlessedProgram extends EventEmitter {
   deviceStatuses(param?: string, callback?: Function, dec?: boolean, noBypass?: boolean): boolean
   dsr(param?: string, callback?: Function, dec?: boolean, noBypass?: boolean): boolean
 
-  getCursor(callback: Function): boolean
+  getCursor(callback: (err: Error, data: IMouseEventArg) => any): boolean
   saveReportedCursor(callback: Function): void
 
   restoreReportedCursor: () => boolean
@@ -595,7 +600,7 @@ export namespace Widgets {
     destroy(): void
   }
 
-  interface IOptions {}
+  interface IOptions { }
 
   interface IHasOptions<T extends IOptions> {
     options: T
@@ -1539,6 +1544,11 @@ export namespace Widgets {
      */
     bold?: string
     underline?: string
+
+    top?: boolean
+    left?: boolean
+    right?: boolean
+    bottom?: boolean
   }
 
   interface ElementOptions extends INodeOptions {
@@ -2154,7 +2164,7 @@ export namespace Widgets {
    * A scrollable text box which can display and scroll text, as well as handle
    * pre-existing newlines and escape codes.
    */
-  class ScrollableTextElement extends ScrollableBoxElement {}
+  class ScrollableTextElement extends ScrollableBoxElement { }
 
   /**
    * A box element which draws a simple box containing content or other elements.
@@ -2659,7 +2669,7 @@ export namespace Widgets {
     on(event: 'cancel' | 'reset', callback: () => void): this
   }
 
-  interface InputOptions extends BoxOptions {}
+  interface InputOptions extends BoxOptions { }
 
   abstract class InputElement extends BoxElement {
     constructor(opts: InputOptions)
@@ -2794,7 +2804,7 @@ export namespace Widgets {
     censor: boolean
   }
 
-  interface ButtonOptions extends BoxOptions {}
+  interface ButtonOptions extends BoxOptions { }
 
   class ButtonElement extends InputElement implements IHasOptions<ButtonOptions> {
     constructor(opts: ButtonOptions)
@@ -2867,7 +2877,7 @@ export namespace Widgets {
     toggle(): void
   }
 
-  interface RadioSetOptions extends BoxOptions {}
+  interface RadioSetOptions extends BoxOptions { }
 
   /**
    * An element wrapping RadioButtons. RadioButtons within this element will be mutually exclusive
@@ -2877,7 +2887,7 @@ export namespace Widgets {
     constructor(opts: RadioSetOptions)
   }
 
-  interface RadioButtonOptions extends BoxOptions {}
+  interface RadioButtonOptions extends BoxOptions { }
 
   /**
    * A radio button which can be used in a form element.
@@ -2886,7 +2896,7 @@ export namespace Widgets {
     constructor(opts: RadioButtonOptions)
   }
 
-  interface PromptOptions extends BoxOptions {}
+  interface PromptOptions extends BoxOptions { }
 
   /**
    * A prompt box containing a text input, okay, and cancel buttons (automatically hidden).
@@ -2904,7 +2914,7 @@ export namespace Widgets {
     readInput(text: string, value: string, callback: (err: any, value: string) => void): void
   }
 
-  interface QuestionOptions extends BoxOptions {}
+  interface QuestionOptions extends BoxOptions { }
 
   /**
    * A question box containing okay and cancel buttons (automatically hidden).
@@ -2920,7 +2930,7 @@ export namespace Widgets {
     ask(question: string, callback: (err: any, value: string) => void): void
   }
 
-  interface MessageOptions extends BoxOptions {}
+  interface MessageOptions extends BoxOptions { }
 
   /**
    * A box containing a message to be displayed (automatically hidden).
@@ -2946,7 +2956,7 @@ export namespace Widgets {
     error(text: string, callback: () => void): void
   }
 
-  interface LoadingOptions extends BoxOptions {}
+  interface LoadingOptions extends BoxOptions { }
 
   /**
    * A box with a spinning line to denote loading (automatically hidden).
@@ -3361,19 +3371,20 @@ export namespace Widgets {
     tty: any
   }
 
+  type LayoutIterator = (el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number },
+    i: number | undefined) => any
   interface LayoutOptions extends ElementOptions {
     /**
      * A callback which is called right before the children are iterated over to be rendered. Should return an
      * iterator callback which is called on each child element: iterator(el, i).
      */
-    renderer?(): void
-
+    renderer?(this: Layout, coords: PositionCoords, i: number | undefined): LayoutIterator
     /**
      * Using the default renderer, it provides two layouts: inline, and grid. inline is the default and will render
      * akin to inline-block. grid will create an automatic grid based on element dimensions. The grid cells'
      * width and height are always determined by the largest children in the layout.
      */
-    layout: 'inline' | 'inline-block' | 'grid'
+    layout?: 'inline' | 'inline-block' | 'grid'
   }
 
   class LayoutElement extends BlessedElement implements IHasOptions<LayoutOptions> {
@@ -3385,7 +3396,7 @@ export namespace Widgets {
      * A callback which is called right before the children are iterated over to be rendered. Should return an
      * iterator callback which is called on each child element: iterator(el, i).
      */
-    renderer(coords: PositionCoords): void
+    renderer(coords: PositionCoords, i: number | undefined): void
 
     /**
      * Check to see if a previous child element has been rendered and is visible on screen. This is only useful
@@ -3417,7 +3428,7 @@ export namespace Widgets {
 }
 
 export namespace widget {
-  class Terminal extends Widgets.TerminalElement {}
+  class Terminal extends Widgets.TerminalElement { }
 }
 
 export function screen(options?: Widgets.IScreenOptions): Widgets.Screen
@@ -3454,3 +3465,62 @@ export function escape(item: any): any
 export const colors: {
   match(hexColor: string): string
 }
+
+export const unicode: Unicode
+
+/**
+ * Unicode utilities, see [[Screen#fullUnicode]]. Wide, Surrogates, and Combining.
+ */
+interface Unicode {
+  
+  fromCodePoint(unicode: number): string
+  
+  charWidth(str: string, i?: number): string
+  
+  strWidth(str: string): number
+  
+  isSurrogate(str: string, i?: number): boolean
+
+  combiningTable: number[][]
+
+  /**
+   * Regexps 
+   */
+  chars: {
+    /**
+     * All surrogate pair wide chars.
+     */
+    wide: Regexp,
+
+    /** 
+     * All wide chars including surrogate pairs. 
+     */
+    all: Regexp
+
+    /**
+     * Regex to detect a surrogate pair.
+     */
+    surrogate: Regexp
+    /**
+     * Regex to find combining characters. 
+     */
+    combining: Regexp
+  }
+}
+
+//TODO
+
+// Helpers
+// All helpers reside on blessed.helpers or blessed.
+
+// merge(a, b) - Merge objects a and b into object a.
+// asort(obj) - Sort array alphabetically by name prop.
+// hsort(obj) - Sort array numerically by index prop.
+// findFile(start, target) - Find a file at start directory with name target.
+// escape(text) - Escape content's tags to be passed into el.setContent(). Example: box.setContent('escaped tag: ' + blessed.escape('{bold}{/bold}'));
+// parseTags(text) - Parse tags into SGR escape codes.
+// generateTags(style, text) - Generate text tags based on style object.
+// attrToBinary(style, element) - Convert style attributes to binary format.
+// stripTags(text) - Strip text of tags and SGR sequences.
+// cleanTags(text) - Strip text of tags, SGR escape code, and leading/trailing whitespace.
+// dropUnicode(text) - Drop text of any >U+FFFF characters.

@@ -62,7 +62,6 @@ var explorer = {
 }
 
 //set tree
-//@ts-ignore
 tree.setData(explorer)
 
 // Handling select event. Every custom property that was added to node is

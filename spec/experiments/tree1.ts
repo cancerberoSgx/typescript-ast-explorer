@@ -61,7 +61,6 @@ tree.render()
 screen.render()
 
 // you can specify a name property at root level to display root
-//@ts-ignore
 tree.setData({
   extended: true,
   children: {
@@ -91,7 +90,6 @@ tree.setData({
 })
 
 var table = contrib.table(
-  //@ts-ignore
   {
     keys: true,
     fg: 'white',
@@ -104,7 +102,7 @@ var table = contrib.table(
     width: '30%',
     clickable: true,
     height: '30%',
-    border: { type: 'line', fg: 'cyan' },
+    border: { type: 'line', fg: 1 },
     columnSpacing: 10, //in chars
     columnWidth: [16, 12, 12] /*in chars*/
   }
@@ -115,7 +113,6 @@ table.focus()
 
 table.setData({
   headers: ['col1', 'col2', 'col3'],
-  //@ts-ignore
   data: [
     [1, 2, 3],
     [4, 5, 6],

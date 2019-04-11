@@ -112,7 +112,7 @@ export function installFocusHandler(
             ? 0
             : lastFocus[focusId] + 1
 
-            // otherwise we assume that key press was for us. TODO: are we certain ? TODO: what if other keys have register with the same key ? we should check which is more close to the real focused
+          // otherwise we assume that key press was for us. TODO: are we certain ? TODO: what if other keys have register with the same key ? we should check which is more close to the real focused
 
           elements[lastFocus[focusId]].focus()
           ;[elements[lastFocus[focusId]], ...(styleChildren ? elements[lastFocus[focusId]].children : [])]

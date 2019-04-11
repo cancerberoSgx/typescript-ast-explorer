@@ -1,4 +1,4 @@
-import * as blessed from 'blessed'
+import * as blessed from 'blessed';
 
 export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.Widgets.BlessedElement) {
   if (!modalInstance) {
@@ -11,7 +11,6 @@ export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.
       draggable: true,
       border: {
         type: 'line',
-        //@ts-ignore
         left: true,
         top: true,
         right: true,
@@ -28,7 +27,6 @@ export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.
       modalInstance.remove(lastModalContent)
     }
     lastModalContent = s
-    // modalInstance.add
     modalInstance.append(s)
   }
   modalInstance.show()

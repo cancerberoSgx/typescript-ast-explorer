@@ -15,13 +15,11 @@ var topleft = blessed.box({
   height: '50%',
   border: {
     type: 'line',
-    //@ts-ignore
     left: false,
     top: false,
     right: true,
     bottom: false
   },
-  // border: 'line',
   content: 'Foo'
 })
 
@@ -33,7 +31,6 @@ var topright = blessed.box({
   height: '50%',
   border: {
     type: 'line',
-    //@ts-ignore
     left: true,
     top: false,
     right: false,
@@ -51,14 +48,11 @@ var bottomleft = blessed.box({
   height: '50%+1',
   border: {
     type: 'line',
-    //@ts-ignore
     left: false,
     top: true,
     right: false,
     bottom: false
   },
-  // @ts-ig nore
-  // border: 'line',
   content: 'Foo'
 })
 
@@ -70,13 +64,11 @@ var bottomright = blessed.listtable({
   height: '50%+1',
   border: {
     type: 'line',
-    //@ts-ignore
     left: true,
     top: true,
     right: false,
     bottom: false
   },
-  // border: 'line',
   align: 'center',
   tags: true,
   keys: true,
@@ -114,7 +106,6 @@ var over = blessed.box({
   draggable: true,
   border: {
     type: 'line',
-    //@ts-ignore
     left: false,
     top: true,
     right: true,

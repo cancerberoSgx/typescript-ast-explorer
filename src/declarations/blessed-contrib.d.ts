@@ -282,22 +282,22 @@ declare namespace BlessedContrib {
       addLegend(bars: any, x: number): void
     }
 
-    export interface CanvasOptions<D extends any = any> extends BoxOptions {
+    export interface CanvasOptions<D extends any = string> extends BoxOptions {
       canvasSize?: {
         width?: number
         height?: number
       }
-      data?: D
+      data?: TableData<D>
     }
 
-    export class CanvasElement<D extends any = any> extends BoxElement implements IHasOptions<CanvasOptions> {
+    export class CanvasElement<D extends any = string> extends BoxElement implements IHasOptions<CanvasOptions<D>> {
       constructor(opts: CanvasOptions<D>)
 
       options: CanvasOptions<D>
 
       calcSize(): void
 
-      setData(data: D): void
+      setData(data: TableData<D>): void
 
       canvasSize: { width: number; height: number }
     }
@@ -444,12 +444,12 @@ declare namespace BlessedContrib {
       options: PictureOptions
     }
 
-    export interface TableData {
+    export interface TableData<T extends any = string> {
       headers?: string[]
-      data?: string[][]
+      data?: T[][]
     }
 
-    export interface TableOptions extends CanvasOptions<TableData> {
+    export interface TableOptions<T extends any = string> extends CanvasOptions<T> {
       bold?: string
       columnSpacing?: number
       columnWidth?: number[]
@@ -458,7 +458,7 @@ declare namespace BlessedContrib {
       selectedBg?: string
       fg?: string
       bg?: string
-      interactive?: string
+      interactive?: boolean
     }
 
     export class TableElement extends CanvasElement<TableData> implements IHasOptions<TableOptions> {
@@ -468,8 +468,8 @@ declare namespace BlessedContrib {
       rows: Blessed.Widgets.ListElement & { selected?: number }
     }
 
-    export interface TreeOptions extends BoxOptions {
-      data?: any
+    export interface TreeOptions<Node extends TreeElementNode = TreeElementNode> extends BoxOptions {
+      data?: Node
       extended?: boolean
       keys?: string[]
       template?: {
@@ -479,15 +479,52 @@ declare namespace BlessedContrib {
       }
     }
 
-    export class TreeElement<Node extends any = any> extends BoxElement implements IHasOptions<TreeOptions> {
+    interface TreeElementNode {
+      /**
+       * Type : boolean
+Desc : Determine if this node is extended
+No effect when the node have no child
+Default value for each node will be treeInstance.options.extended if the node extended option is not set
+Example : {'Fruit':{ name: 'Fruit', extended: true, children:{ 'Banana': {}, 'Cherry': {}}}}
+       */
+      extended?: boolean
+      /** Type : string
+Desc : Node name
+If the node isn't the root and you don't specify the name, will be set to hash key
+Example : { name: 'Fruit'} */
+      name?: string
+      /**
+       * Type : hash or function(node){ return children }
+Desc : Node children.
+The function must return a hash that could have been used as children property
+If you use a function, the result will be stored in node.childrenContent and children
+Example :
+Hash : {'Fruit':{ name: 'Fruit', children:{ 'Banana': {}, 'Cherry': {}}}}
+Function : see examples/explorer.js
+       */
+      children: {[name:string]:TreeNodeElement} |( (name:string)=>TreeNodeElement)
+/**
+ * Type : hash
+Desc : Children content for internal usage DO NOT MODIFY
+If node.children is a hash, node.children===node.childrenContent
+If node.children is a function, it's used to store the node.children() result
+You can read this property, but you should never write it.
+Usually this will be used to check if(node.childrenContent) in your node.children function to generate children only once
+ */
+      childrenContent?: {[name:string]:any}
+    }
+    export class TreeElement<Node extends TreeElementNode = TreeElementNode> extends BoxElement implements IHasOptions<TreeOptions> {
       constructor(opts: TreeOptions)
 
       rows: Blessed.Widgets.ListElement & { selected?: Blessed.Widgets.BlessedElement }
       nodeLines?: Node[]
       lineNbr?: number
-      data: any
+      data: Data
 
       options: TreeOptions
+
+      /** set new data in the Tree, i.e dynamic data. call screen.render() after so UI is updated. */
+      setData(data:Data): void
     }
   }
 
@@ -537,7 +574,7 @@ declare namespace BlessedContrib {
 
   export function tree(options?: Widgets.TreeOptions): Widgets.TreeElement
 
-  export function table(options?: Widgets.TableOptions): Widgets.TableElement
+  export function table<T extends any = string>(options?: Widgets.TableOptions<T>): Widgets.TableElement<T>
 
   export function picture(options?: Widgets.PictureOptions): Widgets.PictureElement
 

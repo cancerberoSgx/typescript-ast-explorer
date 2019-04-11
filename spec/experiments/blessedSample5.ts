@@ -1,7 +1,6 @@
 import * as blessed from 'blessed'
 const screen = blessed.screen({ smartCSR: true })
 
-//@ts-ignore
 var layout = blessed.layout({
   parent: screen,
   top: 'center',
@@ -43,7 +42,7 @@ var layout = blessed.layout({
       el.shrink = true
 
       // Find the previous rendered child's coordinates
-      var last = self.getLastCoords(i)
+      var last = self.getLastCoords(i!)
 
       // If there is no previously rendered element, we are on the first child.
       if (!last) {

@@ -1,6 +1,5 @@
 var fs = require('fs')
 import * as blessed from 'blessed'
-//@ts-ignore
 const unicode = blessed.unicode
 
 var screen = blessed.screen({
@@ -11,7 +10,9 @@ var screen = blessed.screen({
  * Unicode Characters
  */
 
-// var DU = '杜';
+
+
+
 var DU = unicode.fromCodePoint(0x675c)
 
 // var JUAN = '鹃';

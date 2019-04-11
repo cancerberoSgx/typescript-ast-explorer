@@ -43,8 +43,7 @@ export function buildNodeActions(screen: blessed.Widgets.Screen, box: blessed.Wi
     mouse: true,
     style: {
       // heads up : if layout child does not have border or style it throws
-      border: {
-      }
+      border: {}
     },
     valign: 'middle',
     align: 'center',
@@ -58,8 +57,7 @@ export function buildNodeActions(screen: blessed.Widgets.Screen, box: blessed.Wi
     parent: layout,
     padding: 1,
     style: {
-      border: {
-      }
+      border: {}
     },
     valign: 'middle',
     align: 'center',
@@ -78,8 +76,7 @@ export function buildNodeActions(screen: blessed.Widgets.Screen, box: blessed.Wi
     mouse: true,
     style: {
       // heads up : if layout child does not have border or style it throws
-      border: {
-      }
+      border: {}
     },
     valign: 'middle',
     align: 'center',

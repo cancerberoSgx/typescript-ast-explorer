@@ -57,14 +57,12 @@ program.clear()
 
 program.move(1, 1)
 program.bg('black')
-//@ts-ignore
 program.write('Hello world', 'blue fg')
 program.setx(((program.cols / 2) | 0) - 4)
 program.down(5)
 program.write('Hi again!')
 program.bg('!black')
 program.feed()
-//@ts-ignore
 
 program.getCursor(function(err, data) {
   if (!err) {
