@@ -1,6 +1,5 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { focusStyle } from './common'
 import { closeModal, isModalVisible } from './modal'
 
 export function isBlessedElement(n: any): n is blessed.Widgets.BlessedElement {
@@ -46,7 +45,6 @@ export function isFocused(screen: blessed.Widgets.Screen, el: blessed.Widgets.Bl
   return el === screen.focused || el.hasDescendant(screen.focused)
 }
 
-
 export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
   b.on('pressed', e => {
     fn()
@@ -79,4 +77,3 @@ export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement<T>, fn: (se
     }
   })
 }
-

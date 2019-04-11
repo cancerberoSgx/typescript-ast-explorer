@@ -1,7 +1,7 @@
 import { Driver } from 'cli-driver'
 import { Helper } from './interactionHelper'
 
-jasmine.DEFAULT_TIMEOUT_INTERVAL=15000
+jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 describe('astExplorerSpec', () => {
   let client: Driver

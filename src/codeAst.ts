@@ -4,8 +4,8 @@ import { Node, Project } from 'ts-morph'
 import { optionsForm } from './options/options'
 import { installExitKeys, onTreeNodeFocus } from './util/blessed'
 import { buildTreeNode } from './util/common'
+import { installFocusHandler } from './util/focus'
 import { showInModal } from './util/modal'
-import { installFocusHandler } from './util/focus';
 const ansi = require('ansi-escape-sequences')
 
 export function buildCodeAst(options: Options) {
@@ -52,8 +52,7 @@ export function buildCodeAst(options: Options) {
   })
 
   installExitKeys(screen)
-  // installFocusHandler('codeAst', [tree, editor, bar], screen)
-  installFocusHandler('codeAst',  [tree, editor, bar], screen, undefined, true, true)
+  installFocusHandler('codeAst', [tree, editor, bar], screen, undefined, true, true)
 
   screen.render()
 

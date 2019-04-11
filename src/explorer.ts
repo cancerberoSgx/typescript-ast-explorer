@@ -3,17 +3,12 @@ import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { Node, Project } from 'ts-morph'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra'
+import { buildDetails } from './explorerDetails'
 import { optionsForm } from './options/options'
-import {
-  installExitKeys,
-  
-  onTreeNodeFocus,
-  visitDescendantElements
-} from './util/blessed'
+import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './util/blessed'
 import { buildTreeNode, focusStyle } from './util/common'
+import { installFocusHandler } from './util/focus'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project'
-import { buildDetails } from './explorerDetails';
-import { installFocusHandler } from './util/focus';
 
 interface Options {
   project: Project
@@ -21,9 +16,6 @@ interface Options {
 }
 
 export function buildExplorer(options: Options) {
-  // console.log('explorer ',' installFocusHandler');
-
-
   let { screen, project } = options
   const grid = new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
   const rows = process.stdout.rows || 24
@@ -44,8 +36,6 @@ export function buildExplorer(options: Options) {
     updateTreeNodeStyles(tree)
     selectTreeNode(n)
   })
-  // screen.on('focus')
-
   const { table, value, actions } = buildDetails(grid, screen, offset, () => {
     if (lastTableData && lastSelectedNode) {
       ;(lastTableData.find(d => d[0] === 'Text') || ['', ''])[1] = lastSelectedNode.getFullText()
@@ -53,13 +43,9 @@ export function buildExplorer(options: Options) {
     return lastTableData
   })
 
-  // console.log('explorer ',' installFocusHandler');
-  
   screen.render()
   installExitKeys(screen)
 
-  // console.log('explorer ',' installFocusHandler');
-  
   installFocusHandler('fileExplorer', [tree, table, value, actions, optionsListBar], screen, undefined, true, true)
   onTreeNodeFocus(tree, selectTreeNode)
 
@@ -108,5 +94,3 @@ export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement) {
     return false
   })
 }
-
-
