@@ -600,7 +600,7 @@ export namespace Widgets {
     destroy(): void
   }
 
-  interface IOptions { }
+  interface IOptions {}
 
   interface IHasOptions<T extends IOptions> {
     options: T
@@ -2164,7 +2164,7 @@ export namespace Widgets {
    * A scrollable text box which can display and scroll text, as well as handle
    * pre-existing newlines and escape codes.
    */
-  class ScrollableTextElement extends ScrollableBoxElement { }
+  class ScrollableTextElement extends ScrollableBoxElement {}
 
   /**
    * A box element which draws a simple box containing content or other elements.
@@ -2669,7 +2669,7 @@ export namespace Widgets {
     on(event: 'cancel' | 'reset', callback: () => void): this
   }
 
-  interface InputOptions extends BoxOptions { }
+  interface InputOptions extends BoxOptions {}
 
   abstract class InputElement extends BoxElement {
     constructor(opts: InputOptions)
@@ -2804,7 +2804,7 @@ export namespace Widgets {
     censor: boolean
   }
 
-  interface ButtonOptions extends BoxOptions { }
+  interface ButtonOptions extends BoxOptions {}
 
   class ButtonElement extends InputElement implements IHasOptions<ButtonOptions> {
     constructor(opts: ButtonOptions)
@@ -2877,7 +2877,7 @@ export namespace Widgets {
     toggle(): void
   }
 
-  interface RadioSetOptions extends BoxOptions { }
+  interface RadioSetOptions extends BoxOptions {}
 
   /**
    * An element wrapping RadioButtons. RadioButtons within this element will be mutually exclusive
@@ -2887,7 +2887,7 @@ export namespace Widgets {
     constructor(opts: RadioSetOptions)
   }
 
-  interface RadioButtonOptions extends BoxOptions { }
+  interface RadioButtonOptions extends BoxOptions {}
 
   /**
    * A radio button which can be used in a form element.
@@ -2896,7 +2896,7 @@ export namespace Widgets {
     constructor(opts: RadioButtonOptions)
   }
 
-  interface PromptOptions extends BoxOptions { }
+  interface PromptOptions extends BoxOptions {}
 
   /**
    * A prompt box containing a text input, okay, and cancel buttons (automatically hidden).
@@ -2914,7 +2914,7 @@ export namespace Widgets {
     readInput(text: string, value: string, callback: (err: any, value: string) => void): void
   }
 
-  interface QuestionOptions extends BoxOptions { }
+  interface QuestionOptions extends BoxOptions {}
 
   /**
    * A question box containing okay and cancel buttons (automatically hidden).
@@ -2930,7 +2930,7 @@ export namespace Widgets {
     ask(question: string, callback: (err: any, value: string) => void): void
   }
 
-  interface MessageOptions extends BoxOptions { }
+  interface MessageOptions extends BoxOptions {}
 
   /**
    * A box containing a message to be displayed (automatically hidden).
@@ -2956,7 +2956,7 @@ export namespace Widgets {
     error(text: string, callback: () => void): void
   }
 
-  interface LoadingOptions extends BoxOptions { }
+  interface LoadingOptions extends BoxOptions {}
 
   /**
    * A box with a spinning line to denote loading (automatically hidden).
@@ -3371,8 +3371,10 @@ export namespace Widgets {
     tty: any
   }
 
-  type LayoutIterator = (el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number },
-    i: number | undefined) => any
+  type LayoutIterator = (
+    el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number },
+    i: number | undefined
+  ) => any
   interface LayoutOptions extends ElementOptions {
     /**
      * A callback which is called right before the children are iterated over to be rendered. Should return an
@@ -3428,7 +3430,7 @@ export namespace Widgets {
 }
 
 export namespace widget {
-  class Terminal extends Widgets.TerminalElement { }
+  class Terminal extends Widgets.TerminalElement {}
 }
 
 export function screen(options?: Widgets.IScreenOptions): Widgets.Screen
@@ -3472,28 +3474,27 @@ export const unicode: Unicode
  * Unicode utilities, see [[Screen#fullUnicode]]. Wide, Surrogates, and Combining.
  */
 interface Unicode {
-  
   fromCodePoint(unicode: number): string
-  
+
   charWidth(str: string, i?: number): string
-  
+
   strWidth(str: string): number
-  
+
   isSurrogate(str: string, i?: number): boolean
 
   combiningTable: number[][]
 
   /**
-   * Regexps 
+   * Regexps
    */
   chars: {
     /**
      * All surrogate pair wide chars.
      */
-    wide: Regexp,
+    wide: Regexp
 
-    /** 
-     * All wide chars including surrogate pairs. 
+    /**
+     * All wide chars including surrogate pairs.
      */
     all: Regexp
 
@@ -3502,7 +3503,7 @@ interface Unicode {
      */
     surrogate: Regexp
     /**
-     * Regex to find combining characters. 
+     * Regex to find combining characters.
      */
     combining: Regexp
   }

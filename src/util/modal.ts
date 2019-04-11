@@ -1,4 +1,4 @@
-import * as blessed from 'blessed';
+import * as blessed from 'blessed'
 
 export function showInModal(screen: blessed.Widgets.Screen, s: string | blessed.Widgets.BlessedElement) {
   if (!modalInstance) {

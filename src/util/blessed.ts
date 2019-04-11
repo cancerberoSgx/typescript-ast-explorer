@@ -67,7 +67,10 @@ export function installExitKeys(screen: blessed.Widgets.Screen) {
   })
 }
 
-export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement<T>, fn: (selectedNode: T) => void) {
+export function onTreeNodeFocus<T extends contrib.Widgets.TreeElementNode>(
+  tree: contrib.Widgets.TreeElement<T>,
+  fn: (selectedNode: T) => void
+) {
   tree.rows.key(['down', 'up'], k => {
     // const selectedNode =      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
     const selectedNode =

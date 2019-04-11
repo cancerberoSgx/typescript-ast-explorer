@@ -24,10 +24,10 @@ export function buildExplorer(options: Options) {
   let lastSelectedNode: Node | undefined
   const optionsListBar = optionsForm(grid, screen, project, offset, () => lastSelectedNode)
 
-  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
+  const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
     label: 'Files and Nodes Tree'
-  })
+  } as contrib.Widgets.TreeOptions<TreeNode>)
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
   ;(tree as any).setData(rootNode)
@@ -79,11 +79,11 @@ export function buildExplorer(options: Options) {
   }
 }
 
-interface TreeNode {
+interface TreeNode extends contrib.Widgets.TreeElementNode {
   astNode: GeneralNode
 }
 
-export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement) {
+export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement<TreeNode>) {
   visitDescendantElements(tree, e => {
     const content = e.getContent()
     if (content.includes('Directory ') || content.includes('SourceFile ')) {

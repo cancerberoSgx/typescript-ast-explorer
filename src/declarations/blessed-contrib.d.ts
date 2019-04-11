@@ -63,14 +63,14 @@ declare namespace BlessedContrib {
     export class GridElement extends BoxElement implements IHasOptions<GridOptions> {
       constructor(opts: GridOptions)
 
-      set<T extends (options?: TreeOptions) => S, S extends TreeElement>(
+      set<T extends TreeNode>(
         row: number,
         col: number,
         rowSpan: number,
         colSpan: number,
-        obj: T,
-        opt: TreeOptions
-      ): TreeElement
+        obj: (options?: TreeOptions<N>) => TreeElement<T>,
+        opt: TreeOptions<T>
+      ): TreeElement<T>
       set<T extends (options?: TableOptions) => S, S extends TableElement>(
         row: number,
         col: number,
@@ -479,7 +479,7 @@ declare namespace BlessedContrib {
       }
     }
 
-    interface TreeElementNode {
+    export interface TreeElementNode {
       /**
        * Type : boolean
 Desc : Determine if this node is extended
@@ -502,8 +502,8 @@ Example :
 Hash : {'Fruit':{ name: 'Fruit', children:{ 'Banana': {}, 'Cherry': {}}}}
 Function : see examples/explorer.js
        */
-      children: {[name:string]:TreeNodeElement} |( (name:string)=>TreeNodeElement)
-/**
+      children: { [name: string]: TreeNodeElement } | ((name: string) => TreeNodeElement)
+      /**
  * Type : hash
 Desc : Children content for internal usage DO NOT MODIFY
 If node.children is a hash, node.children===node.childrenContent
@@ -511,9 +511,10 @@ If node.children is a function, it's used to store the node.children() result
 You can read this property, but you should never write it.
 Usually this will be used to check if(node.childrenContent) in your node.children function to generate children only once
  */
-      childrenContent?: {[name:string]:any}
+      childrenContent?: { [name: string]: any }
     }
-    export class TreeElement<Node extends TreeElementNode = TreeElementNode> extends BoxElement implements IHasOptions<TreeOptions> {
+    export class TreeElement<Node extends TreeElementNode = TreeElementNode> extends BoxElement
+      implements IHasOptions<TreeOptions> {
       constructor(opts: TreeOptions)
 
       rows: Blessed.Widgets.ListElement & { selected?: Blessed.Widgets.BlessedElement }
@@ -524,7 +525,7 @@ Usually this will be used to check if(node.childrenContent) in your node.childre
       options: TreeOptions
 
       /** set new data in the Tree, i.e dynamic data. call screen.render() after so UI is updated. */
-      setData(data:Data): void
+      setData(data: Data): void
     }
   }
 
@@ -572,7 +573,7 @@ Usually this will be used to check if(node.childrenContent) in your node.childre
 
   export function canvas(options?: Widgets.CanvasOptions): Widgets.CanvasElement
 
-  export function tree(options?: Widgets.TreeOptions): Widgets.TreeElement
+  export function tree<T extends TreeNode = TreeNode>(options?: Widgets.TreeOptions<T>): Widgets.TreeElement<T>
 
   export function table<T extends any = string>(options?: Widgets.TableOptions<T>): Widgets.TableElement<T>
 

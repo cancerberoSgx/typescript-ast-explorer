@@ -10,9 +10,6 @@ var screen = blessed.screen({
  * Unicode Characters
  */
 
-
-
-
 var DU = unicode.fromCodePoint(0x675c)
 
 // var JUAN = '鹃';

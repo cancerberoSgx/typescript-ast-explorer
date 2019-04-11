@@ -23,10 +23,10 @@ export function buildCodeAst(options: Options) {
 
   const bar = optionsForm(grid, screen, project, offset)
 
-  const tree: contrib.Widgets.TreeElement = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
+  const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
     label: node.getSourceFile().getBaseName()
-  } as contrib.Widgets.TreeOptions)
+  } as contrib.Widgets.TreeOptions<TreeNode>)
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   onTreeNodeFocus(tree, selectTreeNode)
   const rootNodew = { extended: true, ...buildTreeNode(node.getSourceFile()) }
@@ -70,7 +70,7 @@ export function buildCodeAst(options: Options) {
   }
 }
 
-interface TreeNode {
+interface TreeNode extends contrib.Widgets.TreeElementNode {
   astNode: Node
 }
 
