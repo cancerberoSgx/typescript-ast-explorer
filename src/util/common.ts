@@ -5,8 +5,9 @@ import { getGeneralNodeKindName, getGeneralNodeName } from './project'
 import * as blessed from 'blessed'
 import Project from 'ts-morph';
 import { State, getCurrentView } from '../store/state';
-import { getVerticalOffset as getVerticalOffsetFile} from '../explorer';
-import { getVerticalOffset as getVerticalOffsetCode} from '../codeAst';
+import { Store } from '../store/store';
+import { buildFileView } from '../explorer';
+import { buildCodeView } from '../codeAst';
 
 
 
@@ -71,16 +72,28 @@ export function createInitialState(): State {
   })
   const project = new Project({ tsConfigFilePath: './tsconfig.json', addFilesFromTsConfig: true })
   return {
-    project, screen,
-    fileView: {
-      verticalOffset: getVerticalOffsetFile(),
-      name: 'Code Explorer',
-      grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
-    },
-    codeView: {
-      verticalOffset: getVerticalOffsetCode(),
-      name: 'File Explorer',
-      grid: new contrib.grid({ rows: 12, cols: 12, screen: screen })
-    }
+    project, 
+    screen,
+    // TODO: we are building the two UIs only showing 1
+    fileView: buildFileView(screen),
+    codeView: buildCodeView(screen)
   }
+}
+
+
+/**
+ * it will create a new screen , destroy the current one and regenerate everything, with the exception of the Project
+ */
+export function resetScreen(store: Store){
+  store.state.screen.clearRegion(0, parseInt(store.state.screen.width + ''), 0, parseInt(store.state.screen.height + ''))
+  store.state.screen.render()
+  store.state.screen.destroy()
+  var screen = blessed.screen({ smartCSR: true })
+  Object.assign(store.state, {...store.state,
+    screen, 
+    fileView: {
+      ...store.state.fileView,...buildFileView(screen)},
+    codeView: {...store.state.codeView, ...buildCodeView(screen)}
+  })
+  // store.state.screen = screen
 }

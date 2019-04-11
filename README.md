@@ -13,7 +13,9 @@ WIP
  * filter nodes by kind or name  or query
  * apply refactors interactively
  * tree expand all - collapse all
-
+ * move the tree to its own file
+ * stateful modal, selections, expansions, etc
+ 
 ### Issues
 
  * in file view - remove details parent and leave the children only.

@@ -11,6 +11,7 @@ import { Statement } from 'ts-morph';
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project';
 import { pwd } from 'shelljs';
 import { toEditorSettings } from 'typescript/lib/tsserverlibrary';
+import { showInModal } from './util/modal';
 
 export function buildDetails(
   // grid: contrib.grid,
@@ -28,18 +29,24 @@ export function buildDetails(
   // const showValue = store.state.currentView !== 'code'
   // const offset =showValue ? store.state.fileView.verticalOffset : store.state.codeView.verticalOffset
   // const [row, column, rowSpan, columnSpan] = 
-  const box: blessed.Widgets.BoxElement = grid.set(...offset? [ 6, 0, 12 - offset, 6] : [ 0, 6, 12 - offset, 6], blessed.box, {
-    height: '100%',
-    width: '100%',
-    label: 'Details',
-    keys: true,
-    mouse: true,
-    draggable: true,
-    clickable: true,
-    left: 0,
-    content: 'Submit or cancel?'
-  } as blessed.Widgets.BoxOptions)
-  const table = contrib.table({
+
+  // ails(grid, screen, 0, 6, 12 - offset, 6)
+
+
+  // const box: blessed.Widgets.BoxElement = grid.set(view.name==='file' ? [ 6, 0, 12 - offset, 6] : [ 0, 6, 12 - offset, 6], blessed.box, {
+  //   height: '100%',
+  //   width: '100%',
+  //   label: 'Details',
+  //   keys: true,
+  //   mouse: true,
+  //   draggable: true,
+  //   clickable: true,
+  //   left: 0,
+  // } as blessed.Widgets.BoxOptions)
+
+  const table = grid.set(...(view.name==='file' ?  [ 0, 6, 12 - offset, 6] : [ 6, 0, 12 - offset, 6]) ,contrib.table, {
+
+  // const table = contrib.table({
     // ...scrollableOptions,// HEADS UP : THis break its
     clickable: true,
     keys: true,
@@ -54,10 +61,28 @@ export function buildDetails(
     label: 'Selection',
     data: { headers: ['Property', 'Value'], data: [[]] }
   } )
-  box.append(table)
+  // box.append(table)
   
-  let value : blessed.Widgets.BoxElement|undefined
+  let value : blessed.Widgets.ScrollableTextElement|undefined
 
+  if(store.state.currentView!=='code'){
+    // value = blessed.scrollabletext({
+      // grid.set(view.name==='file' ?  [ 5, 6, 12 - offset, 8]: [ 8, 0, 12 - offset, 6] ,contrib.table, {
+    value=    grid.set(...[ 5, 6, 12 - offset, 8] ,blessed.scrollabletext, {
+
+      ...scrollableOptions,
+      label: 'Full Value',
+      width: '100%',
+      top: '33%',
+      height: '33%',
+      padding: 1,
+    draggable: true,
+    border: 'line'
+    })
+    // box.prepend(value)
+  }
+  
+  const actions = buildNodeActions(store)
     // const updateValueAndTableAfterNodeSelected: ActionListener<ActionType.NODE_SELECTION> = {
     //   listenerType: ActionListenerType.afterWrite,
     //   actionType: ActionType.NODE_SELECTION,
@@ -113,31 +138,19 @@ export function buildDetails(
     })
 
 
-    // [table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
+    // ;[table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
     //   c.key('enter', () => {
     //     if (table.rows.selected) {
-    //       const node = getLastTableData()
+    //       showInModal(screen, 'Disabled temporarily')
+    //       // const node = getLastTableData()
     //       // const selected = data && data[table.rows.selected]
     //       // if (selected && selected[1]&& value) {
-    //         value.setContent(isNode(node) ? node.getFullText() : '')
-    //         screen.render()
+    //         // value.setContent(isNode(node) ? node.getFullText() : '')
+    //         // screen.render()
     //       // }
     //     }
     //   })
     // )
-    if(store.state.currentView!=='code'){
-    value = blessed.scrollabletext({
-      ...scrollableOptions,
-      label: 'Full Value',
-      width: '100%',
-      top: '33%',
-      height: '33%',
-      padding: 1,
-    draggable: true,
-    border: 'line'
-    })
-    box.prepend(value)
-  }
-  const actions = buildNodeActions(store.state.screen, box,'66%', '33%')
-  return  { box, table, actions,value}
+  
+  return  { table, actions,value}
 }

@@ -3,7 +3,7 @@ import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
 import { buildCodeAst } from '../codeAst'
 import { buildExplorer } from '../explorer'
-import { buttonStyle } from '../util/common'
+import { buttonStyle, resetScreen } from '../util/common'
 import { showInModal } from '../util/modal'
 import { help } from './help'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra';
@@ -19,8 +19,8 @@ export function optionsForm(
 {
   // const currentView: 'fileExplorer' | 'viewCode' = getLastSelectedNode ? 'fileExplorer' : 'viewCode'
   const view = getCurrentView(store.state)
-const {verticalOffset: offset, grid} = view
-let {screen, currentView} = store.state
+  const { verticalOffset: offset, grid } = view
+  let { screen, currentView } = store.state
 
   const bar = grid.set(12 - offset, 0, offset, 12, blessed.listbar, {
     height: 'shrink',
@@ -39,20 +39,23 @@ let {screen, currentView} = store.state
       [view.name]: {
         keys: ['v'],
         callback() {
-          
+          try {
+            
           // const node =  getLastSelectedNode ? getLastSelectedNode() : undefined
-          if (currentView === 'file'&&isNode(view.selectedNode)) {
+          if (view.name === 'file' && isNode(view.selectedNode)) {
             // TODO: ACTION AND DISPATCHER for this:
-            screen.clearRegion(0, parseInt(screen.width + ''), 0, parseInt(screen.height + ''))
-          screen.render()
-          screen.destroy()
-          screen = store.state.screen = blessed.screen({ smartCSR: true })
-          buildCodeAst(store)
-          screen.render()
+resetScreen(store)
+  buildCodeAst(store)
+  store.state.screen.render()
           } else {
             showInModal(screen, 'You must select some SourceFile or Node to activate this view')
             // buildExplorer({ screen, project })
           }
+          } catch (error) {
+            console.log('ERROR', error);
+            
+          }
+
         }
       },
       'getChildren()': {

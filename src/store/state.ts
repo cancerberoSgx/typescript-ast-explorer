@@ -16,21 +16,20 @@ import { listeners } from 'cluster';
  */
 export interface State {
   project: Project
-  selectedSourceFile?: SourceFile
+  // selectedSourceFile?: SourceFile
   offset?: number
   screen: blessed.Widgets.Screen,
   currentView?: ViewType
   fileView: View,
   codeView: View
-
 }
 type ViewType = 'file'|'code'
-interface View{
+export interface View{
   /**a number that depends on the height of the terminal - changes the grid to accommodate small children */
   verticalOffset: number
   selectedNode?: GeneralNode
   grid: contrib.Widgets.GridElement
-  name: string
+  name: ViewType
 }
 
 

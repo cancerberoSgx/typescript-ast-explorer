@@ -10,7 +10,7 @@ import { buildDetails } from './explorerDetails';
 import { buildNodeActions } from './nodeActions';
 import { ActionListenerType, ActionType, ACTION_LISTENER } from './store/actions';
 import { isNode } from 'ts-simple-ast-extra';
-import { getCurrentView } from './store/state';
+import { getCurrentView, View } from './store/state';
 import { Store } from './store/store';
 const ansi = require('ansi-escape-sequences')
 
@@ -19,6 +19,17 @@ export function getVerticalOffset() {
   const rows = process.stdout.rows || 24;
   const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1;
   return offset;
+}
+
+/**
+ * must never accept the store, since is used to build it and reset the screen (probably given one is a empty one)
+ */
+export function buildCodeView(screen: blessed.Widgets.Screen): View {
+  return {
+    verticalOffset: getVerticalOffset(),
+    name: 'code',
+    grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
+  }
 }
 
 
@@ -37,7 +48,7 @@ export function buildCodeAst(store: Store) {
   //   }
   // }
   if(!isNode(node)){
-    throw new Error('Unespected not Node Genreal node (directory?) in Code View')
+    throw new Error('Unexpected not-a-node selectednode (directory?) in Code View')
   }
   // let { screen, project } = store.state
   // const node = store.state.codeView.selectedNode

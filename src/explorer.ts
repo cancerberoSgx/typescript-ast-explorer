@@ -9,7 +9,7 @@ import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './uti
 import { buildTreeNode, focusStyle } from './util/common'
 import { installFocusHandler } from './util/focus'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath, notUndefined } from './util/project'
-import {  getCurrentView } from './store/state';
+import {  getCurrentView, View } from './store/state';
 import { Store } from './store/store';
 import { ActionType } from './store/actions';
 
@@ -26,6 +26,16 @@ export function getVerticalOffset() {
   return offset;
 }
 
+/**
+ * must never accept the store, since is used to build it and reset the screen (probably given one is a empty one)
+ */
+export function buildFileView(screen: blessed.Widgets.Screen): View {
+  return {
+    verticalOffset: getVerticalOffset(),
+    name: 'file',
+    grid:  new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
+  };
+}
 
 export function buildExplorer(store: Store) {
   // let { screen, store } = options
@@ -44,9 +54,12 @@ export function buildExplorer(store: Store) {
     template: { lines: true },
     label: 'Files and Nodes Tree'
   } as contrib.Widgets.TreeOptions<TreeNode>)
+
+  // TODO:the following should be done in a Dispatcher
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
   ;(tree as any).setData(rootNode)
+
   updateTreeNodeStyles(tree)
   tree.on('select', function(n: TreeNode) {
     updateTreeNodeStyles(tree)
@@ -68,7 +81,8 @@ export function buildExplorer(store: Store) {
   screen.render()
   installExitKeys(screen)
 
-  installFocusHandler('fileExplorer', [tree, table, value, actions, optionsListBar].filter(notUndefined), screen, undefined, true, true)
+  installFocusHandler('fileExplorer', [tree, table, value, actions, optionsListBar]
+  .filter(notUndefined), screen, undefined, true, true)
   onTreeNodeFocus(tree, n=>{
     store.dispatch({
       type: ActionType.NODE_SELECTION,
