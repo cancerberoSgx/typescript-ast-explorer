@@ -2,9 +2,9 @@ import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
 import { buildCodeAst } from '../codeAst'
-import { buttonStyle } from '../common'
 import { buildExplorer } from '../explorer'
-import { showInModal } from '../modal'
+import { buttonStyle } from '../util/common'
+import { showInModal } from '../util/modal'
 import { help } from './help'
 
 export function optionsForm(

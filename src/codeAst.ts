@@ -1,10 +1,10 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
-import { installExitKeys, installFocusHandler, onTreeNodeFocus } from './blessed'
-import { buildTreeNode } from './common'
-import { showInModal } from './modal'
 import { optionsForm } from './options/options'
+import { installExitKeys, installFocusHandler, onTreeNodeFocus } from './util/blessed'
+import { buildTreeNode } from './util/common'
+import { showInModal } from './util/modal'
 const ansi = require('ansi-escape-sequences')
 
 export function buildCodeAst(options: Options) {

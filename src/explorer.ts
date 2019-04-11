@@ -3,16 +3,16 @@ import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { Node, Project } from 'ts-morph'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra'
+import { optionsForm } from './options/options'
 import {
   installExitKeys,
   installFocusHandler,
   isBlessedElement,
   onTreeNodeFocus,
   visitDescendantElements
-} from './blessed'
-import { buildTreeNode, buttonStyle, focusStyle, scrollableOptions } from './common'
-import { optionsForm } from './options/options'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './project'
+} from './util/blessed'
+import { buildTreeNode, buttonStyle, focusStyle, scrollableOptions } from './util/common'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project'
 
 interface Options {
   project: Project
@@ -50,7 +50,9 @@ export function buildExplorer(options: Options) {
   })
 
   installExitKeys(screen)
-  installFocusHandler([tree, table, optionsListBar, value, actions], screen)
+
+  installFocusHandler([tree, table, value, actions, optionsListBar], screen)
+
   screen.render()
 
   let lastTableData: string[][] | undefined
@@ -78,7 +80,6 @@ export function buildExplorer(options: Options) {
       table.setData({ headers: ['Property', 'Value'], data })
       // HEADS UP : saving the data since crappy contrib table is not storing it on setData() - just format it and loose the  parsed info
       lastTableData = data
-      // ;(data as any).fullText =  n.astNode.getFullText()
     }
     screen.render()
   }
@@ -111,14 +112,12 @@ function buildDetails(
     width: '100%',
     label: 'Details',
     keys: true,
-    mouse: true
-    // clickable: true,
+    mouse: true,
+    clickable: true
   } as blessed.Widgets.BoxOptions)
 
   const table = contrib.table({
-    // parent: box,
-    // ...scrollableOptions,// THis break its
-
+    // ...scrollableOptions,// HEADS UP : THis break its
     clickable: true,
     keys: true,
     // focusable: true,
@@ -136,7 +135,6 @@ function buildDetails(
         style: 'line',
         fg: 'white'
       }
-      //   fg: 'green'
     }
   } as contrib.Widgets.TableOptions)
 
@@ -144,16 +142,10 @@ function buildDetails(
   ;[table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
     c.key('enter', () => {
       if (table.rows.selected) {
-        //@ts-ignore
-        // debugger
-        // console.log('JOJOJO', table.rows.value, table.rows.selected, table.rows.items[1].name, 'HDHDHDHD', table.rows.items[1].data, 'CONTENT?', table.rows.items[1].content,  'options?', table.rows.items[1].options.name, table.rows.items[1].options.index, table.rows.items[1].options.data, table.rows.items[1].options.content, Object.keys(table.rows.items[1].options).join(', '), Object.keys( table.rows.items[1]).join(','))  //Object.keys( table.rows).join(','), table.getLines(), table.rows.getLines(), table.rows.getLines())
-
         const data = getLastTableData()
         const selected = data && data[table.rows.selected]
         if (selected && selected[1]) {
-          // console.log(selected[1]);
           value.setContent(selected[1])
-          // value.focus()w
           screen.render()
         }
       }
@@ -202,6 +194,5 @@ function buildDetails(
   })
   actions.append(b1)
 
-  // screen.render()
   return { box, table, actions, value }
 }
