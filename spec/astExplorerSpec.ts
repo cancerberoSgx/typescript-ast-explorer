@@ -41,19 +41,15 @@ describe('astExplorerSpec', () => {
     expect(await helper.waitForStrippedDataToInclude('Project View'))
     await client.enter('v')
     let s = await helper.waitForStrippedDataToInclude('try again')
-    // expect(s).not.toContain('Welcome to')
-
     await client.enter('q')
     // TODO: wait not to contain
     await client.time(300)
 
     await client.enter('h')
     s = await helper.waitForStrippedDataToInclude('Welcome to')
-    // expect(s).not.toContain('try again')
 
     await client.enter('q')
     // TODO: wait not to contain
-    // expect(await helper.waitForStrippedDataToInclude('Project View'))
     await client.time(300)
     await client.enter('q')
     await client.time(300)

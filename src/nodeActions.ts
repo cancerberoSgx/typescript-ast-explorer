@@ -14,15 +14,12 @@ export function buildNodeActions(store: Store) {
 
   const [top, height] = ['66%', '33%']
 
-  // grid.set(view.name==='file' ?  [ 5, 6, 12 - offset, 8]: [ 8, 0, 12 - offset, 6] ,contrib.table, {
   const container = grid.set(
     ...(view.name === 'file' ? [6, 8, 12 - offset, 4] : [8, 0, 12 - offset, 6]),
     blessed.listbar,
     {
-      // const container = blessed.({
       style: { ...buttonStyle },
       ...scrollableOptions,
-      // parent: box,
       border: 'line',
       padding: 1,
       label: 'Node Actions',

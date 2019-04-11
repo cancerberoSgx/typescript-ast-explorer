@@ -1,14 +1,12 @@
 import { NodeSelectionAction } from './nodeSelection'
 import { State } from './state'
-let actions
-/** name convention Like redux actions they are expect to come with an event payload */
+
+/**
+ * name convention Like redux actions they are expect to come with an event payload
+ */
 export enum ActionType {
   NODE_SELECTION = 'node:selection'
 }
-// interface Action<T extends ActionType> {
-//   type: T
-// }
-// export interface Dispatcher<T extends ActionType> extends ActionListener<T>{}
 /**
  * Dispatcher is like Reducer but with more freedom - receive the action and the entire state and mutates it.
  */
@@ -21,10 +19,13 @@ export interface ActionListener<T extends ActionType> {
   actionType: T
   handle<T extends ActionType, A extends ActionTypeMap[T]>(action: A, state: State): void
 }
-/** centraliced action map to typed actions */
+/**
+ * centralized action map to typed actions
+ */
 export interface ActionTypeMap {
   [ActionType.NODE_SELECTION]: NodeSelectionAction
 }
+
 export enum ActionListenerType {
   beforeReadOnly = 'beforeReadOnly',
   afterReadOnly = 'afterReadOnly',

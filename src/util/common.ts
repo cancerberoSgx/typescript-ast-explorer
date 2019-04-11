@@ -34,7 +34,6 @@ export const focusStyle = {
 }
 
 export const scrollableOptions = {
-  // alwaysScroll: true,
   scrollable: true,
   clickable: true,
   keys: true,
@@ -99,5 +98,4 @@ export function resetScreen(store: Store) {
     },
     codeView: { ...store.state.codeView, ...buildCodeView(screen) }
   })
-  // store.state.screen = screen
 }

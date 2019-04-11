@@ -31,7 +31,6 @@ export function mainMenu(store: Store) {
         keys: ['v'],
         callback() {
           try {
-            // const node =  getLastSelectedNode ? getLastSelectedNode() : undefined
             if (view.name === 'file') {
               // TODO: ACTION AND DISPATCHER for this:
               if (isNode(view.selectedNode)) {
@@ -44,19 +43,11 @@ export function mainMenu(store: Store) {
                   screen,
                   'You must select a file or node before activating the code view. Do it in the tree and try again. '
                 )
-                // buildExplorer({ screen, project })
               }
             } else {
-              // showInModal(store.state.screen, 'about to change')
               resetScreen(store)
               store.state.currentView = 'file'
-
-              // showInModal(store.state.screen, 'clean')
-
               buildExplorer(store)
-              // showInModal(store.state.screen, 'built')
-
-              // store.state.screen
               store.state.screen.render()
             }
           } catch (error) {

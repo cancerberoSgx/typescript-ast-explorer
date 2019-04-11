@@ -13,6 +13,5 @@ export const nodeSelectionDispatcher: ActionListener<ActionType.NODE_SELECTION> 
   handle(a, s) {
     s.fileView.selectedNode = a.node
     s.codeView.selectedNode = a.node
-    // getCurrentView(s).selectedNode = a.node;
   }
 }

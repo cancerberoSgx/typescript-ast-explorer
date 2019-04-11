@@ -72,7 +72,6 @@ export function onTreeNodeFocus<T extends contrib.Widgets.TreeElementNode>(
   fn: (selectedNode: T) => void
 ) {
   tree.rows.key(['down', 'up'], k => {
-    // const selectedNode =      tree.nodeLines && tree.rows && (tree.nodeLines[tree.rows.getItemIndex((tree.rows as any).selected || 0)] as any)
     const selectedNode =
       tree.nodeLines && tree.rows && tree.rows.selected && tree.nodeLines[tree.rows.getItemIndex(tree.rows.selected)]
     if (selectedNode) {

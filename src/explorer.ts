@@ -11,12 +11,6 @@ import { buildTreeNode, focusStyle } from './util/common'
 import { installFocusHandler } from './util/focus'
 import { notUndefined } from './util/project'
 
-// interface Options {
-// project: Project
-// store: Store
-// screen: blessed.Widgets.Screen
-// }
-
 export function getVerticalOffset() {
   const rows = process.stdout.rows || 24
   const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
@@ -35,15 +29,9 @@ export function buildFileView(screen: blessed.Widgets.Screen): View {
 }
 
 export function buildExplorer(store: Store) {
-  // let { screen, store } = options
   const { screen, project } = store.state
   const view = getCurrentView(store.state)
-  // const project = store.state.project
-  // const grid =  getCurrentView(store.state) project.new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
-  const { grid, verticalOffset: offset } = view //getVerticalOffset();
-
-  // let lastSelectedNode: GeneralNode | undefined
-  // const optionsListBar = optionsForm(view.grid, screen, project, offset, () => lastSelectedNode)
+  const { grid, verticalOffset: offset } = view
   const optionsListBar = mainMenu(store)
 
   const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
@@ -63,14 +51,9 @@ export function buildExplorer(store: Store) {
       type: ActionType.NODE_SELECTION,
       node: n.astNode
     })
-    // selectTreeNode(n)
   })
 
-  // const { table, value, actions } = buildDetails(grid, screen, 0, 6, 12 - offset, 6)
   const { table, value, actions } = detailsPanel(store)
-
-  // console.log('value', !!value);
-
   screen.render()
   installExitKeys(screen)
 
@@ -88,35 +71,6 @@ export function buildExplorer(store: Store) {
       node: n.astNode
     })
   })
-
-  // let lastTableData: string[][] | undefined
-
-  // function selectTreeNode(n: TreeNode) {
-  //   if (n.astNode) {
-  //     if (isNode(n.astNode)) {
-  //       lastSelectedNode = n.astNode
-  //     }
-  //     // const data = [
-  //     //   ['Kind', getGeneralNodeKindName(n.astNode) || ''],
-  //     //   ['Name', getGeneralNodeName(n.astNode) || ''],
-  //     //   ['Position', isNode(n.astNode) ? n.astNode.getPos() + '' : ''],
-  //     //   ['Path', getGeneralNodePath(n.astNode, pwd()) || ''],
-  //     //   [
-  //     //     'Text',
-  //     //     isNode(n.astNode)
-  //     //       ? n.astNode
-  //     //           .getFullText()
-  //     //           .substring(0, Math.max(n.astNode.getFullText().length, 200))
-  //     //           .replace(/\n/gm, '\\n') || ''
-  //     //       : ''
-  //     //   ]
-  //     // ]
-  //     // table.setData({ headers: ['Property', 'Value'], data })
-  //     // HEADS UP : saving the data since crappy contrib table is not storing it on setData() - just format it and loose the  parsed info
-  //     // lastTableData = data
-  //   }
-  //   screen.render()
-  // }
 }
 
 interface TreeNode extends contrib.Widgets.TreeElementNode {
