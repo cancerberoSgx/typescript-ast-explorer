@@ -46,38 +46,6 @@ export function isFocused(screen: blessed.Widgets.Screen, el: blessed.Widgets.Bl
   return el === screen.focused || el.hasDescendant(screen.focused)
 }
 
-let lastFocus = 0
-export function installFocusHandler(f: blessed.Widgets.BlessedElement[], screen: blessed.Widgets.Screen) {
-  screen.key(['tab', 'S-tab'], function(ch, key) {
-    try {
-      if (screen.focused) {
-        ;[f[lastFocus], ...(f[lastFocus].children || [])].filter(isBlessedElement).forEach(c => {
-          c.style = { ...(c.style || {}), border: {} }
-        })
-      }
-      lastFocus = key.shift
-        ? lastFocus <= 0
-          ? f.length - 1
-          : lastFocus - 1
-        : lastFocus >= f.length - 1
-        ? 0
-        : lastFocus + 1
-      f[lastFocus].focus()
-      ;[f[lastFocus], ...(f[lastFocus].children || [])].filter(isBlessedElement).forEach(c => {
-        c.style = { ...(c.style || {}), ...focusStyle }
-      })
-      f[lastFocus].key
-      screen.render()
-    } catch (error) {
-      console.log(error)
-      throw error
-    }
-  })
-  f[0].focus()
-  ;[f[0], ...(f[0].children || [])].filter(isBlessedElement).forEach(c => {
-    c.style = { ...(c.style || {}), ...focusStyle }
-  })
-}
 
 export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
   b.on('pressed', e => {
@@ -111,3 +79,4 @@ export function onTreeNodeFocus<T>(tree: contrib.Widgets.TreeElement<T>, fn: (se
     }
   })
 }
+

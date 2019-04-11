@@ -2,9 +2,10 @@ import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
 import { optionsForm } from './options/options'
-import { installExitKeys, installFocusHandler, onTreeNodeFocus } from './util/blessed'
+import { installExitKeys, onTreeNodeFocus } from './util/blessed'
 import { buildTreeNode } from './util/common'
 import { showInModal } from './util/modal'
+import { installFocusHandler } from './util/focus';
 const ansi = require('ansi-escape-sequences')
 
 export function buildCodeAst(options: Options) {
@@ -51,7 +52,9 @@ export function buildCodeAst(options: Options) {
   })
 
   installExitKeys(screen)
-  installFocusHandler([tree, editor, bar], screen)
+  // installFocusHandler('codeAst', [tree, editor, bar], screen)
+  installFocusHandler('codeAst',  [tree, editor, bar], screen, undefined, true, true)
+
   screen.render()
 
   function selectTreeNode(n: TreeNode) {

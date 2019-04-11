@@ -6,13 +6,14 @@ import { GeneralNode, isNode } from 'ts-simple-ast-extra'
 import { optionsForm } from './options/options'
 import {
   installExitKeys,
-  installFocusHandler,
-  isBlessedElement,
+  
   onTreeNodeFocus,
   visitDescendantElements
 } from './util/blessed'
-import { buildTreeNode, buttonStyle, focusStyle, scrollableOptions } from './util/common'
+import { buildTreeNode, focusStyle } from './util/common'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project'
+import { buildDetails } from './explorerDetails';
+import { installFocusHandler } from './util/focus';
 
 interface Options {
   project: Project
@@ -20,6 +21,9 @@ interface Options {
 }
 
 export function buildExplorer(options: Options) {
+  // console.log('explorer ',' installFocusHandler');
+
+
   let { screen, project } = options
   const grid = new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
   const rows = process.stdout.rows || 24
@@ -33,7 +37,6 @@ export function buildExplorer(options: Options) {
     label: 'Files and Nodes Tree'
   })
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
-  onTreeNodeFocus(tree, selectTreeNode)
   const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
   ;(tree as any).setData(rootNode)
   updateTreeNodeStyles(tree)
@@ -41,6 +44,7 @@ export function buildExplorer(options: Options) {
     updateTreeNodeStyles(tree)
     selectTreeNode(n)
   })
+  // screen.on('focus')
 
   const { table, value, actions } = buildDetails(grid, screen, offset, () => {
     if (lastTableData && lastSelectedNode) {
@@ -49,11 +53,15 @@ export function buildExplorer(options: Options) {
     return lastTableData
   })
 
+  // console.log('explorer ',' installFocusHandler');
+  
+  screen.render()
   installExitKeys(screen)
 
-  installFocusHandler([tree, table, value, actions, optionsListBar], screen)
-
-  screen.render()
+  // console.log('explorer ',' installFocusHandler');
+  
+  installFocusHandler('fileExplorer', [tree, table, value, actions, optionsListBar], screen, undefined, true, true)
+  onTreeNodeFocus(tree, selectTreeNode)
 
   let lastTableData: string[][] | undefined
 
@@ -101,98 +109,4 @@ export function updateTreeNodeStyles(tree: contrib.Widgets.TreeElement) {
   })
 }
 
-function buildDetails(
-  grid: contrib.grid,
-  screen: blessed.Widgets.Screen,
-  offset: number,
-  getLastTableData: () => string[][] | undefined
-) {
-  const box: blessed.Widgets.BoxElement = grid.set(0, 6, 12 - offset, 6, blessed.box, {
-    height: '100%',
-    width: '100%',
-    label: 'Details',
-    keys: true,
-    mouse: true,
-    clickable: true
-  } as blessed.Widgets.BoxOptions)
 
-  const table = contrib.table({
-    // ...scrollableOptions,// HEADS UP : THis break its
-    clickable: true,
-    keys: true,
-    // focusable: true,
-    mouse: true,
-
-    height: '33%',
-    top: '0%',
-    padding: 1,
-    border: 'line',
-    columnWidth: [8, 200],
-    label: 'Node',
-    data: { headers: ['Property', 'Value'], data: [[]] },
-    style: {
-      border: {
-        style: 'line',
-        fg: 'white'
-      }
-    }
-  } as contrib.Widgets.TableOptions)
-
-  box.append(table)
-  ;[table.rows, ...table.rows.children].filter(isBlessedElement).forEach(c =>
-    c.key('enter', () => {
-      if (table.rows.selected) {
-        const data = getLastTableData()
-        const selected = data && data[table.rows.selected]
-        if (selected && selected[1]) {
-          value.setContent(selected[1])
-          screen.render()
-        }
-      }
-    })
-  )
-
-  const value = blessed.scrollabletext({
-    ...scrollableOptions,
-    label: 'Value',
-    width: '100%',
-    top: '33%',
-    height: '33%',
-    padding: 1,
-    border: 'line',
-    style: {
-      border: {
-        style: 'line',
-        fg: 'white'
-      }
-    }
-  })
-  box.prepend(value)
-
-  const actions = blessed.box({
-    // ...scrollableOptions,
-    label: 'Actions',
-    width: '100%',
-    top: '66%',
-    padding: 1,
-    height: '33%',
-    border: 'line',
-    style: {
-      border: {
-        style: 'line',
-        fg: 'white'
-      }
-    }
-  })
-
-  box.prepend(actions)
-
-  const b1 = blessed.button({
-    padding: { top: 1 },
-    content: 'action 1',
-    style: buttonStyle
-  })
-  actions.append(b1)
-
-  return { box, table, actions, value }
-}
