@@ -8,9 +8,7 @@ import { State, getCurrentView } from '../store/state';
 import { Store } from '../store/store';
 import { buildFileView } from '../explorer';
 import { buildCodeView } from '../codeAst';
-
-
-
+import { resetFocusManager } from './focus';
 
 export function buildTreeNode(n: GeneralNode) {
   const children: any = {}
@@ -85,6 +83,7 @@ export function createInitialState(): State {
  * it will create a new screen , destroy the current one and regenerate everything, with the exception of the Project
  */
 export function resetScreen(store: Store){
+  resetFocusManager()
   store.state.screen.clearRegion(0, parseInt(store.state.screen.width + ''), 0, parseInt(store.state.screen.height + ''))
   store.state.screen.render()
   store.state.screen.destroy()

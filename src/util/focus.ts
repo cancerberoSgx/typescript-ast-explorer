@@ -19,6 +19,7 @@ export function onBlur(
     fn(screen.focused, lastFocused)
   }
 }
+
 /**
  * since blur focus event doesnt work on my terminal - this will poll screen.focused and notify when focus is gone or begin
  */
@@ -37,10 +38,12 @@ export function onFocus(
     fn(screen.focused, lastFocused)
   }
 }
+
 type OnFocusChangeListener = (
   focused?: blessed.Widgets.BlessedElement,
   previous?: blessed.Widgets.BlessedElement
 ) => void
+
 /**
  * since blur focus event doesnt work on my terminal - this will poll screen.focused and notify when focus is gone or begin
 TODO: offFocusChange()
@@ -59,15 +62,26 @@ export function onFocusChange(screen: blessed.Widgets.Screen, fn: OnFocusChangeL
     onFocusChangeListeners.push(fn)
   }
 }
+
 const onFocusChangeListeners: OnFocusChangeListener[] = []
 let onFocusChangeInterval = 500
 export function setOnFocusChangeInterval(t: number) {
   onFocusChangeInterval = t
 }
+
 let onFocusChangeTimer: NodeJS.Timeout | undefined = undefined
-let lastFocused: blessed.Widgets.BlessedElement
+
+// don't do this!
+let lastFocused: blessed.Widgets.BlessedElement|undefined
 
 let lastFocus: { [id: string]: number } = {}
+
+export function resetFocusManager(){
+  lastFocused=undefined
+  onFocusChangeTimer && clearInterval(onFocusChangeTimer)
+  lastFocus={}
+  onFocusChangeListeners.length=0
+}
 
 export function uninstallFocusHandler(focusId: string) {
   if (typeof lastFocus[focusId] === 'undefined') {

@@ -13,7 +13,7 @@ import { pwd } from 'shelljs';
 import { toEditorSettings } from 'typescript/lib/tsserverlibrary';
 import { showInModal } from './util/modal';
 
-export function buildDetails(
+export function detailsPanel(
   // grid: contrib.grid,
   store: Store,
   // screen: blessed.Widgets.Screen,

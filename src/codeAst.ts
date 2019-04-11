@@ -1,12 +1,12 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node, Project } from 'ts-morph'
-import { optionsForm } from './options/options'
+import { mainMenu } from './mainMenu'
 import { installExitKeys, onTreeNodeFocus } from './util/blessed'
 import { buildTreeNode, focusStyle, scrollableOptions } from './util/common'
 import { installFocusHandler } from './util/focus'
 import { showInModal } from './util/modal'
-import { buildDetails } from './explorerDetails';
+import { detailsPanel } from './explorerDetails';
 import { buildNodeActions } from './nodeActions';
 import { ActionListenerType, ActionType, ACTION_LISTENER } from './store/actions';
 import { isNode } from 'ts-simple-ast-extra';
@@ -54,7 +54,7 @@ export function buildCodeAst(store: Store) {
   // const node = store.state.codeView.selectedNode
   // const grid = new contrib.grid({ rows: 12, cols: 12, screen: screen })
 
-  const bar = optionsForm( store)
+  const bar = mainMenu( store)
 
   const tree = grid.set(0, 0, 7 - offset, 6, contrib.tree, {
     template: { lines: true },

@@ -3,8 +3,8 @@ import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { Node, Project } from 'ts-morph'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra'
-import { buildDetails } from './explorerDetails'
-import { optionsForm } from './options/options'
+import { detailsPanel } from './explorerDetails'
+import { mainMenu } from './mainMenu'
 import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './util/blessed'
 import { buildTreeNode, focusStyle } from './util/common'
 import { installFocusHandler } from './util/focus'
@@ -27,7 +27,7 @@ export function getVerticalOffset() {
 }
 
 /**
- * must never accept the store, since is used to build it and reset the screen (probably given one is a empty one)
+ * must never accept the store, since is used to build it and reset the screen (probably given one is a empty)
  */
 export function buildFileView(screen: blessed.Widgets.Screen): View {
   return {
@@ -47,7 +47,7 @@ export function buildExplorer(store: Store) {
 
   // let lastSelectedNode: GeneralNode | undefined
   // const optionsListBar = optionsForm(view.grid, screen, project, offset, () => lastSelectedNode)
-  const optionsListBar = optionsForm(store)
+  const optionsListBar = mainMenu(store)
 
 
   const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
@@ -72,7 +72,7 @@ export function buildExplorer(store: Store) {
 
   
   // const { table, value, actions } = buildDetails(grid, screen, 0, 6, 12 - offset, 6)
-  const { table, value, actions } = buildDetails(store)
+  const { table, value, actions } = detailsPanel(store)
 
 
 

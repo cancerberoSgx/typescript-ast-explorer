@@ -15,6 +15,7 @@ WIP
  * tree expand all - collapse all
  * move the tree to its own file
  * stateful modal, selections, expansions, etc
+ * show errors excep in modals
  
 ### Issues
 
