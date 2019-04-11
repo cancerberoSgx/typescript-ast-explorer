@@ -7,7 +7,8 @@ import { buttonStyle } from '../util/common'
 import { showInModal } from '../util/modal'
 import { help } from './help'
 import { GeneralNode, isNode } from 'ts-simple-ast-extra';
-import { Store, getCurrentView } from '../state';
+import { getCurrentView } from '../store/state';
+import { Store } from '../store/store';
 
 export function optionsForm(
   // grid: contrib.Widgets.GridElement,

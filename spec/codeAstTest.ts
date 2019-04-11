@@ -2,7 +2,7 @@ import * as blessed from 'blessed'
 import { Project } from 'ts-morph'
 import { buildCodeAst } from '../src/codeAst'
 import { longText } from './assets/project1/src/text'
-import { createStore } from '../src/state';
+import { createStore } from '../src/store/store';
 try {
 
 var store = createStore()

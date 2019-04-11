@@ -9,7 +9,9 @@ import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './uti
 import { buildTreeNode, focusStyle } from './util/common'
 import { installFocusHandler } from './util/focus'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath, notUndefined } from './util/project'
-import { Store, getCurrentView, ActionType } from './state';
+import {  getCurrentView } from './store/state';
+import { Store } from './store/store';
+import { ActionType } from './store/actions';
 
 // interface Options {
   // project: Project

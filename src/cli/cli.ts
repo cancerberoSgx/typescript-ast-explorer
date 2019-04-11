@@ -2,7 +2,7 @@ import * as blessed from 'blessed'
 import { Project } from 'ts-morph'
 import { buildExplorer } from '../explorer'
 import { Options } from './cliMain'
-import { createStore } from '../state';
+import { createStore } from '../store/store';
 
 export function main(options: Options) {
 

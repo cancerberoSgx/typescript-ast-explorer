@@ -4,7 +4,9 @@ import { buildNodeActions } from './nodeActions'
 import { isBlessedElement } from './util/blessed'
 import { scrollableOptions } from './util/common'
 import { GeneralNode, isNode, selectNode } from 'ts-simple-ast-extra';
-import { Store, ActionType, ActionListener, ActionListenerType, getCurrentView } from './state';
+import { getCurrentView } from './store/state';
+import { ActionType, ActionListener, ActionListenerType, ACTION_LISTENER } from "./store/actions";
+import { Store } from "./store/store";
 import { Statement } from 'ts-morph';
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project';
 import { pwd } from 'shelljs';
@@ -32,6 +34,7 @@ export function buildDetails(
     label: 'Details',
     keys: true,
     mouse: true,
+    draggable: true,
     clickable: true,
     left: 0,
     content: 'Submit or cancel?'
@@ -84,6 +87,7 @@ export function buildDetails(
     store.addActionListener({
       listenerType: ActionListenerType.afterWrite,
       actionType: ActionType.NODE_SELECTION,
+      id: ACTION_LISTENER.updateDetailsViewOnNodeSelection,
       handle(a, s){
         if(value){
                     value.setContent(isNode(a.node) ? a.node.getFullText() : '')

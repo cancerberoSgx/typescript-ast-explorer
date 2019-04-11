@@ -8,8 +8,10 @@ import { installFocusHandler } from './util/focus'
 import { showInModal } from './util/modal'
 import { buildDetails } from './explorerDetails';
 import { buildNodeActions } from './nodeActions';
-import { Store, getCurrentView, ActionListenerType, ActionType } from './state';
+import { ActionListenerType, ActionType, ACTION_LISTENER } from './store/actions';
 import { isNode } from 'ts-simple-ast-extra';
+import { getCurrentView } from './store/state';
+import { Store } from './store/store';
 const ansi = require('ansi-escape-sequences')
 
 
@@ -80,6 +82,7 @@ export function buildCodeAst(store: Store) {
   store.addActionListener({
     listenerType: ActionListenerType.afterWrite,
     actionType: ActionType.NODE_SELECTION,
+    id:ACTION_LISTENER.updateCodeViewOnNodeSelection,
     handle(a, s){
       if(isNode(a.node)){
         let text = node.getSourceFile().getFullText()

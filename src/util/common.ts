@@ -4,7 +4,7 @@ import * as contrib from 'blessed-contrib'
 import { getGeneralNodeKindName, getGeneralNodeName } from './project'
 import * as blessed from 'blessed'
 import Project from 'ts-morph';
-import { State, getCurrentView } from '../state';
+import { State, getCurrentView } from '../store/state';
 import { getVerticalOffset as getVerticalOffsetFile} from '../explorer';
 import { getVerticalOffset as getVerticalOffsetCode} from '../codeAst';
 
