@@ -63,6 +63,3 @@ export function getFilePath(f: File) {
   return isSourceFile(f) ? f.getFilePath() : f.getPath()
 }
 
-export function notUndefined<T>(a: T): a is Exclude<T, undefined> {
-  return typeof a !== 'undefined'
-}

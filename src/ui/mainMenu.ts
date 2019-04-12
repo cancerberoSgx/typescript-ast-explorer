@@ -4,7 +4,7 @@ import { help } from '../options/help'
 import { getCurrentView } from '../store/state'
 import { Store } from '../store/store'
 import { buttonStyle, resetScreen } from '../util/common'
-import { showInModal } from '../util/modal'
+import { showInModal } from '../blessed/modal'
 import { buildCodeAst } from './codeView'
 import { buildExplorer } from './projectView'
 

@@ -6,7 +6,7 @@ import { State } from '../store/state'
 import { Store } from '../store/store'
 import { buildCodeView } from '../ui/codeView'
 import { buildFileView } from '../ui/projectView'
-import { resetFocusManager } from './focus'
+import { resetFocusManager } from '../blessed/focus'
 import { getGeneralNodeKindName, getGeneralNodeName } from './project'
 
 export function buildTreeNode(n: GeneralNode) {

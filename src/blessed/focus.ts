@@ -1,15 +1,16 @@
 import * as blessed from 'blessed'
 import { isBlessedElement } from './blessed'
-import { focusStyle } from './common'
+import { focusStyle } from '../util/common'
+import { Element } from './blessedTypes';
 /**
  * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
  *
  * It will poll screen.focused and notify when focus/blur is detected.
  */
 export function onBlur(
-  el: blessed.Widgets.BlessedElement,
+  el: Element,
   screen: blessed.Widgets.Screen,
-  fn: (focused?: blessed.Widgets.BlessedElement, previous?: blessed.Widgets.BlessedElement) => void,
+  fn: (focused?: Element, previous?: Element) => void,
   emitNow: boolean = false
 ) {
   onFocusChange(screen, (actual, previous) => {
@@ -28,7 +29,7 @@ export function onBlur(
  * It will poll screen.focused and notify when focus/blur is detected.
  */
 export function onFocus(
-  el: blessed.Widgets.BlessedElement,
+  el: Element,
   screen: blessed.Widgets.Screen,
   fn: OnFocusChangeListener,
   emitNow: boolean = false
@@ -44,8 +45,8 @@ export function onFocus(
 }
 
 type OnFocusChangeListener = (
-  focused?: blessed.Widgets.BlessedElement,
-  previous?: blessed.Widgets.BlessedElement
+  focused?: Element,
+  previous?: Element
 ) => void
 
 /**
@@ -72,6 +73,7 @@ export function onFocusChange(screen: blessed.Widgets.Screen, fn: OnFocusChangeL
 
 const onFocusChangeListeners: OnFocusChangeListener[] = []
 let onFocusChangeInterval = 500
+
 /**
  * change the polling interval. By default it's 500 ms
  */
@@ -81,13 +83,11 @@ export function setOnFocusChangeInterval(t: number) {
 
 let onFocusChangeTimer: NodeJS.Timeout | undefined = undefined
 
-// don't do this!
-let lastFocused: blessed.Widgets.BlessedElement | undefined
-
+let lastFocused: Element | undefined
 let lastFocus: { [id: string]: number } = {}
 
 /**
- * It resets the focus manager. Useful if you are destroying / recreating the screen
+ * It resets the focus manager. Useful if you are destroying / recreating the screen.
  */
 export function resetFocusManager() {
   lastFocused = undefined
@@ -106,7 +106,7 @@ export function uninstallFocusHandler(focusId: string) {
 
 export function installFocusHandler(
   focusId: string,
-  elements: blessed.Widgets.BlessedElement[],
+  elements: Element[],
   screen: blessed.Widgets.Screen,
   keys: [string, string] = ['tab', 'S-tab'],
   styleChildren = true,
@@ -139,7 +139,9 @@ export function installFocusHandler(
             ? 0
             : lastFocus[focusId] + 1
 
-          // otherwise we assume that key press was for us. TODO: are we certain ? TODO: what if other keys have register with the same key ? we should check which is more close to the real focused
+          // otherwise we assume that key press was for us. 
+          // TODO: are we certain ? 
+          // TODO: what if other keys have register with the same key ? we should check which is more close to the real focused
 
           elements[lastFocus[focusId]].focus()
           ;[elements[lastFocus[focusId]], ...(styleChildren ? elements[lastFocus[focusId]].children : [])]
@@ -162,4 +164,8 @@ export function installFocusHandler(
       })
     }
   }
+}
+
+export function isFocused(screen: blessed.Widgets.Screen, el: Element) {
+  return el === screen.focused || el.hasDescendant(screen.focused)
 }

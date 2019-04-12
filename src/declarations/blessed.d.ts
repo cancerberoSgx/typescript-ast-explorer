@@ -569,19 +569,27 @@ export namespace Widgets {
   }
 
   namespace Events {
-    interface IMouseEventArg {
+    interface IMouseEventArg extends IAbstractEventArg{
       x: number
       y: number
       action: Types.TMouseAction
+      button: 'left'|'right'|'middle'|'unknown'
+      name: 'mouse'
     }
 
-    interface IKeyEventArg {
-      full: string
+    interface IKeyEventArg extends IAbstractEventArg {
+      full: string      
+      sequence: string
+    }
+
+    interface IAbstractEventArg{
       name: string
       shift: boolean
       ctrl: boolean
       meta: boolean
-      sequence: string
+      type: string
+      raw: [number, number, number, string]
+      bug: Buffer
     }
   }
 
@@ -876,6 +884,9 @@ export namespace Widgets {
     on(event: string, listener: (ch: any, key: Events.IKeyEventArg) => void): this
     /** Received on mouse events. */
     on(event: NodeMouseEventType, callback: (arg: Events.IMouseEventArg) => void): this
+    on(event: 'click', callback: (arg: Events.IMouseEventArg) => void): this
+    
+
     /** Received on key events. */
     on(event: 'keypress', callback: (ch: string, key: Events.IKeyEventArg) => void): this
     on(event: NodeScreenEventType, callback: (arg: Screen) => void): this
@@ -2080,7 +2091,7 @@ export namespace Widgets {
      * Whether to enable automatic mouse support for this element.
      * Use pre-defined mouse events (right-click for editor).
      */
-    mouse?: boolean | (() => void)
+    mouse?: boolean
 
     /**
      * Use pre-defined keys (i or enter for insert, e for editor, C-e for editor while inserting).
@@ -2663,10 +2674,10 @@ export namespace Widgets {
      */
     reset(): void
 
-    on(event: string, listener: (...args: any[]) => void): this
+    on(event: string, listener: (this: FormElement, ...args: any[]) => void): this
     /** Form is submitted. Receives a data object. */
-    on(event: 'submit', callback: (out: TFormData) => void): this
-    on(event: 'cancel' | 'reset', callback: () => void): this
+    on(event: 'submit', callback: (this: FormElement, out: TFormData) => void): this
+    on(event: 'cancel' | 'reset', callback: (this: FormElement) => void): this
   }
 
   interface InputOptions extends BoxOptions {}
@@ -2875,6 +2886,11 @@ export namespace Widgets {
      * toggle checked state.
      */
     toggle(): void
+
+    on(event: string, listener: (this: CheckboxElement, ...args: any[]) => void): this
+    on(event: 'check', callback: (this: CheckboxElement) => void): this
+    on(event: 'uncheck', callback: (this: CheckboxElement) => void): this
+
   }
 
   interface RadioSetOptions extends BoxOptions {}
@@ -3371,9 +3387,9 @@ export namespace Widgets {
     tty: any
   }
 
-  type LayoutIterator = (
-    el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number },
-    i: number | undefined
+  export type LayoutIterator = (
+    el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number }&BlessedElement,
+    i: number 
   ) => any
   interface LayoutOptions extends ElementOptions {
     /**

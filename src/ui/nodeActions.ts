@@ -2,7 +2,7 @@ import * as blessed from 'blessed'
 import { getCurrentView } from '../store/state'
 import { Store } from '../store/store'
 import { buttonStyle, scrollableOptions } from '../util/common'
-import { showInModal } from '../util/modal'
+import { showInModal } from '../blessed/modal'
 
 /**
  * builds a panel with action buttons that apply to the current selected node
