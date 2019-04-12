@@ -737,7 +737,7 @@ export namespace Widgets {
     /**
      * Parent node.
      */
-    parent: Node
+    parent?: Node
 
     /**
      * Array of node's children.

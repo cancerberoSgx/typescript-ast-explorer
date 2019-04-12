@@ -7,6 +7,15 @@ WIP
  * See it file structure and the AST nodes inside each file. 
  * Navigate through the AST and source code like. 
 
+
+### Issues
+
+ * in file view - remove details parent and leave the children only.
+ * should we add the code view in the file view?
+ * currently, because of custom  .d.ts, the project needs to declare the types in its own ts.config.json
+ * file view: expand first folder automatically.
+ * when switching from files view to code view it should open in last viewed node and vice versa - auto-expanding the tree
+
 ## TODO 
 
  * query elements across the project using CSS-like language (tsquery)
@@ -15,12 +24,26 @@ WIP
  * tree expand all - collapse all
  * move the tree to its own file
  * stateful modal, selections, expansions, etc
- * show errors excep in modals
+ * show errors except in modals
+ + navigate with arrows 2-d instead of tab only (1-d)
+ * a general option/menu to hide boxes - or perhaps a halo on them to collapse ?
+ * confirmation before exit
+ * move blessed reusable utilities to their own package
  
-### Issues
+  
+ # crazy
 
- * in file view - remove details parent and leave the children only.
- * should we add the code view in the file view?
- * currently, because of custom  .d.ts, the project needs to declare the types in its own ts.config.json
- * file view: expand first folder automatically.
- * when switching from files view to code view it should open in last viewed node and viceversa - auto-expanding the tree
+  * jsx-alone render impl ? how would it be? CSS? layouts? `<div>foo:<button onclick={fo()}>click</button>`
+
+```
+const p = new blessed.box({
+})
+props.children.map c =>{
+  return blessed[TYPE]({
+    parent: p,....
+  })
+}
+return p
+```
+what about TextNodes? - setContent() ?
+

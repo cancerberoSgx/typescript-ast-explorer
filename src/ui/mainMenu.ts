@@ -1,12 +1,12 @@
 import * as blessed from 'blessed'
 import { isNode } from 'ts-simple-ast-extra'
-import { buildCodeAst } from './codeAst'
-import { buildExplorer } from './explorer'
-import { help } from './options/help'
-import { getCurrentView } from './store/state'
-import { Store } from './store/store'
-import { buttonStyle, resetScreen } from './util/common'
-import { showInModal } from './util/modal'
+import { help } from '../options/help'
+import { getCurrentView } from '../store/state'
+import { Store } from '../store/store'
+import { buttonStyle, resetScreen } from '../util/common'
+import { showInModal } from '../util/modal'
+import { buildCodeAst } from './codeView'
+import { buildExplorer } from './projectView'
 
 export function mainMenu(store: Store) {
   const view = getCurrentView(store.state)
@@ -45,6 +45,7 @@ export function mainMenu(store: Store) {
                 )
               }
             } else {
+              // TODO: ACTION AND DISPATCHER for this:
               resetScreen(store)
               store.state.currentView = 'file'
               buildExplorer(store)

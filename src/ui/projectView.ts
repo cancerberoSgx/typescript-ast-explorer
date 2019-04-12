@@ -1,28 +1,24 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { detailsPanel } from './explorerDetails'
+import { ActionType } from '../store/actions'
+import { getCurrentView, View } from '../store/state'
+import { Store } from '../store/store'
+import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from '../util/blessed'
+import { buildTreeNode, focusStyle } from '../util/common'
+import { installFocusHandler } from '../util/focus'
+import { notUndefined } from '../util/project'
+import { detailsPanel } from './detailsPanel'
 import { mainMenu } from './mainMenu'
-import { ActionType } from './store/actions'
-import { getCurrentView, View } from './store/state'
-import { Store } from './store/store'
-import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from './util/blessed'
-import { buildTreeNode, focusStyle } from './util/common'
-import { installFocusHandler } from './util/focus'
-import { notUndefined } from './util/project'
-
-export function getVerticalOffset() {
-  const rows = process.stdout.rows || 24
-  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
-  return offset
-}
 
 /**
  * must never accept the store, since is used to build it and reset the screen (probably given one is a empty)
  */
 export function buildFileView(screen: blessed.Widgets.Screen): View {
+  const rows = process.stdout.rows || 24
+  const verticalOffset = rows < 20 ? 3 : rows < 40 ? 2 : 1
   return {
-    verticalOffset: getVerticalOffset(),
+    verticalOffset,
     name: 'file',
     grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
   }

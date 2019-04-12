@@ -2,26 +2,25 @@ import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { isNode } from 'ts-simple-ast-extra'
+import { ActionListenerType, ActionType, ACTION_LISTENER } from '../store/actions'
+import { getCurrentView } from '../store/state'
+import { Store } from '../store/store'
+import { scrollableOptions } from '../util/common'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from '../util/project'
 import { buildNodeActions } from './nodeActions'
-import { ActionListenerType, ActionType, ACTION_LISTENER } from './store/actions'
-import { getCurrentView } from './store/state'
-import { Store } from './store/store'
-import { scrollableOptions } from './util/common'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from './util/project'
 
 export function detailsPanel(store: Store) {
-  const { screen, project } = store.state
   const view = getCurrentView(store.state)
   const { grid, verticalOffset: offset } = view
-  const table = grid.set(...(view.name === 'file' ? [0, 6, 12 - offset, 6] : [6, 0, 12 - offset, 6]), contrib.table, {
+
+  // TABLE
+  const gridPositino = view.name === 'file' ? [0, 6, 5, 6] : [5, 0, 4, 6]
+  const table = grid.set(...gridPositino, contrib.table, {
     clickable: true,
     keys: true,
     focusable: true,
     draggable: true,
     mouse: true,
-    height: '33%',
-    top: 0,
-    padding: 1,
     border: 'line',
     columnWidth: [8, 30],
     label: 'Selection',
@@ -29,19 +28,15 @@ export function detailsPanel(store: Store) {
   })
   let value: blessed.Widgets.ScrollableTextElement | undefined
 
+  // VALUE
   if (store.state.currentView !== 'code') {
-    value = grid.set(...[5, 6, 12 - offset, 8], blessed.scrollabletext, {
+    value = grid.set(...[3, 6, 5, 6], blessed.scrollabletext, {
       ...scrollableOptions,
       label: 'Full Value',
-      width: '100%',
-      top: '33%',
-      height: '33%',
-      padding: 1,
       draggable: true,
       border: 'line'
     })
   }
-
   const actions = buildNodeActions(store)
   store.addActionListener({
     listenerType: ActionListenerType.afterWrite,

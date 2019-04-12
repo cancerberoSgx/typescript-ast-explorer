@@ -1,5 +1,5 @@
-import { buildExplorer } from '../src/explorer'
 import { createStore } from '../src/store/store'
+import { buildExplorer } from '../src/ui/projectView'
 try {
   var store = createStore()
   buildExplorer(store)

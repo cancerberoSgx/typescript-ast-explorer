@@ -1,5 +1,5 @@
-import { buildCodeAst } from '../src/codeAst'
 import { createStore } from '../src/store/store'
+import { buildCodeAst } from '../src/ui/codeView'
 try {
   var store = createStore()
   buildCodeAst(store)

@@ -2,7 +2,9 @@ import * as blessed from 'blessed'
 import { isBlessedElement } from './blessed'
 import { focusStyle } from './common'
 /**
- * since blur focus event doesnt work on my terminal - this will poll screen.focused and notify when focus is gone or begin
+ * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
+ *
+ * It will poll screen.focused and notify when focus/blur is detected.
  */
 export function onBlur(
   el: blessed.Widgets.BlessedElement,
@@ -21,7 +23,9 @@ export function onBlur(
 }
 
 /**
- * since blur focus event doesnt work on my terminal - this will poll screen.focused and notify when focus is gone or begin
+ * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
+ *
+ * It will poll screen.focused and notify when focus/blur is detected.
  */
 export function onFocus(
   el: blessed.Widgets.BlessedElement,
@@ -45,8 +49,11 @@ type OnFocusChangeListener = (
 ) => void
 
 /**
- * since blur focus event doesnt work on my terminal - this will poll screen.focused and notify when focus is gone or begin
-TODO: offFocusChange()
+ * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
+ *
+ * It will poll screen.focused and notify when focus/blur is detected.
+ *
+ * TODO: offFocusChange()
  */
 export function onFocusChange(screen: blessed.Widgets.Screen, fn: OnFocusChangeListener) {
   lastFocused = lastFocused || screen.focused
@@ -65,6 +72,9 @@ export function onFocusChange(screen: blessed.Widgets.Screen, fn: OnFocusChangeL
 
 const onFocusChangeListeners: OnFocusChangeListener[] = []
 let onFocusChangeInterval = 500
+/**
+ * change the polling interval. By default it's 500 ms
+ */
 export function setOnFocusChangeInterval(t: number) {
   onFocusChangeInterval = t
 }
@@ -76,6 +86,9 @@ let lastFocused: blessed.Widgets.BlessedElement | undefined
 
 let lastFocus: { [id: string]: number } = {}
 
+/**
+ * It resets the focus manager. Useful if you are destroying / recreating the screen
+ */
 export function resetFocusManager() {
   lastFocused = undefined
   onFocusChangeTimer && clearInterval(onFocusChangeTimer)
@@ -149,5 +162,4 @@ export function installFocusHandler(
       })
     }
   }
-  // }
 }

@@ -27,9 +27,19 @@ Also, in general you can also use the mouse to active stuff.
 
 Some tools open in a modal (like this help). For closing the modal, press 'q' or 'ESC'.
 
+### Layout
+
+It tries to be responsive and adapt to any terminal size. 
+
+You can drag and drop the panels if you like.
+
+May be too many boxes ? suggestions accepted. I'm new on this. 
+
+WIP: dynamic layout / grid - collapsible , resizable. 
+
 ## Exiting
 
-At any moment you can press 'q', or 'ESC' or 'control-c' to exit the applicatiion.
+At any moment you can press 'q', or 'ESC' or 'control-c' to exit the application.
 
 ## File tree View
 

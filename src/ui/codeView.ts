@@ -2,28 +2,25 @@ import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node } from 'ts-morph'
 import { getFileRelativePath, isNode } from 'ts-simple-ast-extra'
+import { ActionListenerType, ActionType, ACTION_LISTENER } from '../store/actions'
+import { getCurrentView, View } from '../store/state'
+import { Store } from '../store/store'
+import { installExitKeys, onTreeNodeFocus } from '../util/blessed'
+import { buildTreeNode, focusStyle, scrollableOptions } from '../util/common'
+import { installFocusHandler } from '../util/focus'
+import { showInModal } from '../util/modal'
+import { detailsPanel } from './detailsPanel'
 import { mainMenu } from './mainMenu'
-import { ActionListenerType, ActionType, ACTION_LISTENER } from './store/actions'
-import { getCurrentView, View } from './store/state'
-import { Store } from './store/store'
-import { installExitKeys, onTreeNodeFocus } from './util/blessed'
-import { buildTreeNode, focusStyle, scrollableOptions } from './util/common'
-import { installFocusHandler } from './util/focus'
-import { showInModal } from './util/modal'
 const ansi = require('ansi-escape-sequences')
-
-export function getVerticalOffset() {
-  const rows = process.stdout.rows || 24
-  const offset = rows < 20 ? 3 : rows < 40 ? 2 : 1
-  return offset
-}
 
 /**
  * must never accept the store, since is used to build it and reset the screen (probably given one is a empty one)
  */
 export function buildCodeView(screen: blessed.Widgets.Screen): View {
+  const rows = process.stdout.rows || 24
+  const verticalOffset = rows < 20 ? 3 : rows < 40 ? 2 : 1
   return {
-    verticalOffset: getVerticalOffset(),
+    verticalOffset,
     name: 'code',
     grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
   }
@@ -38,7 +35,7 @@ export function buildCodeAst(store: Store) {
   }
   const bar = mainMenu(store)
 
-  const tree = grid.set(0, 0, 7 - offset, 6, contrib.tree, {
+  const tree = grid.set(0, 0, 5, 6, contrib.tree, {
     template: { lines: true },
     label: 'Code View'
   } as contrib.Widgets.TreeOptions<TreeNode>)
@@ -51,15 +48,17 @@ export function buildCodeAst(store: Store) {
   }
   tree.setData(rootNode)
 
-  const editor: blessed.Widgets.ScrollableTextElement = grid.set(0, 6, 12 - offset, 6, blessed.scrollabletext, {
+  const editor: blessed.Widgets.ScrollableTextElement = grid.set(0, 6, 12 - offset - 3, 6, blessed.scrollabletext, {
     ...scrollableOptions
   } as blessed.Widgets.ScrollableTextOptions)
   editor.on('click', function(data: any) {
     showInModal(screen, JSON.stringify(data) + '  ' + JSON.stringify(editor.position))
   })
 
+  const { table, value, actions } = detailsPanel(store)
+
   installExitKeys(screen)
-  installFocusHandler('codeAst', [tree, editor, bar], screen, undefined, true, true)
+  installFocusHandler('codeAst', [tree, editor, bar, table, actions], screen, undefined, true, true)
 
   screen.render()
 
