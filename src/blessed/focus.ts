@@ -1,7 +1,7 @@
 import * as blessed from 'blessed'
-import { isBlessedElement } from './blessed'
 import { focusStyle } from '../util/common'
-import { Element } from './blessedTypes';
+import { isBlessedElement } from './blessed'
+import { Element } from './blessedTypes'
 /**
  * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
  *
@@ -44,10 +44,7 @@ export function onFocus(
   }
 }
 
-type OnFocusChangeListener = (
-  focused?: Element,
-  previous?: Element
-) => void
+type OnFocusChangeListener = (focused?: Element, previous?: Element) => void
 
 /**
  * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
@@ -139,8 +136,8 @@ export function installFocusHandler(
             ? 0
             : lastFocus[focusId] + 1
 
-          // otherwise we assume that key press was for us. 
-          // TODO: are we certain ? 
+          // otherwise we assume that key press was for us.
+          // TODO: are we certain ?
           // TODO: what if other keys have register with the same key ? we should check which is more close to the real focused
 
           elements[lastFocus[focusId]].focus()

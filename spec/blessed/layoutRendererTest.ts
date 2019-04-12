@@ -1,21 +1,20 @@
+import * as blessed from 'blessed'
+import * as contrib from 'blessed-contrib'
+import { installExitKeys, onValueChange } from '../../src/blessed/blessed'
+import { BoxOptions } from '../../src/blessed/blessedTypes'
+import { installCollapsible, toggleCollapsed } from '../../src/blessed/collapsible'
+import { renderer } from '../../src/blessed/layoutRenderer'
 
-import * as blessed from 'blessed';
-import * as contrib from 'blessed-contrib';
-import { installExitKeys, onValueChange } from '../../src/blessed/blessed';
-import { BoxOptions } from '../../src/blessed/blessedTypes';
-import { installCollapsible, toggleCollapsed } from '../../src/blessed/collapsible';
-import { renderer } from '../../src/blessed/layoutRenderer';
-
-const screen = blessed.screen({ smartCSR: true })
+const screen = blessed.screen({ smartCSR: true,  log: './log.txt' })
 
 const checkboxOptions: BoxOptions = {
-  input: true ,
+  input: true,
   mouse: true,
   clickable: true,
   style: {
     bg: 'gray'
   },
-  focusable: true,
+  focusable: true
 }
 
 var layout = blessed.layout({
@@ -32,15 +31,15 @@ var layout = blessed.layout({
   renderer
 })
 
-installCollapsible(layout, {collapsedHeight: 3})
+installCollapsible(layout, { collapsedHeight: 3 })
 
 const collapsedCheckbox = blessed.checkbox({
- ...checkboxOptions,
+  ...checkboxOptions,
   parent: layout,
-  content: 'Collapsed ?',
-}) 
+  content: 'Collapsed ?'
+})
 
-onValueChange(collapsedCheckbox, value=>{
+onValueChange(collapsedCheckbox, value => {
   toggleCollapsed(layout)
   screen.render()
 })
@@ -50,24 +49,17 @@ const note = contrib.markdown({
   parent: layout,
   width: '40%',
   padding: 2,
-  style: {
-    bg: 'gray', 
-  display: 'block'
-},
-}) 
-
-note.style.bg='gray'
-
-note.setMarkdown(`
-# Notes
-
- * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
- * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
- * 
-  `)
-
+  markdown: `
+  # Notes
+  
+   * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
+   * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
+   * 
+    `  
+})
+note.style.display = 'block'
+note.style.bg = 'gray'
 
 installExitKeys(screen)
 
 screen.render()
-

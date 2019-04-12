@@ -1,9 +1,9 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
+import { appendFileSync } from 'fs'
+import { getObjectProperty, setObjectProperty } from '../util/misc'
+import { CheckboxElement, Element } from './blessedTypes'
 import { closeModal, isModalVisible } from './modal'
-import { getObjectProperty, setObjectProperty } from '../util/misc';
-import { Element, CheckboxElement } from './blessedTypes';
-import { appendFileSync } from 'fs';
 
 export function isBlessedElement(n: any): n is Element {
   return n && n.screenshot && n.enableDrag
@@ -25,10 +25,7 @@ export function visitDescendantNodes(node: Element, fn: (l: blessed.Widgets.Node
   })
 }
 
-export function visitDescendantElements(
-  node: Element,
-  fn: (l: Element) => boolean
-) {
+export function visitDescendantElements(node: Element, fn: (l: Element) => boolean) {
   return visitDescendantNodes(node, n => (isBlessedElement(n) ? fn(n) : false))
 }
 
@@ -45,7 +42,7 @@ export function findDescendantNode(node: Element, fn: (l: blessed.Widgets.Node) 
 }
 
 /**
- * Besides reacting for click, also will react for pressed, enter and space keys. 
+ * Besides reacting for click, also will react for pressed, enter and space keys.
  */
 export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void) {
   b.on('pressed', e => {
@@ -89,43 +86,41 @@ export function onTreeNodeFocus<T extends contrib.Widgets.TreeElementNode>(
 }
 
 /**
- * extract property stored on e.$ by path. 
+ * extract property stored on e.$ by path.
  */
-export function getElementData<T>(e: Element, path: string){
-  e.$ = e.$ ||{}
-  return getObjectProperty(e.$, path) as T|undefined
+export function getElementData<T>(e: Element, path: string) {
+  e.$ = e.$ || {}
+  return getObjectProperty(e.$, path) as T | undefined
 }
 
 /**
- * extract property stored on e.$ by path. 
+ * extract property stored on e.$ by path.
  */
-export function setElementData<T>(e: Element, path: string, value: T){
-  e.$ = e.$ ||{}
- setObjectProperty(e.$, path, value) 
+export function setElementData<T>(e: Element, path: string, value: T) {
+  e.$ = e.$ || {}
+  setObjectProperty(e.$, path, value)
 }
 
-
-export function onValueChange(el: CheckboxElement, cb: (this: CheckboxElement, value: boolean)=>void){
-  function listener(this:CheckboxElement){
+export function onValueChange(el: CheckboxElement, cb: (this: CheckboxElement, value: boolean) => void) {
+  function listener(this: CheckboxElement) {
     cb.apply(this, [this.checked])
   }
-el.on('check', listener)
-el.on('uncheck', listener)
-setElementData(el, 'onChangeCallback', listener)
+  el.on('check', listener)
+  el.on('uncheck', listener)
+  setElementData(el, 'onChangeCallback', listener)
 }
 
-export function offValueChange(el: CheckboxElement){
- const listener = getElementData<(...args: any[]) => void>(el, 'onChangeCallback')
- if(listener){
-   el.on('unchecked', listener)
-   el.off('check', listener)
- }
-setElementData(el, 'onChangeCallback', undefined)
+export function offValueChange(el: CheckboxElement) {
+  const listener = getElementData<(...args: any[]) => void>(el, 'onChangeCallback')
+  if (listener) {
+    el.on('unchecked', listener)
+    el.off('check', listener)
+  }
+  setElementData(el, 'onChangeCallback', undefined)
 }
 //TODO: offChange
 
-
-export function log(...a: any[]){
-  appendFileSync(LOGFILE, a.map(a=>JSON.stringify(a)).join(', ')+'\n\n')
+export function log(...a: any[]) {
+  appendFileSync(LOGFILE, a.map(a => JSON.stringify(a)).join(', ') + '\n\n')
 }
 const LOGFILE = 'tmp.log'

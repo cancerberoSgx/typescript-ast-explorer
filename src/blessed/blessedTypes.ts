@@ -16,10 +16,9 @@ export type Screen = blessed.Widgets.Screen
 export type IMouseEventArg = blessed.Widgets.Events.IMouseEventArg
 export type Markdown = contrib.Widgets.MarkdownElement
 
-
-export function isScreen(n:any): n is Screen{
-  return n && n.type ==='screen' && n.restoreFocus
+export function isScreen(n: any): n is Screen {
+  return n && n.type === 'screen' && n.restoreFocus
 }
-export function isElement(n:any): n is Element{
+export function isElement(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }

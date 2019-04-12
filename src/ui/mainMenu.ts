@@ -1,10 +1,10 @@
 import * as blessed from 'blessed'
 import { isNode } from 'ts-simple-ast-extra'
+import { showInModal } from '../blessed/modal'
 import { help } from '../options/help'
 import { getCurrentView } from '../store/state'
 import { Store } from '../store/store'
 import { buttonStyle, resetScreen } from '../util/common'
-import { showInModal } from '../blessed/modal'
 import { buildCodeAst } from './codeView'
 import { buildExplorer } from './projectView'
 

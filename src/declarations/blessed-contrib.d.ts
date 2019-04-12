@@ -424,7 +424,17 @@ declare namespace BlessedContrib {
       setData(...str: any[]): void
     }
 
-    export interface MarkdownOptions extends CanvasOptions {}
+    export interface MarkdownOptions extends CanvasOptions {
+      /**
+       * Markdown text to render
+       */
+      markdown?: string
+
+      /**
+       * Custom Markdown renderer implementation, by default, marked and MarkedTerminal is used.  
+       */
+      renderer?: (src: string)=> string
+    }
 
     export class MarkdownElement extends CanvasElement implements IHasOptions<MarkdownOptions> {
       constructor(opts: MarkdownOptions)

@@ -62,4 +62,3 @@ export function getGeneralNodePath(f: GeneralNode, relativeTo?: string, includeN
 export function getFilePath(f: File) {
   return isSourceFile(f) ? f.getFilePath() : f.getPath()
 }
-

@@ -569,20 +569,20 @@ export namespace Widgets {
   }
 
   namespace Events {
-    interface IMouseEventArg extends IAbstractEventArg{
+    interface IMouseEventArg extends IAbstractEventArg {
       x: number
       y: number
       action: Types.TMouseAction
-      button: 'left'|'right'|'middle'|'unknown'
+      button: 'left' | 'right' | 'middle' | 'unknown'
       name: 'mouse'
     }
 
     interface IKeyEventArg extends IAbstractEventArg {
-      full: string      
+      full: string
       sequence: string
     }
 
-    interface IAbstractEventArg{
+    interface IAbstractEventArg {
       name: string
       shift: boolean
       ctrl: boolean
@@ -885,7 +885,6 @@ export namespace Widgets {
     /** Received on mouse events. */
     on(event: NodeMouseEventType, callback: (arg: Events.IMouseEventArg) => void): this
     on(event: 'click', callback: (arg: Events.IMouseEventArg) => void): this
-    
 
     /** Received on key events. */
     on(event: 'keypress', callback: (ch: string, key: Events.IKeyEventArg) => void): this
@@ -2890,7 +2889,6 @@ export namespace Widgets {
     on(event: string, listener: (this: CheckboxElement, ...args: any[]) => void): this
     on(event: 'check', callback: (this: CheckboxElement) => void): this
     on(event: 'uncheck', callback: (this: CheckboxElement) => void): this
-
   }
 
   interface RadioSetOptions extends BoxOptions {}
@@ -3388,8 +3386,8 @@ export namespace Widgets {
   }
 
   export type LayoutIterator = (
-    el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number }&BlessedElement,
-    i: number 
+    el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number } & BlessedElement,
+    i: number
   ) => any
   interface LayoutOptions extends ElementOptions {
     /**

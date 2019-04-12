@@ -1,28 +1,22 @@
-
-import * as contrib from 'blessed-contrib'
 import * as blessed from 'blessed'
-import { installCollapsible, setCollapsed, uninstallCollapsible, toggleCollapsed } from '../../src/blessed/collapsible';
-import { installExitKeys, setElementData, onValueChange } from '../../src/blessed/blessed';
-import { BoxOptions } from '../../src/blessed/blessedTypes';
-import { renderer } from '../../src/blessed/layoutRenderer';
+import * as contrib from 'blessed-contrib'
+import { installExitKeys, onValueChange } from '../../src/blessed/blessed'
+import { BoxOptions } from '../../src/blessed/blessedTypes'
+import { installCollapsible, toggleCollapsed, uninstallCollapsible } from '../../src/blessed/collapsible'
+import { renderer } from '../../src/blessed/layoutRenderer'
+
 const screen = blessed.screen({ smartCSR: true, log: './log.txt' })
 
-
 const checkboxOptions: BoxOptions = {
-  input: true ,
+  input: true,
   mouse: true,
   clickable: true,
   style: {
     bg: 'gray'
   },
-  focusable: true,
-  // shrink: true
+  focusable: true
 }
 
-// const container = blessed.box({
-//   parent: screen,
-//   ...checkboxOptions
-// })
 const layout = blessed.layout({
   ...checkboxOptions,
   parent: screen,
@@ -32,7 +26,7 @@ const layout = blessed.layout({
   height: '100%',
   border: 'line',
   style: {
-    bg: 'gray'
+    overflow: 'hidden'
   },
   renderer: renderer
 })
@@ -40,26 +34,25 @@ const layout = blessed.layout({
 const collapsibleCheckbox = blessed.checkbox({
   ...checkboxOptions,
   parent: layout,
-  content: 'Collapsible ?',
-})    
+  content: 'Collapsible ?'
+})
 
-onValueChange(collapsibleCheckbox, value=>{
-  if(value){
-    installCollapsible(layout, {collapsedHeight: 3})
-  }
-  else {
+onValueChange(collapsibleCheckbox, value => {
+  if (value) {
+    installCollapsible(layout, { collapsedHeight: 3 })
+  } else {
     uninstallCollapsible(layout)
   }
   screen.render()
 })
 
 const collapsedCheckbox = blessed.checkbox({
- ...checkboxOptions,
+  ...checkboxOptions,
   parent: layout,
-  content: 'Collapsed ?',
-}) 
+  content: 'Collapsed ?'
+})
 
-onValueChange(collapsedCheckbox, value=>{
+onValueChange(collapsedCheckbox, value => {
   toggleCollapsed(layout)
   screen.render()
 })
@@ -67,14 +60,11 @@ onValueChange(collapsedCheckbox, value=>{
 const note = contrib.markdown({
   ...checkboxOptions,
   parent: layout,
-  width: '99%',
-  padding: {left: 3},
-  style: {bg: 'gray'},
-}) 
-
-note.style.bg='gray'
-
-note.setMarkdown(`
+  padding:  2,
+  style: { 
+    display: 'block' 
+  },
+  markdown: `
 
 # Notes
 
@@ -83,11 +73,12 @@ Change **Collapsible** to install / uninstall collapse support in the box.
 Change **Collapse** to collapse / uncollapse the box.
 
 Note: if Collapsible is false, then the box won't never be collapsed.
-
-  `)
-
+  
+    `
+})
+note.style.display = 'block'
+note.style.bg = 'gray'
 
 installExitKeys(screen)
 
 screen.render()
-
