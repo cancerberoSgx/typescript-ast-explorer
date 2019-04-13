@@ -5,20 +5,19 @@ import {
   BoxOptions,
   Button,
   ButtonOptions,
+  CheckboxOptions,
   Element,
   IKeyEventArg,
   IMouseEventArg,
-  isElement,
+  isNode,
   Layout,
   LayoutOptions,
+  Node,
   NodeGenericEventType,
   NodeMouseEventType,
   NodeWithEvents,
   Textarea,
-  TextareaOptions,
-  CheckboxOptions,
-  isNode,
-  Node
+  TextareaOptions
 } from './blessedTypes'
 
 type On<T> =
@@ -62,7 +61,7 @@ interface ArtificialEventOptions<T extends Element> {
   [ArtificialEventOptionNames.onKeyPress]?: (this: T, e: { ch: string; key: IKeyEventArg } & ArtificialEvent<T>) => void
 }
 
-interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> { }
+interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> {}
 declare global {
   export namespace JSX {
     export interface IntrinsicElements {
@@ -72,8 +71,6 @@ declare global {
       textarea: TextareaOptions & EventOptions<Textarea>
       button: ButtonOptions & EventOptions<Button>
       checkbox: CheckboxOptions & EventOptions<Button>
-
-
     }
   }
 }
@@ -104,7 +101,7 @@ interface BlessedJsx {
    */
   render(e: BlessedElement): Element
   /**
-   * Default blessed Node factory for text like "foo" in <box>foo</box> 
+   * Default blessed Node factory for text like "foo" in <box>foo</box>
    */
   createTextNode(e: string | number | boolean, parent: Node): Element
 }
@@ -115,11 +112,9 @@ export const React: BlessedJsx = {
     if (typeof tag === 'function' && tag.prototype && tag.prototype.render) {
       const instance = new tag({ ...attrs, children })
       el = instance.render()
-    }
-    else if (typeof tag === 'function') {
+    } else if (typeof tag === 'function') {
       el = tag({ ...attrs, children })
-    }
-    else if (typeof tag === 'string') {
+    } else if (typeof tag === 'string') {
       const fn = (blessed as any)[tag] as (options?: any) => Element
       if (!fn) {
         const s = 'blessed.' + tag + ' function not found'
@@ -144,30 +139,29 @@ export const React: BlessedJsx = {
         }
       })
       el = fn(attrs) as Element
-        // generic event handlers
-        ; (Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
-          const args = blessedEventMethodAttributes[methodName] as any[]
-            ; (el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
-        })
-        // artificial event handlers like onClick (these doesn't exist on blessed - we need to map them manually)
-        ; (Object.keys(artificialEventAttributes) as ArtificialEventOptionNames[]).forEach(attributeName => {
-          if (attributeName === ArtificialEventOptionNames.onClick) {
-            const fn = artificialEventAttributes[attributeName]!
-            el.on('click', e => {
-              fn.bind(el)({ ...e, currentTarget: el })
-            })
-          } else if (attributeName === ArtificialEventOptionNames.onKeyPress) {
-            const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onKeyPress']
-            el.on('keypress', (ch, key) => {
-              fn!.bind(el)({ ch, key, currentTarget: el })
-            })
-          } else {
-            console.log('Unrecognized artificialEventAttributes ' + attributeName)
-            // TODO: debug
-          }
-        })
-    }
-    else {
+      // generic event handlers
+      ;(Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
+        const args = blessedEventMethodAttributes[methodName] as any[]
+        ;(el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
+      })
+      // artificial event handlers like onClick (these doesn't exist on blessed - we need to map them manually)
+      ;(Object.keys(artificialEventAttributes) as ArtificialEventOptionNames[]).forEach(attributeName => {
+        if (attributeName === ArtificialEventOptionNames.onClick) {
+          const fn = artificialEventAttributes[attributeName]!
+          el.on('click', e => {
+            fn.bind(el)({ ...e, currentTarget: el })
+          })
+        } else if (attributeName === ArtificialEventOptionNames.onKeyPress) {
+          const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onKeyPress']
+          el.on('keypress', (ch, key) => {
+            fn!.bind(el)({ ch, key, currentTarget: el })
+          })
+        } else {
+          console.log('Unrecognized artificialEventAttributes ' + attributeName)
+          // TODO: debug
+        }
+      })
+    } else {
       //TODO:debug
       console.log('Unrecognized tag type ' + tag)
     }
@@ -182,20 +176,17 @@ export const React: BlessedJsx = {
         if (!c.options || !c.options.parent) {
           el.append(c)
         }
-      }
-      else if (Array.isArray(c)) {
+      } else if (Array.isArray(c)) {
         c.forEach(c => {
           if (isNode(c)) {
-            if ((!c.options || !c.options.parent)) {
+            if (!c.options || !c.options.parent) {
               el.append(c)
             }
-          }
-          else {
+          } else {
             this.createTextNode(c, el)
           }
         })
-      }
-      else {
+      } else {
         this.createTextNode(c, el)
       }
     })

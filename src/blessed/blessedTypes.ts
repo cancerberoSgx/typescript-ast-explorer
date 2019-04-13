@@ -37,7 +37,7 @@ export type NodeGenericEventType = blessed.Widgets.NodeGenericEventType
 export type Markdown = contrib.Widgets.MarkdownElement
 
 export function isScreen(n: any): n is Screen {
-  return n && isNode(n) && n.type === 'screen' 
+  return n && isNode(n) && n.type === 'screen'
 }
 export function isElement(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
