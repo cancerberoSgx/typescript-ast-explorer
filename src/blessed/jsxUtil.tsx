@@ -11,7 +11,8 @@ export function Br(props: {}) {
 
 export function Strong(props: { children?: string | string[]; color?: string }) {
   return (
-    <text content={format(asArray(props.children || []).join(' '), ['bold', props.color].filter(notUndefined) as any)}
+    <text
+      content={format(asArray(props.children || []).join(' '), ['bold', props.color].filter(notUndefined) as any)}
     />
   )
 }

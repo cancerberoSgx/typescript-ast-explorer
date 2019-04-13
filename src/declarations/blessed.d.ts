@@ -1541,7 +1541,7 @@ export namespace Widgets {
     bottom: number | string
   }
 
-  type BorderType = 'line'|'bg'
+  type BorderType = 'line' | 'bg'
   interface Border {
     /**
      * Type of border (line or bg). bg by default.
@@ -2098,7 +2098,7 @@ export namespace Widgets {
      * Object enabling a scrollbar.
      * Style of the scrollbar track if present (takes regular style options).
      */
-    scrollbar?: { style?: Widgets.Types.TStyle; track?: any; ch?: string }|boolean
+    scrollbar?: { style?: Widgets.Types.TStyle; track?: any; ch?: string } | boolean
   }
 
   interface ScrollableTextOptions extends ScrollableBoxOptions {

@@ -1,13 +1,13 @@
 import { Screen } from '../../../src/blessed/blessedTypes'
+import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Component } from "../../../src/blessed/jsx/component";
+import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
 import { showInModal } from '../../../src/blessed/modal'
 import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc'
 import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { commonOptions } from './util'
-import { Strong, Div, Br } from '../../../src/blessed/jsxUtil';
 
 enum Demo {
   button,
@@ -40,9 +40,9 @@ export class App extends Component<P, S> {
     const { screen } = this.props
     return (
       <Div parent={screen} width="95%" height="100%" border="line" label="Blessed Gallery">
-      <Br/>
-      <Strong>Chose a Demo:</Strong>
-      <Br/>
+        <Br />
+        <Strong>Chose a Demo:</Strong>
+        <Br />
         <listbar
           {...commonOptions()}
           padding={1}

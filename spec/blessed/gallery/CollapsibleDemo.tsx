@@ -1,21 +1,21 @@
 import { BoxOptions } from '../../../src/blessed/blessedTypes'
 import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collapsible'
+import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Component } from "../../../src/blessed/jsx/component";
 import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
-import { commonOptions } from './util';
+import { commonOptions } from './util'
 
 export class CollapsibleDemo extends Component {
   render() {
-    const common: ()=>BoxOptions = ()=>({
+    const common: () => BoxOptions = () => ({
       ...commonOptions(),
       mouse: true,
       clickable: true,
       keys: true,
       keyable: true,
       focusable: true,
-      
+
       style: {
         ...commonOptions().style,
         selected: {
@@ -23,27 +23,27 @@ export class CollapsibleDemo extends Component {
             bg: 'blue'
           },
           bg: 'magenta'
-        }, 
+        },
         hover: {
           bg: 'blue'
-        },
+        }
         // bg: 'yellow'
       }
       // draggable: false
     })
-    const buttonOptions: ()=>BoxOptions = ()=>({
+    const buttonOptions: () => BoxOptions = () => ({
       ...common(),
-      padding: 1, 
-      border:'line',
+      padding: 1,
+      border: 'line',
       // // border: 'line',
       style: {
         ...common().style,
         boder: {
-          fg: 'cyan',
+          fg: 'cyan'
         },
 
         // hover: {
-          // bg: 'blue'
+        // bg: 'blue'
         // },
         bg: 'yellow'
       }

@@ -1,21 +1,24 @@
 import * as blessed from 'blessed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
+import { Checkbox, Element, isNode, Node } from '../blessedTypes'
+import { Component } from './component'
 import {
-  Checkbox,
-  Element,
-  isNode,
-  Node} from '../blessedTypes'
-import { BlessedJsx, EventOptionNames, ArtificialEventOptionNames, BlessedEventOptions, ArtificialEventOptions, BlessedJsxAttrs } from './types';
-import { Component } from './component';
-interface Options{
+  ArtificialEventOptionNames,
+  ArtificialEventOptions,
+  BlessedEventOptions,
+  BlessedJsx,
+  BlessedJsxAttrs,
+  EventOptionNames
+} from './types'
+interface Options {
   dontInerithStyle?: boolean
 }
 
-interface ComponentConstructor<P={}, S={}> {
-  new(p:P, s:S): Component
+interface ComponentConstructor<P = {}, S = {}> {
+  new (p: P, s: S): Component
 }
 
-function isComponentConstructor(tag:any): tag is ComponentConstructor {
+function isComponentConstructor(tag: any): tag is ComponentConstructor {
   return typeof tag === 'function' && tag.prototype && tag.prototype.render
 }
 
@@ -24,11 +27,10 @@ function isComponentConstructor(tag:any): tag is ComponentConstructor {
  In this implementation, all the work is dont by createElement, that returns ready to use blessed elements. Attributes and children are only implemented for intrinsic elements and all blessed types in JSX.IntrinsicElement should be supported. All event handlers in types are supported. 
   */
 class BlessedJsxImpl implements BlessedJsx {
-  constructor(protected options: Options = {}){
-  }
+  constructor(protected options: Options = {}) {}
 
-  createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs , ...children: any[]) {
-    let el: JSX.ReactNode 
+  createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs, ...children: any[]) {
+    let el: JSX.ReactNode
 
     const eventOptionNames = enumKeys(EventOptionNames)
     const artificialEventOptionNames = enumKeys(ArtificialEventOptionNames)
@@ -70,10 +72,9 @@ class BlessedJsxImpl implements BlessedJsx {
 
     // finished instantiating the Node that BTW is a blessed Element. So we ugly cast it .
 
-    if(typeof tag === 'string'){
-      this.installAttirbutesAndChildren(el!, blessedEventMethodAttributes, artificialEventAttributes, children )
-
-    } 
+    if (typeof tag === 'string') {
+      this.installAttirbutesAndChildren(el!, blessedEventMethodAttributes, artificialEventAttributes, children)
+    }
     // else {
     //   //TODO:debug
     //   console.log('Unrecognized tag type ' + tag)
@@ -81,72 +82,75 @@ class BlessedJsxImpl implements BlessedJsx {
 
     return el!
   }
-  installAttirbutesAndChildren(jsxNode: JSX.ReactNode, blessedEventMethodAttributes: any, artificialEventAttributes: any, children: any[]): any {
-   const el = jsxNode as Element
-
+  installAttirbutesAndChildren(
+    jsxNode: JSX.ReactNode,
+    blessedEventMethodAttributes: any,
+    artificialEventAttributes: any,
+    children: any[]
+  ): any {
+    const el = jsxNode as Element
 
       // EVENT HANDLER ATTRIBUTES
       // native event handlers like on(), key() etc are exactly matched agains a blessed method. Exactly same signature.
-      ;(Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
-        const args = blessedEventMethodAttributes[methodName] as any[]
-        ;(el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
-      })
-      // artificial event handlers like onClick, onChange (these doesn't exist on blessed - we need to map/install them manually)
-      ;(Object.keys(artificialEventAttributes) as ArtificialEventOptionNames[]).forEach(attributeName => {
-        if (attributeName === ArtificialEventOptionNames.onClick) {
-          const fn = artificialEventAttributes[attributeName]!
-          el.on('click', e => {
-            fn.bind(el)({ ...e, currentTarget: el })
-          })
-        } else if (attributeName === ArtificialEventOptionNames.onKeyPress) {
-          const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onKeyPress']
-          el.on('keypress', (ch, key) => {
-            fn!.bind(el)({ ch, key, currentTarget: el })
-          })
-        } else if (attributeName === ArtificialEventOptionNames.onRender) {
-          const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onRender']
-          el.on('render', e => {
-            fn!.bind(el)({ ...e, currentTarget: el })
-          })
-        } else if (attributeName === ArtificialEventOptionNames.onChange) {
-          const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onChange']
-          // TODO: verify that element type supports the value change semantic (i.e is a checkbox )?
-          el.on('check', e => {
-            fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
-          })
-          el.on('uncheck', e => {
-            fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
-          })
-        } else {
-          console.log('Unrecognized artificialEventAttribute ' + attributeName)
-          // TODO: debug
+    ;(Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
+      const args = blessedEventMethodAttributes[methodName] as any[]
+      ;(el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
+    })
+    // artificial event handlers like onClick, onChange (these doesn't exist on blessed - we need to map/install them manually)
+    ;(Object.keys(artificialEventAttributes) as ArtificialEventOptionNames[]).forEach(attributeName => {
+      if (attributeName === ArtificialEventOptionNames.onClick) {
+        const fn = artificialEventAttributes[attributeName]!
+        el.on('click', e => {
+          fn.bind(el)({ ...e, currentTarget: el })
+        })
+      } else if (attributeName === ArtificialEventOptionNames.onKeyPress) {
+        const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onKeyPress']
+        el.on('keypress', (ch, key) => {
+          fn!.bind(el)({ ch, key, currentTarget: el })
+        })
+      } else if (attributeName === ArtificialEventOptionNames.onRender) {
+        const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onRender']
+        el.on('render', e => {
+          fn!.bind(el)({ ...e, currentTarget: el })
+        })
+      } else if (attributeName === ArtificialEventOptionNames.onChange) {
+        const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onChange']
+        // TODO: verify that element type supports the value change semantic (i.e is a checkbox )?
+        el.on('check', e => {
+          fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
+        })
+        el.on('uncheck', e => {
+          fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
+        })
+      } else {
+        console.log('Unrecognized artificialEventAttribute ' + attributeName)
+        // TODO: debug
+      }
+    })
+    // CHILDREN
+    children.forEach(c => {
+      if (!c) {
+        // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
+        return
+      }
+      if (isNode(c)) {
+        if (!c.options || !c.options.parent) {
+          el.append(c)
         }
-      })
-      // CHILDREN
-      children.forEach(c => {
-        if (!c) {
-          // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
-          return
-        }
-        if (isNode(c)) {
-          if (!c.options || !c.options.parent) {
-            el.append(c)
-          }
-        } else if (Array.isArray(c)) {
-          c.forEach(c => {
-            if (isNode(c)) {
-              if (!c.options || !c.options.parent) {
-                el.append(c)
-              }
-            } else {
-              this.createTextNode(c, el)
+      } else if (Array.isArray(c)) {
+        c.forEach(c => {
+          if (isNode(c)) {
+            if (!c.options || !c.options.parent) {
+              el.append(c)
             }
-          })
-        } else {
-          this.createTextNode(c, el)
-        }
-      })
-
+          } else {
+            this.createTextNode(c, el)
+          }
+        })
+      } else {
+        this.createTextNode(c, el)
+      }
+    })
   }
 
   render(e: JSX.Element) {
