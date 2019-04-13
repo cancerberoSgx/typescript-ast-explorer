@@ -1,5 +1,6 @@
 import { Screen } from '../../../src/blessed/blessedTypes'
-import { Component, React } from '../../../src/blessed/jsx'
+import { React } from '../../../src/blessed/jsx/createElement'
+import { Component } from "../../../src/blessed/jsx/component";
 import { showInModal } from '../../../src/blessed/modal'
 import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc'
 import { ButtonDemo } from './ButtonDemo'

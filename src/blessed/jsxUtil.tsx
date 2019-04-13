@@ -2,7 +2,7 @@ import { format } from 'ansi-escape-sequences'
 import { asArray } from 'misc-utils-of-mine-generic'
 import { notUndefined } from '../util/misc'
 import { LayoutOptions } from './blessedTypes'
-import { React } from './jsx'
+import { React } from './jsx/createElement'
 import { renderer } from './layoutRenderer'
 
 export function Br(props: {}) {
@@ -11,12 +11,9 @@ export function Br(props: {}) {
 
 export function Strong(props: { children?: string | string[]; color?: string }) {
   return (
-    <text
-      // content = {asArray(props.children||[]).join(' ')}
-      content={format(asArray(props.children || []).join(' '), ['bold', props.color].filter(notUndefined) as any)}
+    <text content={format(asArray(props.children || []).join(' '), ['bold', props.color].filter(notUndefined) as any)}
     />
   )
-  // , props.color].filter(notUndefined))} />
 }
 
 export function Div(

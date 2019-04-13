@@ -1,6 +1,7 @@
 import { BoxOptions } from '../../../src/blessed/blessedTypes'
 import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collapsible'
-import { Component, React } from '../../../src/blessed/jsx'
+import { React } from '../../../src/blessed/jsx/createElement'
+import { Component } from "../../../src/blessed/jsx/component";
 import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
 import { commonOptions } from './util';

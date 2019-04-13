@@ -1,4 +1,4 @@
-export { React } from './blessed/jsx'
+export *  from './blessed/jsx'
 export { main } from './cli/cli'
 export { createStore } from './store/store'
 export { buildCodeAst } from './ui/codeView'

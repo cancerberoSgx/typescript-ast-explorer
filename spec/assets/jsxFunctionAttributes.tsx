@@ -1,7 +1,7 @@
 import * as blessed from 'blessed'
 import { findDescendantNode, installExitKeys } from '../../src/blessed/blessed'
 import { BoxOptions, Textarea } from '../../src/blessed/blessedTypes'
-import { React } from '../../src/blessed/jsx'
+import { React } from '../../src/blessed/jsx/createElement'
 
 const screen = blessed.screen({ smartCSR: true })
 installExitKeys(screen)

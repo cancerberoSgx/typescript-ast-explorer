@@ -1,7 +1,7 @@
 import * as blessed from 'blessed'
 import { installExitKeys } from '../../src/blessed/blessed'
 import { BoxOptions } from '../../src/blessed/blessedTypes'
-import { React } from '../../src/blessed/jsx'
+import { React } from '../../src/blessed/jsx/createElement'
 import { renderer } from '../../src/blessed/layoutRenderer'
 
 const screen = blessed.screen({ smartCSR: true })

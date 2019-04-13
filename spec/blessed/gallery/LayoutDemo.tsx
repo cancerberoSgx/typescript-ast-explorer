@@ -1,4 +1,5 @@
-import { Component, React } from '../../../src/blessed/jsx'
+import { React } from '../../../src/blessed/jsx/createElement'
+import { Component } from "../../../src/blessed/jsx/component";
 import { Br, Div } from '../../../src/blessed/jsxUtil'
 import { color, number } from './util'
 
