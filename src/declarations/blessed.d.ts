@@ -865,29 +865,30 @@ export namespace Widgets {
     | 'set content'
     | 'parsed content'
 
+  export type KeyEventListener = (ch: string, key: Events.IKeyEventArg) => void
   class NodeWithEvents extends Node {
     /**
      * Bind a keypress listener for a specific key.
      */
-    key(name: string | string[], listener: (ch: any, key: Events.IKeyEventArg) => void): void
+    key(name: string | string[], listener: KeyEventListener): void
 
     /**
      * Bind a keypress listener for a specific key once.
      */
-    onceKey(name: string, listener: (ch: any, key: Events.IKeyEventArg) => void): void
+    onceKey(name: string, listener: KeyEventListener): void
 
     /**
      * Remove a keypress listener for a specific key.
      */
-    unkey(name: string, listener: (ch: any, key: Events.IKeyEventArg) => void): void
-    removeKey(name: string, listener: (ch: any, key: Events.IKeyEventArg) => void): void
+    unkey(name: string, listener: KeyEventListener): void
+    removeKey(name: string, listener: KeyEventListener): void
 
     on(event: string, listener: (...args: any[]) => void): this
     /** Received on mouse events. */
     on(event: NodeMouseEventType, callback: (arg: Events.IMouseEventArg) => void): this
 
     /** Received on key events. */
-    on(event: 'keypress', callback: (ch: string, key: Events.IKeyEventArg) => void): this
+    on(event: 'keypress', callback: KeyEventListener): this
     on(event: NodeScreenEventType, callback: (arg: Screen) => void): this
     /** Received when blessed notices something untoward (output is not a tty, terminfo not found, etc). */
     on(event: 'warning', callback: (text: string) => void): this

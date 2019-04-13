@@ -37,10 +37,10 @@ installCollapsible(layout, { collapsedHeight: 5 })
 
 const collapsedCheckbox = blessed.checkbox({
   ...checkboxOptions,
-  parent: layout,
+  // parent: layout,
   content: 'Collapsed ?'
 })
-
+layout.append(collapsedCheckbox)
 onValueChange(collapsedCheckbox, value => {
   toggleCollapsed(layout)
   screen.render()
@@ -48,7 +48,7 @@ onValueChange(collapsedCheckbox, value => {
 
 const note = contrib.markdown({
   ...checkboxOptions,
-  parent: layout,
+  // parent: layout,
   width: '40%',
   padding: 2,
   label: 'Notes',
@@ -64,7 +64,7 @@ const note = contrib.markdown({
   * 
     `
 })
-
+layout.append(note)
 installExitKeys(screen)
 
 screen.render()

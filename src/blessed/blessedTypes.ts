@@ -23,6 +23,7 @@ export type TextElementOptions = blessed.Widgets.TextOptions
 export type TextareaOptions = blessed.Widgets.TextareaOptions
 export type ButtonOptions = blessed.Widgets.ButtonOptions
 export type InputOptions = blessed.Widgets.InputOptions
+export type CheckboxOptions = blessed.Widgets.CheckboxOptions
 
 export type PositionCoords = blessed.Widgets.PositionCoords
 
@@ -36,8 +37,12 @@ export type NodeGenericEventType = blessed.Widgets.NodeGenericEventType
 export type Markdown = contrib.Widgets.MarkdownElement
 
 export function isScreen(n: any): n is Screen {
-  return n && n.type === 'screen' && n.restoreFocus
+  return n && isNode(n) && n.type === 'screen' 
 }
 export function isElement(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
+}
+
+export function isNode(n: any): n is Node {
+  return n && n.insertBefore && n.forDescendants
 }

@@ -15,7 +15,10 @@ import {
   NodeMouseEventType,
   NodeWithEvents,
   Textarea,
-  TextareaOptions
+  TextareaOptions,
+  CheckboxOptions,
+  isNode,
+  Node
 } from './blessedTypes'
 
 type On<T> =
@@ -33,33 +36,33 @@ enum EventOptionNames {
 }
 
 enum ArtificialEventOptionNames {
-  onClick = 'onClick'
+  onClick = 'onClick',
+  onKeyPress = 'onKeyPress'
 }
 
-// type ArtificialEventAttributeData=
 type ArtificialEventAttributes = {
   [a in ArtificialEventOptionNames]: {
     methodName: EventOptionNames
     eventType: NodeMouseEventType | NodeGenericEventType | 'keypress' | 'warning'
   }
 }
-const artificialAttributesToMethodName: ArtificialEventAttributes = {
-  [ArtificialEventOptionNames.onClick]: { methodName: EventOptionNames.on, eventType: 'click' }
-}
 
 interface ArtificialEvent<T extends Element> {
   currentTarget: T
 }
 
-type ArtificialEventHandler<T extends Element> = (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
-interface EventOptions<T extends Element> {
+interface BlessedEventOptions {
   [EventOptionNames.key]?: Parameters<NodeWithEvents['key']>
   [EventOptionNames.onceKey]?: Parameters<NodeWithEvents['onceKey']>
   [EventOptionNames.on]?: On<this>
   [EventOptionNames.once]?: On<this>
-  [ArtificialEventOptionNames.onClick]?: ArtificialEventHandler<T>
+}
+interface ArtificialEventOptions<T extends Element> {
+  [ArtificialEventOptionNames.onClick]?: (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
+  [ArtificialEventOptionNames.onKeyPress]?: (this: T, e: { ch: string; key: IKeyEventArg } & ArtificialEvent<T>) => void
 }
 
+interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> { }
 declare global {
   export namespace JSX {
     export interface IntrinsicElements {
@@ -68,6 +71,9 @@ declare global {
       text: TextareaOptions & EventOptions<Textarea>
       textarea: TextareaOptions & EventOptions<Textarea>
       button: ButtonOptions & EventOptions<Button>
+      checkbox: CheckboxOptions & EventOptions<Button>
+
+
     }
   }
 }
@@ -81,66 +87,126 @@ interface BlessedElement {
 type TagFn = TODO
 type TagClass = TODO
 
-export const React: {
-  createElement: (
+/**
+ * type of the React object as in React.createElement. Note: it could have another name than React, but if so tsconfig needs to be configured (JSXFactory) so for simplicity we name the instance `React`
+ */
+interface BlessedJsx {
+  /**
+   * JSX.Element to blessed node factory method. i.e. <box>foo</box> will be translated to React.createElement('box', {}, ['foo'])
+   */
+  createElement(
     tag: undefined | string | TagFn | TagClass,
     attrs?: undefined | { [a: string]: any },
     ...children: any[]
-  ) => Element
-  render: (e: BlessedElement) => Element
-} = {
-  createElement(tag, attrs, ...children) {
-    const fn = (blessed as any)[tag] as (options?: any) => Element
-    if (!fn) {
-      console.log(tag, fn)
-      throw new Error('blessed creator function for ' + tag + ' not found')
-    }
-    attrs = attrs || {}
-    const eventOptionNames = enumKeys(EventOptionNames)
-    const artificialEventOptionNames = enumKeys(ArtificialEventOptionNames)
-    const blessedEventMethodAttributes = {} as { [a in EventOptionNames]: any }
-    const artificialEventAttributes = {} as { [a in ArtificialEventOptionNames]: ArtificialEventHandler<Element> }
+  ): Node
+  /**
+   * public method to render JSX.Element to blessed nodes. Currently it does nothing.
+   */
+  render(e: BlessedElement): Element
+  /**
+   * Default blessed Node factory for text like "foo" in <box>foo</box> 
+   */
+  createTextNode(e: string | number | boolean, parent: Node): Element
+}
 
-    Object.keys(attrs).forEach(a => {
-      const value = attrs![a]
-      if (eventOptionNames.includes(a)) {
-        blessedEventMethodAttributes[a as EventOptionNames] = value
-        delete attrs![a]
+export const React: BlessedJsx = {
+  createElement(tag, attrs, ...children) {
+    let el: Element
+    if (typeof tag === 'function' && tag.prototype && tag.prototype.render) {
+      const instance = new tag({ ...attrs, children })
+      el = instance.render()
+    }
+    else if (typeof tag === 'function') {
+      el = tag({ ...attrs, children })
+    }
+    else if (typeof tag === 'string') {
+      const fn = (blessed as any)[tag] as (options?: any) => Element
+      if (!fn) {
+        const s = 'blessed.' + tag + ' function not found'
+        console.log(s)
+        throw new Error(s)
       }
-      if (artificialEventOptionNames.includes(a)) {
-        artificialEventAttributes[a as ArtificialEventOptionNames] = value
-        delete attrs![a]
-      }
-    })
-    const el = fn(attrs) as Element
-    // generic event handlers
-    Object.keys(blessedEventMethodAttributes).forEach(methodName => {
-      const args = blessedEventMethodAttributes[methodName as EventOptionNames] as any[]
-      ;(el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
-    })
-    // artificial event handlers like onClick (these doesn't exist on blessed - we need to map them manually)
-    Object.keys(artificialEventAttributes).forEach(attributeName => {
-      if (attributeName === ArtificialEventOptionNames.onClick) {
-        const fn = artificialEventAttributes[attributeName]
-        el.on('click', e => {
-          fn.bind(el)({ ...e, currentTarget: el }) //, {...e, currentTarget: el})
+      attrs = attrs || {}
+      const eventOptionNames = enumKeys(EventOptionNames)
+      const artificialEventOptionNames = enumKeys(ArtificialEventOptionNames)
+      const blessedEventMethodAttributes = {} as BlessedEventOptions
+      const artificialEventAttributes = {} as ArtificialEventOptions<Element>
+
+      Object.keys(attrs).forEach(a => {
+        const value = attrs![a]
+        if (eventOptionNames.includes(a)) {
+          blessedEventMethodAttributes[a as EventOptionNames] = value
+          delete attrs![a]
+        }
+        if (artificialEventOptionNames.includes(a)) {
+          artificialEventAttributes[a as ArtificialEventOptionNames] = value
+          delete attrs![a]
+        }
+      })
+      el = fn(attrs) as Element
+        // generic event handlers
+        ; (Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
+          const args = blessedEventMethodAttributes[methodName] as any[]
+            ; (el as any)[methodName](...args.map(a => (typeof a === 'function' ? a.bind(el) : a)))
         })
-      } else {
-        //TODO
-      }
-    })
+        // artificial event handlers like onClick (these doesn't exist on blessed - we need to map them manually)
+        ; (Object.keys(artificialEventAttributes) as ArtificialEventOptionNames[]).forEach(attributeName => {
+          if (attributeName === ArtificialEventOptionNames.onClick) {
+            const fn = artificialEventAttributes[attributeName]!
+            el.on('click', e => {
+              fn.bind(el)({ ...e, currentTarget: el })
+            })
+          } else if (attributeName === ArtificialEventOptionNames.onKeyPress) {
+            const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onKeyPress']
+            el.on('keypress', (ch, key) => {
+              fn!.bind(el)({ ch, key, currentTarget: el })
+            })
+          } else {
+            console.log('Unrecognized artificialEventAttributes ' + attributeName)
+            // TODO: debug
+          }
+        })
+    }
+    else {
+      //TODO:debug
+      console.log('Unrecognized tag type ' + tag)
+    }
+
     // append children
     children.forEach(c => {
-      if (isElement(c)) {
-        el.append(c)
-      } else {
-        //TODO text : use content or text ?
+      if (!c) {
+        // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
+        return
+      }
+      if (isNode(c)) {
+        if (!c.options || !c.options.parent) {
+          el.append(c)
+        }
+      }
+      else if (Array.isArray(c)) {
+        c.forEach(c => {
+          if (isNode(c)) {
+            if ((!c.options || !c.options.parent)) {
+              el.append(c)
+            }
+          }
+          else {
+            this.createTextNode(c, el)
+          }
+        })
+      }
+      else {
+        this.createTextNode(c, el)
       }
     })
-    return el
+    return el!
   },
 
   render(e: BlessedElement) {
-    return this.createElement(e.type, e.attrs, e.children)
+    return e as any
+  },
+
+  createTextNode(c: any, el: Node) {
+    return blessed.text({ content: c + '', parent: el })
   }
 }
