@@ -34,7 +34,7 @@ export function setCollapsed(el: Element, collapsed: boolean, andRenderScreen = 
       el.children.filter(isElement).forEach(c => c !== internalLabel && c.show())
     }
   }
-  if (auto||andRenderScreen) {
+  if (auto || andRenderScreen) {
     el.screen.render()
   }
 }

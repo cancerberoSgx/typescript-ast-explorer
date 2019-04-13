@@ -1,37 +1,36 @@
 import { Screen } from '../../../src/blessed/blessedTypes'
 import { Component, React } from '../../../src/blessed/jsx'
 import { showInModal } from '../../../src/blessed/modal'
+import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc'
 import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { commonOptions } from './util'
-import { enumKeys } from 'misc-utils-of-mine-typescript';
-import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc';
 
-interface P { screen: Screen }
+enum Demo {
+  button,
+  layout,
+  collapsible
+}
+interface P {
+  screen: Screen
+}
 interface S {
   selectedDemo?: Demo
 }
-enum Demo {
-  button, layout, collapsible
-}
-
 export class App extends Component<P, S> {
   private renderDemo(d: string) {
     const demo = enumValueFromString(d, Demo)
-    if (typeof demo==='undefined') {
+    if (typeof demo === 'undefined') {
       throw new Error('Demo not found ' + d)
     }
     if (demo === Demo.button) {
       return React.render(<ButtonDemo screen={this.props.screen} />)
-    }
-    else if (demo === Demo.layout) {
+    } else if (demo === Demo.layout) {
       return React.render(<LayoutDemo />)
-    }
-    else if (demo === Demo.collapsible) {
+    } else if (demo === Demo.collapsible) {
       return React.render(<CollapsibleDemo />)
-    }
-    else {
+    } else {
       throw new Error('Demo unknown ' + d)
     }
   }
@@ -49,13 +48,9 @@ export class App extends Component<P, S> {
           focused={true}
           border="line"
           autoCommandKeys={true}
-          commands={arrayToObject(enumNoValueKeys(Demo), d => () => showInModal(
-            screen,
-            this.renderDemo(d),
-            `${d} demo (press q to close)`,
-            '100%',
-            '100%'
-          ))}
+          commands={arrayToObject(enumNoValueKeys(Demo), d => () =>
+            showInModal(screen, this.renderDemo(d), `${d} demo (press q to close)`, '100%', '100%')
+          )}
         />
       </box>
     )

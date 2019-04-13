@@ -468,7 +468,7 @@ export namespace Widgets {
       border?: TStyle
       label?: string
       track?: TStyle
-      scrollbar?: TStyle|true
+      scrollbar?: TStyle | true
       focus?: TStyle
       hover?: TStyle
     }
@@ -1769,7 +1769,7 @@ export namespace Widgets {
     /**
      * Calculated height.
      */
-    height:number
+    height: number
 
     /**
      * Calculated relative top offset.

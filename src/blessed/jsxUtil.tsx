@@ -1,19 +1,21 @@
+import { format } from 'ansi-escape-sequences'
+import { asArray } from 'misc-utils-of-mine-generic'
+import { notUndefined } from '../util/misc'
 import { LayoutOptions } from './blessedTypes'
 import { React } from './jsx'
 import { renderer } from './layoutRenderer'
-import {format, Style, style} from 'ansi-escape-sequences';
-import { notUndefined } from '../util/misc';
-import { asArray } from 'misc-utils-of-mine-generic';
 
 export function Br(props: {}) {
   return <text style={{ display: 'block' }} content=" " />
 }
 
-export function Strong(props: {children?: string|string[], color?: string}) {
-  return <text 
-  // content = {asArray(props.children||[]).join(' ')}
-   content={format(asArray(props.children||[]).join(' '), ['bold', props.color].filter(notUndefined) as any)}
-   />
+export function Strong(props: { children?: string | string[]; color?: string }) {
+  return (
+    <text
+      // content = {asArray(props.children||[]).join(' ')}
+      content={format(asArray(props.children || []).join(' '), ['bold', props.color].filter(notUndefined) as any)}
+    />
+  )
   // , props.color].filter(notUndefined))} />
 }
 

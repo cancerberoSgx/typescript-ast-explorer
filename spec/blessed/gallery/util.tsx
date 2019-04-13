@@ -5,7 +5,7 @@ export const commonOptions: BoxOptions = {
   style: {
     bg: 'gray',
     fg: 'black'
-  },
+  }
   // mouse: true,
   // clickable: true,
   // keys: true,

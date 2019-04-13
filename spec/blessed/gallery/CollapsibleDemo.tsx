@@ -10,7 +10,7 @@ export class CollapsibleDemo extends Component {
       mouse: true,
       clickable: true,
       keys: true,
-      keyable: true,
+      keyable: true
       // draggable: false
     }
     const buttonOptions: BoxOptions = {
@@ -34,24 +34,18 @@ export class CollapsibleDemo extends Component {
     const el = (
       <Div>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
-        "collapse"/"expand" functionality in any blessed Element.  <Br />
+        "collapse"/"expand" functionality in any blessed Element. <Br />
         Has mainly two modes,
-<Strong>Manual mode</Strong> in which user is
-                responsible of adding some buttons to trigger the collapse/expand when user clicks them, and a
-<Strong>Automatic mode</Strong>,
-        in which these handlers will be installed automatically on the element and also hiding children, updating labels, visual feedback, etc<Br />
-
+        <Strong>Manual mode</Strong> in which user is responsible of adding some buttons to trigger the collapse/expand
+        when user clicks them, and a<Strong>Automatic mode</Strong>, in which these handlers will be installed
+        automatically on the element and also hiding children, updating labels, visual feedback, etc
+        <Br />
         <layout
           width="100%"
           // bottom="100%"
           height="50%"
-          renderer={renderer}
-        >
-          <layout
-            width="50%"
-            height="100%"
-            renderer={renderer}
-          >
+          renderer={renderer}>
+          <layout width="50%" height="100%" renderer={renderer}>
             <Br />
             <Strong>Automatic mode:</Strong>
             <Br />
@@ -64,17 +58,14 @@ export class CollapsibleDemo extends Component {
               border="line">
               <textbox {...common} content="Tell us your name" />
               <Br />
-
               <checkbox {...common} content="Female?" />
               <Br />
-
-              <radioset  label="Level" height={5} border="line">
+              <radioset label="Level" height={5} border="line">
                 <radiobutton {...radioOptions} top={0} content="Afraid of hights" />
                 <radiobutton {...radioOptions} top={1} content="Sometimes I'm fast" checked={true} />
                 <radiobutton {...radioOptions} top={2} content="Petrol in my veins" />
               </radioset>
               <Br />
-
               <checkbox
                 {...common}
                 content="Do you Accept the licence and foo bar a lot of text here that needs to be collapsed"
@@ -82,20 +73,16 @@ export class CollapsibleDemo extends Component {
               <Br />
               <button {...buttonOptions} content="Submit" />
               ---
-          <button {...buttonOptions} content="Go back" />
+              <button {...buttonOptions} content="Go back" />
             </layout>
           </layout>
 
-          <layout
-            width="50%"
-            height="100%"
-            renderer={renderer}
-          >
+          <layout width="50%" height="100%" renderer={renderer}>
             <Br />
             <Strong>Manual mode:</Strong>
             <Br />
             <layout
-              onRender={e => installCollapsible(e.currentTarget, {collapsedHeight: 5})}
+              onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 5 })}
               label="Search Hero"
               renderer={renderer}
               style={{ overflow: 'hidden' }}
@@ -103,43 +90,39 @@ export class CollapsibleDemo extends Component {
               height="100%"
               border="line">
               <Br />
-
-              <checkbox {...common} style={{fg:'magenta'}} content="Collapsed" checked={false} onChange={e => toggleCollapsed(e.currentTarget.parent as any, true)}></checkbox>
+              <checkbox
+                {...common}
+                style={{ fg: 'magenta' }}
+                content="Collapsed"
+                checked={false}
+                onChange={e => toggleCollapsed(e.currentTarget.parent as any, true)}
+              />
               <Br />
               <Br />
               <textbox {...common} content="By Name" />
               <Br />
-
               <checkbox {...common} content="Female?" />
               <Br />
-
               <radioset label="Comic" height={5} border="line">
                 <radiobutton {...radioOptions} top={0} content="X-Men" />
                 <radiobutton {...radioOptions} top={1} content="Caballeros del Zoodiaco" checked={true} />
                 <radiobutton {...radioOptions} top={2} content="StarCraft" />
               </radioset>
               <Br />
-
               <radioset label="Power Kind" height={5} border="line">
                 <radiobutton {...radioOptions} top={0} content="Psionic" />
                 <radiobutton {...radioOptions} top={1} content="Brute force" checked={true} />
                 <radiobutton {...radioOptions} top={2} content="Magic" />
               </radioset>
               <Br />
-
-              <checkbox
-                {...common}
-                content="Include Secondary Heroes"
-              />
+              <checkbox {...common} content="Include Secondary Heroes" />
               <Br />
               <button {...buttonOptions} content="Submit" />
               ---
-          <button {...buttonOptions} content="Go back" />
+              <button {...buttonOptions} content="Go back" />
             </layout>
           </layout>
-
         </layout>
-
       </Div>
     )
 

@@ -7,6 +7,7 @@ import {
   BoxOptions,
   Button,
   ButtonOptions,
+  Checkbox,
   CheckboxOptions,
   Element,
   FileManager,
@@ -40,8 +41,7 @@ import {
   TextareaOptions,
   Textbox,
   TextboxOptions,
-  TextOptions,
-  Checkbox
+  TextOptions
 } from './blessedTypes'
 
 type On<T> =
@@ -62,7 +62,7 @@ enum ArtificialEventOptionNames {
   onClick = 'onClick',
   onKeyPress = 'onKeyPress',
   onRender = 'onRender',
-  onChange="onChange"
+  onChange = 'onChange'
 }
 
 // type ArtificialEventAttributes = {
@@ -86,8 +86,7 @@ interface ArtificialEventOptions<T extends Element> {
   [ArtificialEventOptionNames.onClick]?: (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
   [ArtificialEventOptionNames.onKeyPress]?: (this: T, e: { ch: string; key: IKeyEventArg } & ArtificialEvent<T>) => void
   [ArtificialEventOptionNames.onRender]?: (this: T, e: INodeGenericEventArg & ArtificialEvent<T>) => void
-  [ArtificialEventOptionNames.onChange]?: <V=any>(this: T, e:  ArtificialEvent<T>&{value: V}) => void
-
+  [ArtificialEventOptionNames.onChange]?: <V = any>(this: T, e: ArtificialEvent<T> & { value: V }) => void
 }
 
 interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> {}
@@ -208,20 +207,17 @@ export const React: BlessedJsx = {
           el.on('render', e => {
             fn!.bind(el)({ ...e, currentTarget: el })
           })
-        }
-        else if (attributeName === ArtificialEventOptionNames.onChange) {
+        } else if (attributeName === ArtificialEventOptionNames.onChange) {
           const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onChange']
           // if(el instanceof blessed.checkbox){
-            el.on('check', e => {
-              fn!.bind(el)({ ...e, currentTarget: el, value:( el as Checkbox).value })
-            })
-            el.on('uncheck', e => {
-              fn!.bind(el)({ ...e, currentTarget: el, value:( el as Checkbox).value })
-            })
-          // }        
-        }
-        
-        else {
+          el.on('check', e => {
+            fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
+          })
+          el.on('uncheck', e => {
+            fn!.bind(el)({ ...e, currentTarget: el, value: (el as Checkbox).value })
+          })
+          // }
+        } else {
           console.log('Unrecognized artificialEventAttribute ' + attributeName)
           // TODO: debug
         }
@@ -274,12 +270,12 @@ export abstract class Component<P = {}, S = {}> {
    * All class elements will have a reference to its rendered blessed element
    */
   protected blessedElement: Element = undefined as any
-  /** 
+  /**
    * very simple setState, by default calls element's render() unless [[dontRenderOnStateChange]]
-  */
+   */
   protected setState(s: Partial<S>) {
-    this.state = {...this.state, ...s}
-    if(!this.dontRenderOnStateChange){
+    this.state = { ...this.state, ...s }
+    if (!this.dontRenderOnStateChange) {
       this.blessedElement.render()
     }
   }
