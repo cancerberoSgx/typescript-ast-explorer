@@ -3,6 +3,7 @@ import { tryTo } from 'misc-utils-of-mine-generic'
 
 /**
  * Easy to use modal: ``` showInModal(screen, anElement)``` or simply:  ``` showInModal(screen, 'some text')```
+ * 
  */
 export function showInModal(
   screen: blessed.Widgets.Screen,
@@ -11,6 +12,8 @@ export function showInModal(
   width = '50%',
   height = '50%'
 ) {
+
+  closeModal(screen)
   if (!modalInstance) {
     modalInstance = blessed.box({
       parent: screen,

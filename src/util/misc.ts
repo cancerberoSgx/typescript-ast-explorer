@@ -39,3 +39,11 @@ export function setObjectProperty<T>(object: any, path: string, value: T) {
     prev[tokens[tokens.length - 1]] = value
   }
 }
+/**
+ * strips ANSI codes from a string. From https://github.com/xpl/ansicolor/blob/master/ansicolor.js
+ * @param {string} s a string containing ANSI escape codes.
+ * @return {string} clean string.
+ */
+export function strip(s: string) {
+  return s.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g, '') // hope V8 caches the regexp
+}

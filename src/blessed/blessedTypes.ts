@@ -52,6 +52,8 @@ export type IMouseEventArg = blessed.Widgets.Events.IMouseEventArg
 export type NodeMouseEventType = blessed.Widgets.NodeMouseEventType
 export type NodeScreenEventType = blessed.Widgets.NodeScreenEventType
 export type IKeyEventArg = blessed.Widgets.Events.IKeyEventArg
+export type INodeGenericEventArg = blessed.Widgets.Events.INodeGenericEventArg
+
 export type NodeEventType = blessed.Widgets.NodeEventType
 export type NodeGenericEventType = blessed.Widgets.NodeGenericEventType
 

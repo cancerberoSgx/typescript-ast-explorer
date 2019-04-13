@@ -1,7 +1,7 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { getObjectProperty, setObjectProperty } from '../util/misc'
-import { Checkbox, Element, Node } from './blessedTypes'
+import { Checkbox, Element, Node, Box } from './blessedTypes'
 import { closeModal, isModalVisible } from './modal'
 
 export function isBlessedElement(n: any): n is Element {
@@ -116,4 +116,11 @@ export function offValueChange(el: Checkbox) {
     el.off('check', listener)
   }
   setElementData(el, 'onChangeCallback', undefined)
+}
+
+/**
+ * returns element's internal representation of the label. Warning it uses internal blessed properties that could break in the future. 
+ */
+export function getElementLabel(el: Element): Element|undefined{
+  return (el as any)._label
 }

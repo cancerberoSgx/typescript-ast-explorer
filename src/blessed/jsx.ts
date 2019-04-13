@@ -39,7 +39,8 @@ import {
   TextareaOptions,
   Textbox,
   TextboxOptions,
-  TextOptions
+  TextOptions,
+  INodeGenericEventArg
 } from './blessedTypes'
 
 type On<T> =
@@ -58,7 +59,8 @@ enum EventOptionNames {
 
 enum ArtificialEventOptionNames {
   onClick = 'onClick',
-  onKeyPress = 'onKeyPress'
+  onKeyPress = 'onKeyPress',
+  onRender = 'onRender',
 }
 
 type ArtificialEventAttributes = {
@@ -81,6 +83,8 @@ interface BlessedEventOptions {
 interface ArtificialEventOptions<T extends Element> {
   [ArtificialEventOptionNames.onClick]?: (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
   [ArtificialEventOptionNames.onKeyPress]?: (this: T, e: { ch: string; key: IKeyEventArg } & ArtificialEvent<T>) => void
+  [ArtificialEventOptionNames.onRender]?: (this: T, e:INodeGenericEventArg& ArtificialEvent<T>) => void
+
 }
 
 interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> {}
@@ -150,6 +154,7 @@ export const React: BlessedJsx = {
     if (typeof tag === 'function' && tag.prototype && tag.prototype.render) {
       const instance = new tag({ ...attrs, children })
       el = instance.render()
+      instance.blessedElement = el
     } else if (typeof tag === 'function') {
       el = tag({ ...attrs, children })
     } else if (typeof tag === 'string') {
@@ -195,7 +200,14 @@ export const React: BlessedJsx = {
           el.on('keypress', (ch, key) => {
             fn!.bind(el)({ ch, key, currentTarget: el })
           })
-        } else {
+        } 
+        else if (attributeName === ArtificialEventOptionNames.onRender) {
+          const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onRender']
+          el.on('render', e => {
+            fn!.bind(el)({ ...e, currentTarget: el })
+          })
+        }else {
+
           console.log('Unrecognized artificialEventAttributes ' + attributeName)
           // TODO: debug
         }
@@ -244,4 +256,8 @@ export const React: BlessedJsx = {
 export abstract class Component<P = {}, S = {}> {
   constructor(protected props: P, protected state: S) {}
   abstract render(): void
+  /**
+   * All class elements will have a reference to its rendered blessed element
+   */
+  protected blessedElement: Element = undefined as any
 }
