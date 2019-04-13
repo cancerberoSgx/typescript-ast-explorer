@@ -1,6 +1,6 @@
 import * as blessed from 'blessed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
-import { Checkbox, Element, isNode, Node } from '../blessedTypes'
+import { BoxOptions, Checkbox, Element, ElementOptions, isElement } from '../blessedTypes'
 import { Component } from './component'
 import {
   ArtificialEventOptionNames,
@@ -29,25 +29,37 @@ function isComponentConstructor(tag: any): tag is ComponentConstructor {
 class BlessedJsxImpl implements BlessedJsx {
   constructor(protected options: Options = {}) {}
 
+  render(e: JSX.Element) {
+    return e as any
+  }
+
   createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs, ...children: any[]) {
-    let el: JSX.ReactNode
+    // TODO: beforeElementCreateListeners (so I can manipulate tag, attrs and children before anything happens)
+
+    let el: JSX.BlessedJsxNode
 
     const eventOptionNames = enumKeys(EventOptionNames)
     const artificialEventOptionNames = enumKeys(ArtificialEventOptionNames)
     const blessedEventMethodAttributes = {} as BlessedEventOptions
     const artificialEventAttributes = {} as ArtificialEventOptions<Element>
-
+    let component: Component | undefined
     if (isComponentConstructor(tag)) {
-      tag
-      const instance = new tag({ ...attrs, children }, {})
-      el = instance.render()
+      // TODO: beforeComponentCreated
+      component = new tag({ ...attrs, children }, {})
+      // TODO: beforeElementRenderListeners
+      el = component.render()
       //@ts-ignore
-      instance.blessedElement = el
+      component.blessedElement = el
     } else if (typeof tag === 'function') {
       el = tag({ ...attrs, children })
+      // TODO: add beforeElementRenderListeners
     } else if (typeof tag === 'string') {
-      // HEADS UP! we only implement attributes and children for intrinsic elements. ClassElement and FunctionElement are responsible of implementing both its attrs and children on their own
+      // HEADS UP! we only implement attributes and children for intrinsic elements. ClassElement and FunctionElement
+      // are responsible of implementing both its attrs and children on their own
       const fn = (blessed as any)[tag] as (options?: any) => Element
+
+      // TODO: beforeBlessedOptionsCleanedListeners
+
       if (!fn) {
         const s = 'blessed.' + tag + ' function not found'
         console.log(s)
@@ -55,7 +67,6 @@ class BlessedJsxImpl implements BlessedJsx {
       }
       // ATTRIBUTE NORMALIZATION (remove attributes that are not valid blessed options)
       attrs = attrs || {}
-
       Object.keys(attrs).forEach(a => {
         const value = attrs![a]
         if (eventOptionNames.includes(a)) {
@@ -67,29 +78,43 @@ class BlessedJsxImpl implements BlessedJsx {
           delete attrs![a]
         }
       })
-      el = fn(attrs) as Element
+
+      const beforeElementCreatedEvent: BeforeElementCreatedEvent = { fn, options: attrs, name: tag as any, children }
+      let listenerInstance: Element | undefined
+      this.beforeElementCreatedListeners.some(l => {
+        listenerInstance = l(beforeElementCreatedEvent)
+        return !!listenerInstance
+      })
+      if (!listenerInstance) {
+        el = fn(attrs) as Element
+      } else {
+        console.log('Element ' + tag + ' created by listener')
+        return listenerInstance
+      }
     }
 
-    // finished instantiating the Node that BTW is a blessed Element. So we ugly cast it .
+    const afterElementCreatedEvent: AfterElementCreatedEvent = { el: el! as any, tag, attrs, children, component }
+    this.afterElementCreatedListeners.forEach(l => {
+      l(afterElementCreatedEvent)
+    })
 
+    // finished created the  blessed Element. Now we ugly cast the JSX.Element to a BlessedElement and continue installing attributes and children only for intrinsic elements
     if (typeof tag === 'string') {
-      this.installAttirbutesAndChildren(el!, blessedEventMethodAttributes, artificialEventAttributes, children)
+      this.installAttributesAndChildren(el!, blessedEventMethodAttributes, artificialEventAttributes, children)
     }
-    // else {
-    //   //TODO:debug
-    //   console.log('Unrecognized tag type ' + tag)
-    // }
 
+    // TODO: finishElementCreateListeners
     return el!
   }
-  installAttirbutesAndChildren(
-    jsxNode: JSX.ReactNode,
+
+  private installAttributesAndChildren(
+    jsxNode: JSX.BlessedJsxNode,
     blessedEventMethodAttributes: any,
     artificialEventAttributes: any,
     children: any[]
   ): any {
+    // HEADS UP : casting JSX.Element to concrete blessing Element
     const el = jsxNode as Element
-
       // EVENT HANDLER ATTRIBUTES
       // native event handlers like on(), key() etc are exactly matched agains a blessed method. Exactly same signature.
     ;(Object.keys(blessedEventMethodAttributes) as EventOptionNames[]).forEach(methodName => {
@@ -124,24 +149,27 @@ class BlessedJsxImpl implements BlessedJsx {
         })
       } else {
         console.log('Unrecognized artificialEventAttribute ' + attributeName)
-        // TODO: debug
+        throw new Error('Unrecognized artificialEventAttribute ' + attributeName)
       }
     })
+
+    // TODO: afterAttributesInstalledListeners
+
     // CHILDREN
     children.forEach(c => {
       if (!c) {
-        // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
+        // HEADS UP: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
         return
       }
-      if (isNode(c)) {
+      if (isElement(c)) {
         if (!c.options || !c.options.parent) {
-          el.append(c)
+          this.appendChild(el, c)
         }
       } else if (Array.isArray(c)) {
         c.forEach(c => {
-          if (isNode(c)) {
+          if (isElement(c)) {
             if (!c.options || !c.options.parent) {
-              el.append(c)
+              this.appendChild(el, c)
             }
           } else {
             this.createTextNode(c, el)
@@ -153,20 +181,72 @@ class BlessedJsxImpl implements BlessedJsx {
     })
   }
 
-  render(e: JSX.Element) {
-    return e as any
+  /**
+   * all children blessed nodes, even from text  are appended to the blessed element using this method,
+   * so subclasses can override to do something about it. will notify beforeAppendChildListeners and if any
+   * return true the child won't be appended
+   */
+  protected appendChild(el: Element, child: Element): any {
+    const event: BeforeAppendChildEvent = {
+      el,
+      child
+    }
+    let dontAppend = this.beforeAppendChildListeners.some(l => l(event))
+    if (!dontAppend) {
+      el.append(child)
+    }
   }
 
   /**
    * Default blessed Node factory for text like "foo" in <box>foo</box>
    */
-  protected createTextNode(c: any, el: Node) {
-    return blessed.text({ content: c + '', parent: el })
+  protected createTextNode(c: JSX.BlessedJsxText, el: Element) {
+    // TODO: onCreateTextNodeListeners (so I can transform JSXText literals)
+    const t = blessed.text({ content: c + '' })
+    this.appendChild(el, t)
+    return t
   }
 
-  // protected afterElementCreatedListeners : AfterElementCreatedListener[] = []
+  private afterElementCreatedListeners: AfterElementCreatedListener[] = []
+  /** add listeners that will be notifies just after the Blessed Element instance is created. Attributes and children have not yet been set, besides blessed options native ones.*/
+  addAfterElementCreatedListener(l: AfterElementCreatedListener): void {
+    this.afterElementCreatedListeners.push(l)
+  }
+
+  private beforeAppendChildListeners: BeforeAppendChildListener[] = []
+  /** add listeners that will be notified just before a child is appended to its parent blessed element even for notes created from JSXText. If any listener return true the notification chain will stop, the children won't be appended to the element. */
+  addBeforeAppendChildListener(l: BeforeAppendChildListener): void {
+    this.beforeAppendChildListeners.push(l)
+  }
+
+  private beforeElementCreatedListeners: BeforeElementCreatedListener[] = []
+  /** add listeners that will be notified just before the blessed.foo() function is call with all the options as they are (normalized and valid) and  also children blessed elements. If any of the listeners returns a blessed element, it will interrupt the listener chain and that instance will be used instead of calling the blessed function. */
+  addBeforeElementCreatedListener(l: BeforeElementCreatedListener): void {
+    this.beforeElementCreatedListeners.push(l)
+  }
 }
 
 export const React: BlessedJsx = new BlessedJsxImpl()
 
-// type AfterElementCreatedListener = (event: {el: Element, tag: BlessedJsxTag, attrs: BlessedJsxAttrs, children: any[]})=>void
+type AfterElementCreatedListener = (event: AfterElementCreatedEvent) => void
+interface AfterElementCreatedEvent {
+  el: Element
+  tag: JSX.ElementType
+  attrs: BlessedJsxAttrs
+  children: JSX.BlessedJsxNode[]
+  component?: Component
+}
+
+type BeforeAppendChildListener = (event: BeforeAppendChildEvent) => boolean
+interface BeforeAppendChildEvent {
+  el: Element
+  child: Element
+}
+
+type BeforeElementCreatedListener = (event: BeforeElementCreatedEvent) => Element | undefined
+interface BeforeElementCreatedEvent<Options extends ElementOptions = BoxOptions> {
+  fn: (options: Options) => Element
+  options: Options
+  name: keyof JSX.IntrinsicElements
+  children: Element[]
+}

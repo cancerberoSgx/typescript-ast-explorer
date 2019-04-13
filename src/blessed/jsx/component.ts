@@ -6,7 +6,7 @@ import { Element } from '../blessedTypes'
 export abstract class Component<P = {}, S = {}> {
   constructor(protected props: P, protected state: S) {}
 
-  abstract render(): JSX.ReactNode
+  abstract render(): JSX.BlessedJsxNode
 
   /**
    * All class elements will have a reference to its rendered blessed element

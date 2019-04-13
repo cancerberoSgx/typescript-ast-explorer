@@ -694,7 +694,7 @@ export namespace Widgets {
     name?: string
     screen?: Screen
     parent?: Node
-    children?: Node[]
+    // children?: Node[]
     focusable?: boolean
   }
 

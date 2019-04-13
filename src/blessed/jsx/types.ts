@@ -6,6 +6,7 @@ import {
   Button,
   ButtonOptions,
   CheckboxOptions,
+  Element as BlessedElement,
   Element,
   FileManager,
   FileManagerOptions,
@@ -102,50 +103,65 @@ declare global {
       radiobutton: RadioButtonOptions & EventOptions<RadioButton>
     }
 
-    /** JSX.Element represent the JSXElement nodes in the source code's AST. */
-    export interface Element<P = any> {
+    export interface Element<P extends { children?: BlessedJsxNode } = {}> {
       type: ElementType
       props: P
-      // attrs?: {
-      //   [a: string]: any;
-      // };
-      // children: Children;
+      children?: BlessedJsxNode
     }
 
-    export type ElementType<P = any> = undefined | string | Component<P, any> | FunctionComponent<P>
+    // TODO: we are using class Component directly while we should use a interface here
+    export type ElementType<P extends { children?: BlessedJsxNode } = {}> =
+      | undefined
+      | string
+      | Component<P, any>
+      | FunctionComponent<P>
 
-    export interface FunctionComponent<P = {}> {
-      (props: P & { children?: ReactNode }, context?: any): Element<any> | null
+    export interface FunctionComponent<P extends { children?: BlessedJsxNode } = {}> {
+      (props: P & { children?: BlessedJsxNode }, context?: any): Element<any> | null
     }
 
-    type ReactText = string | number
-    type ReactChild = Element<any> | ReactText
-    export interface ReactNodeArray extends Array<ReactNode> {}
-    export type ReactFragment = {} | ReactNodeArray
-    export type ReactNode = ReactChild | ReactFragment | boolean | null // | Node[] | Node | undefined // Heads up: we are forcing blessed node to be a JSX node !
+    // and the following is basically for typings props.children
 
-    //   export interface ElementClass<P = {}, S={}>{
-    //     new(props: P, state: S): this
-    //     render(): ReactNode
-    // }
+    type BlessedJsxText = string | number
 
-    type Child = JSX.Element | string | number | boolean | undefined | null
-    type Children = Child | Child[]
+    type BlessedJsxChild = Element<any> | BlessedJsxText
+
+    export interface ReactNodeArray extends Array<BlessedJsxNode> {}
+
+    export type BlessedJsxFragment = {} | ReactNodeArray
+
+    // Heads up: we are forcing blessed node to be a JSX node !
+    export type BlessedJsxNode =
+      | BlessedJsxChild
+      | BlessedJsxFragment
+      | boolean
+      | null
+      | BlessedElement[]
+      | BlessedElement
+
+    export interface ElementAttributesProperty {
+      props: {}
+    }
+
+    export interface ElementChildrenAttribute {
+      children: {}
+    }
   }
 }
 
 /**
  * Type of the `React` object as in `React.createElement`.
  *
- * Note: it could have another name than React, but if so tsconfig needs to be configured (JSXFactory) so for simplicity we name the instance `React`
+ * Note: it could have another name than React, but if so tsconfig needs to be configured (JSXFactory) so for
+ * simplicity we name the instance `React`
  */
 export interface BlessedJsx {
   /**
    * JSX.Element to blessed node factory method. i.e. `<box>foo</box>` will be translated to `React.createElement('box', {}, ['foo'])`.
    *
-   * This method should never be called diretly by users, althoguh is called internally when users call [[React.createEkenebt]]
+   * This method should never be called directly by users, although is called internally when users call [[React.createEkenebt]]
    */
-  createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs, ...children: any[]): JSX.ReactNode
+  createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs, ...children: any[]): JSX.BlessedJsxNode
 
   /**
    * Creates a blessed.element from given JSX expression. Will create blessed nodes recursively, bottom-up.
@@ -165,7 +181,7 @@ type On<T> =
   | Parameters<(event: NodeGenericEventType, callback: () => void) => T>
 
 interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> {
-  // children?: JSX.Children
+  children?: JSX.BlessedJsxNode
 }
 
 interface ArtificialEvent<T extends Element> {
