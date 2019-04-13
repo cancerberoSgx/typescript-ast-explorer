@@ -15,6 +15,7 @@ import {
   FormOptions,
   IKeyEventArg,
   IMouseEventArg,
+  INodeGenericEventArg,
   isNode,
   Layout,
   LayoutOptions,
@@ -39,8 +40,7 @@ import {
   TextareaOptions,
   Textbox,
   TextboxOptions,
-  TextOptions,
-  INodeGenericEventArg
+  TextOptions
 } from './blessedTypes'
 
 type On<T> =
@@ -60,7 +60,7 @@ enum EventOptionNames {
 enum ArtificialEventOptionNames {
   onClick = 'onClick',
   onKeyPress = 'onKeyPress',
-  onRender = 'onRender',
+  onRender = 'onRender'
 }
 
 type ArtificialEventAttributes = {
@@ -83,8 +83,7 @@ interface BlessedEventOptions {
 interface ArtificialEventOptions<T extends Element> {
   [ArtificialEventOptionNames.onClick]?: (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
   [ArtificialEventOptionNames.onKeyPress]?: (this: T, e: { ch: string; key: IKeyEventArg } & ArtificialEvent<T>) => void
-  [ArtificialEventOptionNames.onRender]?: (this: T, e:INodeGenericEventArg& ArtificialEvent<T>) => void
-
+  [ArtificialEventOptionNames.onRender]?: (this: T, e: INodeGenericEventArg & ArtificialEvent<T>) => void
 }
 
 interface EventOptions<T extends Element> extends BlessedEventOptions, ArtificialEventOptions<T> {}
@@ -200,14 +199,12 @@ export const React: BlessedJsx = {
           el.on('keypress', (ch, key) => {
             fn!.bind(el)({ ch, key, currentTarget: el })
           })
-        } 
-        else if (attributeName === ArtificialEventOptionNames.onRender) {
+        } else if (attributeName === ArtificialEventOptionNames.onRender) {
           const fn = artificialEventAttributes[attributeName] as ArtificialEventOptions<Element>['onRender']
           el.on('render', e => {
             fn!.bind(el)({ ...e, currentTarget: el })
           })
-        }else {
-
+        } else {
           console.log('Unrecognized artificialEventAttributes ' + attributeName)
           // TODO: debug
         }

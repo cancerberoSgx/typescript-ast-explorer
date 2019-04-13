@@ -595,8 +595,8 @@ export namespace Widgets {
       bug: Buffer
     }
 
-    interface INodeGenericEventArg extends  PositionCoords    {
-      base: number, 
+    interface INodeGenericEventArg extends PositionCoords {
+      base: number
       renders: number
     }
   }
@@ -900,7 +900,7 @@ export namespace Widgets {
     on(event: NodeScreenEventType, callback: (arg: Screen) => void): this
     /** Received when blessed notices something untoward (output is not a tty, terminfo not found, etc). */
     on(event: 'warning', callback: (text: string) => void): this
-    on(event: NodeGenericEventType, callback: (arg:Events.INodeGenericEventArg) => void): this
+    on(event: NodeGenericEventType, callback: (arg: Events.INodeGenericEventArg) => void): this
   }
 
   interface IScreenOptions extends INodeOptions {

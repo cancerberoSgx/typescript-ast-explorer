@@ -1,8 +1,5 @@
-import { getElementData, setElementData, getElementLabel } from './blessed'
+import { getElementData, getElementLabel, setElementData } from './blessed'
 import { Element, IMouseEventArg, isElement } from './blessedTypes'
-import { showInModal } from './modal';
-import { screen } from 'blessed';
-import { strip } from '../util/misc';
 
 export function isCollapsed(el: Element) {
   return el.$.collapsible && el.$.collapsible.collapsed
@@ -48,21 +45,16 @@ export function toggleCollapsed(el: Element) {
 }
 
 interface Options {
-  // label?: string
   /** if provided, element will be collapsed to this height. by default it will be 3 to support auto: true, border and label */
   collapsedHeight?: number | string
-  // /**
-  //  * implies addClickListener and custom collapsed/uncollapsed labels ig not provided
-  //  */
-  // auto?: boolean
-  /** 
-   * Settings this to true will install a click listener on the element's label to toggle the collapse state. It will make sure there always be a label. Also it will hide/show non-label children when element is collapsed automatically. 
-   * 
+  /**
+   * Settings this to true will install a click listener on the element's label to toggle the collapse state. It will make sure there always be a label. Also it will hide/show non-label children when element is collapsed automatically.
+   *
    * If this property is false, then user is responsible of all of this: implementing handlers for triggering toggle/collapse (like buttons/checkbox), hiding/showing children on collapse, resize the element, etc.
-   *  
-   * By default the state will change when user left-click element's first line (y==0) . 
-   * 
-   * Also optionally, collapsed / uncollapsed custom labels can be set with [[collapsedLabel]] , [[uncollapsedLabel]] 
+   *
+   * By default the state will change when user left-click element's first line (y==0) .
+   *
+   * Also optionally, collapsed / uncollapsed custom labels can be set with [[collapsedLabel]] , [[uncollapsedLabel]]
    */
   auto?: boolean
   /** if provided it will set this label when element is collapsed*/
@@ -77,11 +69,9 @@ export function installCollapsible(el: Element, options: Options = {}) {
   }
 
   el.screen.log('installCollapsible', el.options, options)
-  // showInModal(el.screen, JSON.stringify(el.options.label))
   // TODO: listen for resize and update collapsible.originalHeight
   setElementData(el, 'collapsible.originalLabel', el.options.label)
   setElementData(el, 'collapsible.originalHeight', el.height)
-  // setElementData(el, 'collapsible.originalPadding', el.padding)
   setElementData(el, 'collapsible.auto', options.auto)
   setElementData(el, 'collapsible.installed', true)
   setElementData(el, 'collapsible.collapsedHeight', options.collapsedHeight || 3)
@@ -94,31 +84,20 @@ export function installCollapsible(el: Element, options: Options = {}) {
   setElementData(el, 'collapsible.uncollapsedLabel', options.uncollapsedLabel)
 
   if (typeof options.collapsedLabel !== 'undefined') {
-    // setElementData(el, 'collapsible.label', options.label)
     el.setLabel({ side: 'left', text: options.collapsedLabel })
   }
   if (options.auto) {
     const listener = (e: IMouseEventArg) => {
-      // const clickedLine = el.getBaseLine( e.x-(el.atop as number))
-      // const clickedLineStripped = strip(clickedLine).replace(/\s*/gm, '').trim()
-      //  const autoPredicate = el.labe
-      //@ts-ignore
-      //  el.screen.log('listener', e, el.atop, el.label)
-      // if (options.collapseEventPredicate ? options.collapseEventPredicate(e) : true
-      //  ||
-      //  e.button === 'left'
-      //  && e.meta
-      //  ) {
       toggleCollapsed(el)
-      // }
     }
-    // Heads up, in auto mode we install the listener on the label
-    const internalLabel = getElementLabel(el) // in auto mode there should always be a label
+    // Heads up, in auto mode we install the listener on the label. in auto mode there should always be a label
+    const internalLabel = getElementLabel(el) //
     if (internalLabel) {
       internalLabel.on('click', listener)
-    }
-    else {
-      throw new Error('installCollapsible auto: true fails because the internal label element cannot be found for ' + el.type)
+    } else {
+      throw new Error(
+        'installCollapsible auto: true fails because the internal label element cannot be found for ' + el.type
+      )
     }
     setElementData(el, 'collapsible.listener', listener)
   }
@@ -132,7 +111,7 @@ export function uninstallCollapsible(el: Element) {
 
   const l = getElementData<(...args: any[]) => void>(el, 'collapsible.listener')
   if (l) {
-    const internalLabel = getElementLabel(el) // in auto mode there should always be a label
+    const internalLabel = getElementLabel(el)
     if (internalLabel) {
       internalLabel.off('click', l)
     }
