@@ -5,11 +5,11 @@ export function isCollapsed(el: Element) {
   return el.$.collapsible && el.$.collapsible.collapsed
 }
 
-export function setCollapsed(el: Element, collapsed: boolean) {
+export function setCollapsed(el: Element, collapsed: boolean, andRenderScreen = false) {
   if (!getElementData<boolean>(el, 'collapsible.installed')) {
     return
   }
-  el.screen.log('setCollapsed', el.options, collapsed)
+  // el.screen.log('setCollapsed', el.options, collapsed)
   const auto = getElementData(el, 'collapsible.auto')
   const internalLabel = getElementLabel(el)
   setElementData(el, 'collapsible.collapsed', collapsed)
@@ -34,14 +34,15 @@ export function setCollapsed(el: Element, collapsed: boolean) {
       el.children.filter(isElement).forEach(c => c !== internalLabel && c.show())
     }
   }
-  if (auto) {
+  if (auto||andRenderScreen) {
     el.screen.render()
   }
 }
 
-export function toggleCollapsed(el: Element) {
-  const collapsed = getElementData<boolean>(el, 'collapsible.collapsed')
-  setCollapsed(el, !collapsed)
+export function toggleCollapsed(el: Element, andRenderScreen = false) {
+  const collapsed = !getElementData<boolean>(el, 'collapsible.collapsed')
+  // el.screen.log('toggleCollapsed', collapsed)
+  setCollapsed(el, collapsed, andRenderScreen)
 }
 
 interface Options {
@@ -68,7 +69,7 @@ export function installCollapsible(el: Element, options: Options = {}) {
     return
   }
 
-  el.screen.log('installCollapsible', el.options, options)
+  // el.screen.log('installCollapsible', el.options, options)
   // TODO: listen for resize and update collapsible.originalHeight
   setElementData(el, 'collapsible.originalLabel', el.options.label)
   setElementData(el, 'collapsible.originalHeight', el.height)
@@ -117,7 +118,7 @@ export function uninstallCollapsible(el: Element) {
     }
     el.off('click', l)
   }
-  el.height = getElementData<string>(el, 'collapsible.originalHeight') || el.height
+  el.height = getElementData<number>(el, 'collapsible.originalHeight') || el.height
   el.setLabel(getElementData<string>(el, 'collapsible.originalLabel') || '')
   setElementData(el, 'collapsible', {})
 }

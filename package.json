@@ -30,6 +30,7 @@
     "yargs-parser": "^10.1.0"
   },
   "devDependencies": {
+    "@types/ansi-escape-sequences": "^4.0.0",
     "@types/blessed": "^0.1.11",
     "@types/jasmine": "^2.8.16",
     "@types/node": "^10.5.2",

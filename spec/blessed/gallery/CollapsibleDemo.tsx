@@ -1,7 +1,7 @@
 import { BoxOptions } from '../../../src/blessed/blessedTypes'
-import { installCollapsible } from '../../../src/blessed/collapsible'
+import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collapsible'
 import { Component, React } from '../../../src/blessed/jsx'
-import { Br, Div } from '../../../src/blessed/jsxUtil'
+import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
 
 export class CollapsibleDemo extends Component {
@@ -10,7 +10,8 @@ export class CollapsibleDemo extends Component {
       mouse: true,
       clickable: true,
       keys: true,
-      keyable: true
+      keyable: true,
+      // draggable: false
     }
     const buttonOptions: BoxOptions = {
       ...common,
@@ -33,41 +34,112 @@ export class CollapsibleDemo extends Component {
     const el = (
       <Div>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
-        "collapse"/"expand" functionality in any blessed Element. Has mainly two modes, manual mode in which user is
-        responsible of adding some buttons to trigger the collapse/expand when user clicks them, and a automatic mode,
-        in which these handlers will be installed automatically on the element. <Br />
-        Automatic Mode:
-        <Br />
+        "collapse"/"expand" functionality in any blessed Element.  <Br />
+        Has mainly two modes,
+<Strong>Manual mode</Strong> in which user is
+                responsible of adding some buttons to trigger the collapse/expand when user clicks them, and a
+<Strong>Automatic mode</Strong>,
+        in which these handlers will be installed automatically on the element and also hiding children, updating labels, visual feedback, etc<Br />
+
         <layout
-          {...common}
-          // on={['render', this.installCollapsible1.bind(this)]}
-          onRender={e => installCollapsible(e.currentTarget, { auto: true })}
-          label="New Contact"
+          width="100%"
+          // bottom="100%"
+          height="50%"
           renderer={renderer}
-          width="80%"
-          height="40%"
-          border="line">
-          <textbox {...common} content="Tell us your name" />
-          <Br />
+        >
+          <layout
+            width="50%"
+            height="100%"
+            renderer={renderer}
+          >
+            <Br />
+            <Strong>Automatic mode:</Strong>
+            <Br />
+            <layout
+              onRender={e => installCollapsible(e.currentTarget, { auto: true })}
+              label="New Contact"
+              renderer={renderer}
+              width="100%"
+              height="100%"
+              border="line">
+              <textbox {...common} content="Tell us your name" />
+              <Br />
 
-          <checkbox {...common} content="Female?" />
-          <Br />
+              <checkbox {...common} content="Female?" />
+              <Br />
 
-          <radioset {...common} label="Level" height={5} border="line">
-            <radiobutton {...common} top={0} content="Afraid of hights" />
-            <radiobutton {...common} top={1} content="Sometimes I'm fast" checked={true} />
-            <radiobutton {...common} top={2} content="Petrol in my veins" />
-          </radioset>
-          <Br />
+              <radioset  label="Level" height={5} border="line">
+                <radiobutton {...radioOptions} top={0} content="Afraid of hights" />
+                <radiobutton {...radioOptions} top={1} content="Sometimes I'm fast" checked={true} />
+                <radiobutton {...radioOptions} top={2} content="Petrol in my veins" />
+              </radioset>
+              <Br />
 
-          <checkbox
-            {...common}
-            content="Do you Accept the licence and foo bar a lot of text here that needs to be collapsed"
-          />
-          <Br />
-          <button {...buttonOptions} content="Submit" />
+              <checkbox
+                {...common}
+                content="Do you Accept the licence and foo bar a lot of text here that needs to be collapsed"
+              />
+              <Br />
+              <button {...buttonOptions} content="Submit" />
+              ---
           <button {...buttonOptions} content="Go back" />
+            </layout>
+          </layout>
+
+          <layout
+            width="50%"
+            height="100%"
+            renderer={renderer}
+          >
+            <Br />
+            <Strong>Manual mode:</Strong>
+            <Br />
+            <layout
+              onRender={e => installCollapsible(e.currentTarget, {collapsedHeight: 5})}
+              label="Search Hero"
+              renderer={renderer}
+              style={{ overflow: 'hidden' }}
+              width="100%"
+              height="100%"
+              border="line">
+              <Br />
+
+              <checkbox {...common} style={{fg:'magenta'}} content="Collapsed" checked={false} onChange={e => toggleCollapsed(e.currentTarget.parent as any, true)}></checkbox>
+              <Br />
+              <Br />
+              <textbox {...common} content="By Name" />
+              <Br />
+
+              <checkbox {...common} content="Female?" />
+              <Br />
+
+              <radioset label="Comic" height={5} border="line">
+                <radiobutton {...radioOptions} top={0} content="X-Men" />
+                <radiobutton {...radioOptions} top={1} content="Caballeros del Zoodiaco" checked={true} />
+                <radiobutton {...radioOptions} top={2} content="StarCraft" />
+              </radioset>
+              <Br />
+
+              <radioset label="Power Kind" height={5} border="line">
+                <radiobutton {...radioOptions} top={0} content="Psionic" />
+                <radiobutton {...radioOptions} top={1} content="Brute force" checked={true} />
+                <radiobutton {...radioOptions} top={2} content="Magic" />
+              </radioset>
+              <Br />
+
+              <checkbox
+                {...common}
+                content="Include Secondary Heroes"
+              />
+              <Br />
+              <button {...buttonOptions} content="Submit" />
+              ---
+          <button {...buttonOptions} content="Go back" />
+            </layout>
+          </layout>
+
         </layout>
+
       </Div>
     )
 

@@ -468,7 +468,7 @@ export namespace Widgets {
       border?: TStyle
       label?: string
       track?: TStyle
-      scrollbar?: TStyle
+      scrollbar?: TStyle|true
       focus?: TStyle
       hover?: TStyle
     }
@@ -1764,52 +1764,52 @@ export namespace Widgets {
     /**
      * Calculated width.
      */
-    width: number | string
+    width: number
 
     /**
      * Calculated height.
      */
-    height: number | string
+    height:number
 
     /**
      * Calculated relative top offset.
      */
-    top: Types.TTopLeft
+    top: number
 
     /**
      * Calculated relative left offset.
      */
-    left: Types.TTopLeft
+    left: number
 
     /**
      * Calculated relative right offset.
      */
-    right: Types.TPosition
+    right: number
 
     /**
      * Calculated relative bottom offset.
      */
-    bottom: Types.TPosition
+    bottom: number
 
     /**
      * Calculated absolute top offset.
      */
-    atop: Types.TTopLeft
+    atop: number
 
     /**
      * Calculated absolute left offset.
      */
-    aleft: Types.TTopLeft
+    aleft: number
 
     /**
      * Calculated absolute right offset.
      */
-    aright: Types.TPosition
+    aright: number
 
     /**
      * Calculated absolute bottom offset.
      */
-    abottom: Types.TPosition
+    abottom: number
 
     /**
      * Whether the element is draggable. Set to true to allow dragging.
@@ -2854,10 +2854,10 @@ export namespace Widgets {
      */
     checked?: boolean
 
-    /**
-     * enable mouse support.
-     */
-    mouse?: boolean
+    // /**
+    //  * enable mouse support.
+    //  */
+    // mouse?: boolean
   }
 
   /**

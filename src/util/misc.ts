@@ -47,3 +47,28 @@ export function setObjectProperty<T>(object: any, path: string, value: T) {
 export function strip(s: string) {
   return s.replace(/[\u001b\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-PRZcf-nqry=><]/g, '') // hope V8 caches the regexp
 }
+
+/** List given enum keys as array. Differently to [[enumKeys]], is should be used only on enums that doesn't have assigned values or other wise on those which values are identical to the keys or not strings. If not, they will be returned also! */
+export function enumNoValueKeys(anEnum: any): string[] {
+  return Object.keys(anEnum).map(i=>anEnum[i as any]).filter((s, i, a)=>typeof s === 'string' && a.indexOf(s)===i)
+  }
+
+/**
+ * build an object using keys in [[a]] and values returning from [[fn]] as long as they are not undefined
+ */
+export function arrayToObject<T=any>(a: string[], fn: (a:string)=>T|undefined){
+  const o :{[s:string]:T} = {}
+  a.forEach(k=>{
+    const v = fn(k)
+    if(typeof v !== 'undefined'){
+      o[k] = v
+    }
+  })
+  return o
+}
+/**
+ * return the Enum type from given string enum key obtained with key [[enumNoValueKeys]]
+ */
+export function enumValueFromString<T>(key: string, anEnum: any): T | undefined {
+  return anEnum[key]
+}

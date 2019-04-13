@@ -5,8 +5,36 @@ import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { commonOptions } from './util'
+import { enumKeys } from 'misc-utils-of-mine-typescript';
+import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc';
 
-export class App extends Component<{ screen: Screen }> {
+interface P { screen: Screen }
+interface S {
+  selectedDemo?: Demo
+}
+enum Demo {
+  button, layout, collapsible
+}
+
+export class App extends Component<P, S> {
+  private renderDemo(d: string) {
+    const demo = enumValueFromString(d, Demo)
+    if (typeof demo==='undefined') {
+      throw new Error('Demo not found ' + d)
+    }
+    if (demo === Demo.button) {
+      return React.render(<ButtonDemo screen={this.props.screen} />)
+    }
+    else if (demo === Demo.layout) {
+      return React.render(<LayoutDemo />)
+    }
+    else if (demo === Demo.collapsible) {
+      return React.render(<CollapsibleDemo />)
+    }
+    else {
+      throw new Error('Demo unknown ' + d)
+    }
+  }
   render() {
     const { screen } = this.props
     return (
@@ -15,31 +43,19 @@ export class App extends Component<{ screen: Screen }> {
           {...commonOptions}
           padding={1}
           keys={true}
+          mouse={true}
+          clickable={true}
+          focusable={true}
+          focused={true}
           border="line"
           autoCommandKeys={true}
-          commands={{
-            button() {
-              showInModal(
-                screen,
-                React.render(<ButtonDemo screen={screen} />),
-                'Button demo (press q to close)',
-                '90%',
-                '90%'
-              )
-            },
-            layout() {
-              showInModal(screen, React.render(<LayoutDemo />), 'Layout demo (press q to close)', '90%', '90%')
-            },
-            collapsible() {
-              showInModal(
-                screen,
-                React.render(<CollapsibleDemo />),
-                'Collapsible demo (press q to close)',
-                '90%',
-                '90%'
-              )
-            }
-          }}
+          commands={arrayToObject(enumNoValueKeys(Demo), d => () => showInModal(
+            screen,
+            this.renderDemo(d),
+            `${d} demo (press q to close)`,
+            '100%',
+            '100%'
+          ))}
         />
       </box>
     )
