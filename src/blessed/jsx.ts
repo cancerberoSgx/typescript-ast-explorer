@@ -1,6 +1,19 @@
-import * as blessed from 'blessed';
-import { enumKeys, TODO } from 'misc-utils-of-mine-typescript';
-import { BoxOptions, ButtonOptions, Element, IKeyEventArg, IMouseEventArg, InputOptions, LayoutOptions, NodeGenericEventType, NodeMouseEventType, NodeWithEvents, TextareaOptions, isElement } from './blessedTypes';
+import * as blessed from 'blessed'
+import { enumKeys, TODO } from 'misc-utils-of-mine-typescript'
+import {
+  BoxOptions,
+  ButtonOptions,
+  Element,
+  IKeyEventArg,
+  IMouseEventArg,
+  InputOptions,
+  isElement,
+  LayoutOptions,
+  NodeGenericEventType,
+  NodeMouseEventType,
+  NodeWithEvents,
+  TextareaOptions
+} from './blessedTypes'
 
 type On<T> =
   | Parameters<(event: NodeMouseEventType, callback: (arg: IMouseEventArg) => void) => T>
@@ -58,12 +71,11 @@ export const React: {
   ) => Element
   render: (e: BlessedElement) => Element
 } = {
-
   createElement(tag, attrs, ...children) {
     const fn = (blessed as any)[tag] as (options?: any) => Element
     if (!fn) {
       console.log(tag, fn)
-      throw new Error('blessed creator function for '+tag+' not found')
+      throw new Error('blessed creator function for ' + tag + ' not found')
     }
     attrs = attrs || {}
     const eventOptionNames = enumKeys(EventOptionNames)
@@ -82,13 +94,12 @@ export const React: {
         delete attrs![a]
       }
     })
-    const el= fn(attrs) as Element
-    children.forEach(c=>{
-      if(isElement(c)){
+    const el = fn(attrs) as Element
+    children.forEach(c => {
+      if (isElement(c)) {
         el.append(c)
-      }
-      else{
-        //TODO text : use content or text ? 
+      } else {
+        //TODO text : use content or text ?
       }
     })
     return el

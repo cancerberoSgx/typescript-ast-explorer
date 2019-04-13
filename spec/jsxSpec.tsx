@@ -1,11 +1,9 @@
 import { Driver } from 'cli-driver'
 import { Helper } from './interactionHelper'
-import { help } from '../src/options/help';
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
 describe('jsx', () => {
-
   let client: Driver
   let helper: Helper
 
@@ -36,7 +34,7 @@ describe('jsx', () => {
   it('should render box with one button children', async done => {
     await client.enter('npx ts-node spec/assets/jsxOneChild.tsx')
     const s = await helper.waitForStrippedDataToInclude('click')
-    ;['hello', 'click', 'box', 'content'].forEach(w=>expect(s).toContain(w))
+    ;['hello', 'click', 'box', 'content'].forEach(w => expect(s).toContain(w))
     await client.enter('q')
     done()
   })
