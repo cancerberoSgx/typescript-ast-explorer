@@ -7,15 +7,15 @@ import { tryTo } from 'misc-utils-of-mine-generic'
 export function showInModal(
   screen: blessed.Widgets.Screen,
   s: string | blessed.Widgets.BlessedElement,
-  title = 'Modal'
+  title = 'Modal', width="50%", height="50%"
 ) {
   if (!modalInstance) {
     modalInstance = blessed.box({
       parent: screen,
       left: 'center',
       top: 'center',
-      width: '50%',
-      height: '50%',
+      width,
+      height,
       draggable: true,
       border: {
         type: 'line',
@@ -30,7 +30,6 @@ export function showInModal(
   }
   if (typeof s === 'string') {
     modalInstance.setContent(s)
-    modalInstance.setLabel(title)
   } else {
     tryTo(() => {
       modalInstance && lastModalContent && modalInstance.remove(lastModalContent)
@@ -39,6 +38,7 @@ export function showInModal(
     lastModalContent = s
     modalInstance.append(s)
   }
+  modalInstance.setLabel(title)
   modalInstance.show()
   screen.render()
 }

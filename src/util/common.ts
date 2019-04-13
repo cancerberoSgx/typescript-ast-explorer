@@ -8,6 +8,7 @@ import { Store } from '../store/store'
 import { buildCodeView } from '../ui/codeView'
 import { buildFileView } from '../ui/projectView'
 import { getGeneralNodeKindName, getGeneralNodeName } from './project'
+import { Style } from '../blessed/blessedTypes';
 
 export function buildTreeNode(n: GeneralNode) {
   const children: any = {}
@@ -26,7 +27,7 @@ export function buildTreeNode(n: GeneralNode) {
   }
 }
 
-export const focusStyle = {
+export const focusStyle: Style = {
   border: {
     type: 'line',
     fg: 'red'

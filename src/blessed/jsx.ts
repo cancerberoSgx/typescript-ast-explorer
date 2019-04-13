@@ -17,7 +17,29 @@ import {
   NodeMouseEventType,
   NodeWithEvents,
   Textarea,
-  TextareaOptions
+  TextareaOptions,
+  TextOptions,
+  Text,
+  LineOptions,
+  Line,
+  BigTextOptions,
+  BigText,
+  ListOptions,
+  List,
+  FileManagerOptions,
+  FileManager,
+  ListbarOptions,
+  ListBar,
+  ListTable,
+  ListTableOptions,
+  FormOptions,
+  Form,
+  RadioSetOptions,
+  RadioSet,
+  RadioButtonOptions,
+  RadioButton,
+  TextboxOptions,
+  Textbox
 } from './blessedTypes'
 
 type On<T> =
@@ -66,20 +88,36 @@ declare global {
   export namespace JSX {
     export interface IntrinsicElements {
       box: BoxOptions & EventOptions<Box>
-      layout: LayoutOptions & EventOptions<Layout>
-      text: TextareaOptions & EventOptions<Textarea>
+      text: TextOptions & EventOptions<Text>
+      line: LineOptions & EventOptions<Line>
       textarea: TextareaOptions & EventOptions<Textarea>
+      layout: LayoutOptions & EventOptions<Layout>
       button: ButtonOptions & EventOptions<Button>
       checkbox: CheckboxOptions & EventOptions<Button>
+      bigtext: BigTextOptions & EventOptions<BigText>
+      list: ListOptions & EventOptions<List>
+      filemanager: FileManagerOptions & EventOptions<FileManager>
+      listtable: ListTableOptions & EventOptions<ListTable>
+      listbar: ListbarOptions & EventOptions<ListBar>
+      form: FormOptions & EventOptions<Form>
+      textbox: TextboxOptions & EventOptions<Textbox>
+      radioset: RadioSetOptions & EventOptions<RadioSet>
+      radiobutton: RadioButtonOptions & EventOptions<RadioButton>
+ // TODO: , Prompts, Prompt, Question, Message, Loading, Data Display, ProgressBar, Log, Table, Special Elements, Terminal, Image, ANSIImage, OverlayImage, Video, Layout
+    }
+    export     interface Element {
+      type: keyof IntrinsicElements
+      attrs?: { [a: string]: any }
+      children: (JSX.Element | string | number | boolean)[]
     }
   }
 }
 
-interface BlessedElement {
-  type: keyof JSX.IntrinsicElements
-  attrs?: { [a: string]: any }
-  children: (BlessedElement | string | number | boolean)[]
-}
+// interface JSX.Element {
+//   type: keyof JSX.IntrinsicElements
+//   attrs?: { [a: string]: any }
+//   children: (JSX.Element | string | number | boolean)[]
+// }
 
 type TagFn = TODO
 type TagClass = TODO
@@ -99,7 +137,7 @@ interface BlessedJsx {
   /**
    * public method to render JSX.Element to blessed nodes. Currently it does nothing.
    */
-  render(e: BlessedElement): Element
+  render(e: JSX.Element): Element
   /**
    * Default blessed Node factory for text like "foo" in <box>foo</box>
    */
@@ -115,6 +153,7 @@ export const React: BlessedJsx = {
     } else if (typeof tag === 'function') {
       el = tag({ ...attrs, children })
     } else if (typeof tag === 'string') {
+      // HEADS UP! we only implement attributes and children for intrinsic elements. ClassElement and FunctionElement are responsible of implementing both its attrs and children on their own
       const fn = (blessed as any)[tag] as (options?: any) => Element
       if (!fn) {
         const s = 'blessed.' + tag + ' function not found'
@@ -161,12 +200,7 @@ export const React: BlessedJsx = {
           // TODO: debug
         }
       })
-    } else {
-      //TODO:debug
-      console.log('Unrecognized tag type ' + tag)
-    }
-
-    // append children
+          // append children
     children.forEach(c => {
       if (!c) {
         // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
@@ -190,14 +224,26 @@ export const React: BlessedJsx = {
         this.createTextNode(c, el)
       }
     })
+    } else {
+      //TODO:debug
+      console.log('Unrecognized tag type ' + tag)
+    }
+
+
     return el!
   },
 
-  render(e: BlessedElement) {
+  render(e: JSX.Element) {
     return e as any
   },
 
   createTextNode(c: any, el: Node) {
     return blessed.text({ content: c + '', parent: el })
   }
+}
+
+
+export abstract class Component<P = {}, S={}> {
+  constructor(protected props: P, protected state: S) {}
+  abstract render(): void
 }

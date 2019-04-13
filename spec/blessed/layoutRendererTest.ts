@@ -1,9 +1,9 @@
-import * as blessed from 'blessed'
-import * as contrib from 'blessed-contrib'
-import { installExitKeys, onValueChange } from '../../src/blessed/blessed'
-import { BoxOptions } from '../../src/blessed/blessedTypes'
-import { installCollapsible, toggleCollapsed } from '../../src/blessed/collapsible'
-import { renderer } from '../../src/blessed/layoutRenderer'
+import * as blessed from 'blessed';
+import * as contrib from 'blessed-contrib';
+import { installExitKeys, onValueChange } from '../../src/blessed/blessed';
+import { BoxOptions } from '../../src/blessed/blessedTypes';
+import { installCollapsible, toggleCollapsed } from '../../src/blessed/collapsible';
+import { renderer } from '../../src/blessed/layoutRenderer';
 
 const screen = blessed.screen({ smartCSR: true, log: './log.txt' })
 
@@ -37,10 +37,9 @@ installCollapsible(layout, { collapsedHeight: 5 })
 
 const collapsedCheckbox = blessed.checkbox({
   ...checkboxOptions,
-  // parent: layout,
+  parent: layout,
   content: 'Collapsed ?'
 })
-layout.append(collapsedCheckbox)
 onValueChange(collapsedCheckbox, value => {
   toggleCollapsed(layout)
   screen.render()
@@ -48,7 +47,7 @@ onValueChange(collapsedCheckbox, value => {
 
 const note = contrib.markdown({
   ...checkboxOptions,
-  // parent: layout,
+  parent: layout,
   width: '40%',
   padding: 2,
   label: 'Notes',
@@ -64,9 +63,6 @@ const note = contrib.markdown({
   * 
     `
 })
-layout.append(note)
 installExitKeys(screen)
 
 screen.render()
-//@ts-ignore
-console.log(note.label)

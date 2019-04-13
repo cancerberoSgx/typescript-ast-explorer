@@ -2,6 +2,7 @@ import * as blessed from 'blessed'
 import { focusStyle } from '../util/common'
 import { isBlessedElement } from './blessed'
 import { Element } from './blessedTypes'
+
 /**
  * Provides blur/focus notifications on those terminals that focus protocol is not supported (so bless focus/blur events won't work).
  *

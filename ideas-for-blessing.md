@@ -4,16 +4,21 @@
   * high level APIs, or nice thinkgs, these shoul be buit on top of it. 
   * (the image/video thing dhould belong in another paackage)
 
-## ideas for blessing
+## DONE
 
- * libs on top of it:
+ * jsx
+ * focus/blur
+ * collapsible
+ * modal
+ * layout supporting display: block and overflow: hidden
+
+## ideas for blessing
 
 ### widgets: 
 
- expand/collapse
  resize
 * bavbar with sub-menues
- * NeverHide widget that, if the screen is two small, it will "pop up in a 1 height at bottom or top and if clicked it will show the "hidden" widget (cause is no whough size)
+ * NeverHide:  widget that, if the screen is two small, it will "pop up in a 1 height at bottom or top and if clicked it will show the "hidden" widget (cause is no whough size)
 
 ## Layout
  

@@ -30,20 +30,10 @@ WIP
  * confirmation before exit
  * move blessed reusable utilities to their own package
  
-  
- # crazy
+## crazy
 
-  * jsx-alone render impl ? how would it be? CSS? layouts? `<div>foo:<button onclick={fo()}>click</button>`
-
-```
-const p = new blessed.box({
-})
-props.children.map c =>{
-  return blessed[TYPE]({
-    parent: p,....
-  })
-}
-return p
-```
-what about TextNodes? - setContent() ?
-
+## blessed TODO/ideas
+ 
+ * jsx screen
+ * a provider for common props so style is propagated and mixed in childern
+ * refs ? 

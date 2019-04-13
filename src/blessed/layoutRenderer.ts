@@ -55,10 +55,10 @@ export function renderer(this: Layout, coords: { xl: number; xi: number; yl: num
         el.position.left += highWidth - (last.lpos.xl - last.lpos.xi)
       }
 
-      if (el.type === 'markdown') {
-        this.screen.log('hell0', this.options.style.display, el.options.style.display) // getObjectProperty(el, 'options.style.display')+'')
-        // console.log( this.options.el.options.style.display)// getObjectProperty(el, 'options.style.display'));
-      }
+      // if (el.type === 'markdown' && ) {
+      //   this.screen.log('hell0', this.options.style.display, el.options.style.display) // getObjectProperty(el, 'options.style.display')+'')
+      //   // console.log( this.options.el.options.style.display)// getObjectProperty(el, 'options.style.display'));
+      // }
       // If our child does not overlap the right side of the Layout, set it's
       // `top`/`y` to the current `rowOffset` (the coordinate for the current
       // row).
