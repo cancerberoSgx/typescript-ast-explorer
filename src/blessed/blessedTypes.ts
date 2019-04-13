@@ -26,7 +26,6 @@ export type Textbox = blessed.Widgets.TextboxElement
 export type RadioSet = blessed.Widgets.RadioSetElement
 export type RadioButton = blessed.Widgets.RadioButtonElement
 
-
 export type BoxOptions = blessed.Widgets.BoxOptions
 export type ListTableOptions = blessed.Widgets.ListTableOptions
 export type ListbarOptions = blessed.Widgets.ListbarOptions
@@ -55,7 +54,6 @@ export type NodeScreenEventType = blessed.Widgets.NodeScreenEventType
 export type IKeyEventArg = blessed.Widgets.Events.IKeyEventArg
 export type NodeEventType = blessed.Widgets.NodeEventType
 export type NodeGenericEventType = blessed.Widgets.NodeGenericEventType
-
 
 export type Border = blessed.Widgets.Types.TBorder
 export type Style = blessed.Widgets.Types.TStyle

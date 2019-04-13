@@ -1,45 +1,45 @@
 import * as blessed from 'blessed'
 import { enumKeys, TODO } from 'misc-utils-of-mine-typescript'
 import {
+  BigText,
+  BigTextOptions,
   Box,
   BoxOptions,
   Button,
   ButtonOptions,
   CheckboxOptions,
   Element,
+  FileManager,
+  FileManagerOptions,
+  Form,
+  FormOptions,
   IKeyEventArg,
   IMouseEventArg,
   isNode,
   Layout,
   LayoutOptions,
+  Line,
+  LineOptions,
+  List,
+  ListBar,
+  ListbarOptions,
+  ListOptions,
+  ListTable,
+  ListTableOptions,
   Node,
   NodeGenericEventType,
   NodeMouseEventType,
   NodeWithEvents,
+  RadioButton,
+  RadioButtonOptions,
+  RadioSet,
+  RadioSetOptions,
+  Text,
   Textarea,
   TextareaOptions,
-  TextOptions,
-  Text,
-  LineOptions,
-  Line,
-  BigTextOptions,
-  BigText,
-  ListOptions,
-  List,
-  FileManagerOptions,
-  FileManager,
-  ListbarOptions,
-  ListBar,
-  ListTable,
-  ListTableOptions,
-  FormOptions,
-  Form,
-  RadioSetOptions,
-  RadioSet,
-  RadioButtonOptions,
-  RadioButton,
+  Textbox,
   TextboxOptions,
-  Textbox
+  TextOptions
 } from './blessedTypes'
 
 type On<T> =
@@ -103,9 +103,9 @@ declare global {
       textbox: TextboxOptions & EventOptions<Textbox>
       radioset: RadioSetOptions & EventOptions<RadioSet>
       radiobutton: RadioButtonOptions & EventOptions<RadioButton>
- // TODO: , Prompts, Prompt, Question, Message, Loading, Data Display, ProgressBar, Log, Table, Special Elements, Terminal, Image, ANSIImage, OverlayImage, Video, Layout
+      // TODO: , Prompts, Prompt, Question, Message, Loading, Data Display, ProgressBar, Log, Table, Special Elements, Terminal, Image, ANSIImage, OverlayImage, Video, Layout
     }
-    export     interface Element {
+    export interface Element {
       type: keyof IntrinsicElements
       attrs?: { [a: string]: any }
       children: (JSX.Element | string | number | boolean)[]
@@ -200,35 +200,34 @@ export const React: BlessedJsx = {
           // TODO: debug
         }
       })
-          // append children
-    children.forEach(c => {
-      if (!c) {
-        // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
-        return
-      }
-      if (isNode(c)) {
-        if (!c.options || !c.options.parent) {
-          el.append(c)
+      // append children
+      children.forEach(c => {
+        if (!c) {
+          // Heads up: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
+          return
         }
-      } else if (Array.isArray(c)) {
-        c.forEach(c => {
-          if (isNode(c)) {
-            if (!c.options || !c.options.parent) {
-              el.append(c)
-            }
-          } else {
-            this.createTextNode(c, el)
+        if (isNode(c)) {
+          if (!c.options || !c.options.parent) {
+            el.append(c)
           }
-        })
-      } else {
-        this.createTextNode(c, el)
-      }
-    })
+        } else if (Array.isArray(c)) {
+          c.forEach(c => {
+            if (isNode(c)) {
+              if (!c.options || !c.options.parent) {
+                el.append(c)
+              }
+            } else {
+              this.createTextNode(c, el)
+            }
+          })
+        } else {
+          this.createTextNode(c, el)
+        }
+      })
     } else {
       //TODO:debug
       console.log('Unrecognized tag type ' + tag)
     }
-
 
     return el!
   },
@@ -242,8 +241,7 @@ export const React: BlessedJsx = {
   }
 }
 
-
-export abstract class Component<P = {}, S={}> {
+export abstract class Component<P = {}, S = {}> {
   constructor(protected props: P, protected state: S) {}
   abstract render(): void
 }

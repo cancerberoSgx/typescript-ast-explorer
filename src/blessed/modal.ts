@@ -7,7 +7,9 @@ import { tryTo } from 'misc-utils-of-mine-generic'
 export function showInModal(
   screen: blessed.Widgets.Screen,
   s: string | blessed.Widgets.BlessedElement,
-  title = 'Modal', width="50%", height="50%"
+  title = 'Modal',
+  width = '50%',
+  height = '50%'
 ) {
   if (!modalInstance) {
     modalInstance = blessed.box({

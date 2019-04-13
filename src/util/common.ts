@@ -2,13 +2,13 @@ const ansi = require('ansi-escape-sequences')
 import * as blessed from 'blessed'
 import Project from 'ts-morph'
 import { GeneralNode, getGeneralNodeChildren, isDirectory } from 'ts-simple-ast-extra'
+import { Style } from '../blessed/blessedTypes'
 import { resetFocusManager } from '../blessed/focus'
 import { State } from '../store/state'
 import { Store } from '../store/store'
 import { buildCodeView } from '../ui/codeView'
 import { buildFileView } from '../ui/projectView'
 import { getGeneralNodeKindName, getGeneralNodeName } from './project'
-import { Style } from '../blessed/blessedTypes';
 
 export function buildTreeNode(n: GeneralNode) {
   const children: any = {}
