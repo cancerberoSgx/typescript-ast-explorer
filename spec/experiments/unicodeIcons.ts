@@ -4,6 +4,37 @@ var screen = blessed.screen({
   smartCSR: true
 })
 
+
+var main = blessed.box({
+  parent: screen,
+  left: 'center',
+  top: 'center',
+  width: '90%',
+  height: '90%',
+  border: 'line',
+  draggable: true,
+  tags: true,
+  content: `black-bg}{light-blue-fg} Some icons ${getIcons()
+    .map(s => blessed.unicode.fromCodePoint(Number(s)) + ': ' + s)
+    .join(', ')} {/}`,
+  scrollable: true,
+  alwaysScroll: true,
+  keys: true,
+  vi: true,
+  mouse: true
+})
+
+main.focus()
+
+screen.key('q', function() {
+  return screen.destroy()
+})
+
+screen.render()
+
+
+function getIcons(){
+
 const icons = [
   '0x21c8',
   '0x2618',
@@ -959,33 +990,5 @@ const icons = [
   '0x2676',
   '0x2677'
 ]
-
-var main = blessed.box({
-  parent: screen,
-  left: 'center',
-  top: 'center',
-  width: '90%',
-  height: '90%',
-  // style: {
-  //   bg: 'grey'
-  // },
-  border: 'line',
-  draggable: true,
-  tags: true,
-  content: `black-bg}{light-blue-fg} Some icons ${icons
-    .map(s => blessed.unicode.fromCodePoint(Number(s)) + ': ' + s)
-    .join(', ')} {/}`,
-  scrollable: true,
-  alwaysScroll: true,
-  keys: true,
-  vi: true,
-  mouse: true
-})
-
-main.focus()
-
-screen.key('q', function() {
-  return screen.destroy()
-})
-
-screen.render()
+return icons
+}

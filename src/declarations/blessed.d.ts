@@ -844,7 +844,8 @@ export namespace Widgets {
     | 'mousewheel'
     | 'wheeldown'
     | 'wheelup'
-    | 'mousemove'
+    | 'mousemove' 
+    | 'click'
 
   type NodeGenericEventType =
     /** Received on screen resize. */
@@ -881,10 +882,9 @@ export namespace Widgets {
     unkey(name: string, listener: (ch: any, key: Events.IKeyEventArg) => void): void
     removeKey(name: string, listener: (ch: any, key: Events.IKeyEventArg) => void): void
 
-    on(event: string, listener: (ch: any, key: Events.IKeyEventArg) => void): this
+    on(event: string, listener: (...args: any[]) => void): this
     /** Received on mouse events. */
     on(event: NodeMouseEventType, callback: (arg: Events.IMouseEventArg) => void): this
-    on(event: 'click', callback: (arg: Events.IMouseEventArg) => void): this
 
     /** Received on key events. */
     on(event: 'keypress', callback: (ch: string, key: Events.IKeyEventArg) => void): this
@@ -1714,6 +1714,9 @@ export namespace Widgets {
      */
     border: Border
 
+    /** Current element padding */
+    padding: Required<Padding>
+
     style: any
     position: Position
     content: string
@@ -1856,7 +1859,7 @@ export namespace Widgets {
      * Free up the element. Automatically unbind all events that may have been bound to the screen
      * object. This prevents memory leaks. For use with onScreenEvent(), removeScreenEvent(),
      * and destroy().
-     */
+     */ 
     free(): void
 
     /**

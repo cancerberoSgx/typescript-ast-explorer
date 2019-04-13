@@ -26,6 +26,7 @@ var layout = blessed.layout({
   height: '50%',
   border: 'line',
   style: {
+    ...checkboxOptions.style,
     overflow: 'hidden'
   },
   renderer
@@ -49,17 +50,20 @@ const note = contrib.markdown({
   parent: layout,
   width: '40%',
   padding: 2,
+  label: 'Notes',
+  style: {
+    ...checkboxOptions.style,
+    display: 'block'
+  },
   markdown: `
-  # Notes
-  
    * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
    * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
    * 
     `  
 })
-note.style.display = 'block'
-note.style.bg = 'gray'
 
 installExitKeys(screen)
 
 screen.render()
+//@ts-ignore
+console.log(  note.label);

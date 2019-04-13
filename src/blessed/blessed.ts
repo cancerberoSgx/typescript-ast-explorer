@@ -1,6 +1,5 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { appendFileSync } from 'fs'
 import { getObjectProperty, setObjectProperty } from '../util/misc'
 import { CheckboxElement, Element } from './blessedTypes'
 import { closeModal, isModalVisible } from './modal'
@@ -94,7 +93,7 @@ export function getElementData<T>(e: Element, path: string) {
 }
 
 /**
- * extract property stored on e.$ by path.
+ * set property stored on e.$ by path.
  */
 export function setElementData<T>(e: Element, path: string, value: T) {
   e.$ = e.$ || {}
@@ -118,9 +117,3 @@ export function offValueChange(el: CheckboxElement) {
   }
   setElementData(el, 'onChangeCallback', undefined)
 }
-//TODO: offChange
-
-export function log(...a: any[]) {
-  appendFileSync(LOGFILE, a.map(a => JSON.stringify(a)).join(', ') + '\n\n')
-}
-const LOGFILE = 'tmp.log'

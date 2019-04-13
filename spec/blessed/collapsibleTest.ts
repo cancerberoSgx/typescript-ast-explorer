@@ -26,6 +26,7 @@ const layout = blessed.layout({
   height: '100%',
   border: 'line',
   style: {
+    ...checkboxOptions.style,
     overflow: 'hidden'
   },
   renderer: renderer
@@ -57,12 +58,13 @@ onValueChange(collapsedCheckbox, value => {
   screen.render()
 })
 
-const note = contrib.markdown({
+contrib.markdown({
   ...checkboxOptions,
   parent: layout,
   padding:  2,
   style: { 
-    display: 'block' 
+    ...checkboxOptions.style,
+    display: 'block' ,
   },
   markdown: `
 
@@ -76,8 +78,6 @@ Note: if Collapsible is false, then the box won't never be collapsed.
   
     `
 })
-note.style.display = 'block'
-note.style.bg = 'gray'
 
 installExitKeys(screen)
 
