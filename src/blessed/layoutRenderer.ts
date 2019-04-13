@@ -1,5 +1,5 @@
 import { getObjectProperty } from '../util/misc'
-import { isElement, LayoutElement, LayoutIterator } from './blessedTypes'
+import { isElement, Layout, LayoutIterator } from './blessedTypes'
 
 /**
  * The same blessed Layout renderer function with a few modifications and adapted to TypeScript. Modifications:
@@ -8,7 +8,7 @@ import { isElement, LayoutElement, LayoutIterator } from './blessedTypes'
  *  * if layout=='inline' and an element has style.display==='block' then it will be rendered in a new line no matter that there is space for it in current line.
  *
  */
-export function renderer(this: LayoutElement, coords: { xl: number; xi: number; yl: number; yi: number }) {
+export function renderer(this: Layout, coords: { xl: number; xi: number; yl: number; yi: number }) {
   // The coordinates of the layout element
   var width = coords.xl - coords.xi,
     height = coords.yl - coords.yi,

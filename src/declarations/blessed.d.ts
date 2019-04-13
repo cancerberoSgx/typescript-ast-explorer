@@ -1595,7 +1595,7 @@ export namespace Widgets {
     /**
      * Element is focused.
      */
-    focused?: BlessedElement
+    focused?: boolean
 
     /**
      * Whether the element is hidden.

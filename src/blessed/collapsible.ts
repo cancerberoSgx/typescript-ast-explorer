@@ -1,5 +1,5 @@
 import { getElementData, setElementData } from './blessed'
-import { Element, IMouseEventArg, Padding } from './blessedTypes'
+import { Element, IMouseEventArg } from './blessedTypes'
 
 export function isCollapsed(el: Element) {
   return el.$.collapsible && el.$.collapsible.collapsed
@@ -13,15 +13,15 @@ export function setCollapsed(el: Element, collapsed: boolean) {
   if (collapsed) {
     // TODO: consider border and padding
     el.height = getElementData(el, 'collapsible.collapsedHeight') || 2
-    el.padding = { top: 0, left: 0, right: 0, bottom: 0 }
+    // el.padding = { top: 0, left: 0, right: 0, bottom: 0 }
   } else {
     el.height = getElementData(el, 'collapsible.originalHeight') || 2
-    el.padding = getElementData<Required<Padding>>(el, 'collapsible.originalPadding') || {
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0
-    }
+    // el.padding = getElementData<Required<Padding>>(el, 'collapsible.originalPadding') || {
+    //   top: 0,
+    //   left: 0,
+    //   right: 0,
+    //   bottom: 0
+    // }
   }
 }
 
@@ -45,11 +45,11 @@ interface Options {
 
 export function installCollapsible(el: Element, options: Options = {}) {
   // TODO: listen for resize and update collapsible.originalHeight
-  setElementData(el, 'collapsible.originalHeight', el.height)
-  setElementData(el, 'collapsible.originalPadding', el.padding)
-  setElementData(el, 'collapsible.installed', true)
-  setElementData(el, 'collapsible.options', options)
   setElementData(el, 'collapsible.originalLabel', el.options.label)
+  setElementData(el, 'collapsible.originalHeight', el.height)
+  // setElementData(el, 'collapsible.originalPadding', el.padding)
+  setElementData(el, 'collapsible.installed', true)
+  setElementData(el, 'collapsible.collapsedHeight', options.collapsedHeight)
 
   if (typeof options.collapsedLabel !== 'undefined') {
     // setElementData(el, 'collapsible.label', options.label)
@@ -76,7 +76,9 @@ export function uninstallCollapsible(el: Element) {
   if (l) {
     el.off('click', l)
   }
-  const options = getElementData<Options>(el, 'collapsible.options') || {}
-  // el.setLabel(options.collapi || '')
+  el.height = getElementData<string>(el, 'collapsible.originalHeight') || el.height
+  el.setLabel(getElementData<string>(el, 'collapsible.originalLabel') || '')
+  // el.padding = getElementData<Required<Padding>>(el, 'collapsible.originalPadding') ||el.padding
+
   setElementData(el, 'collapsible', {})
 }

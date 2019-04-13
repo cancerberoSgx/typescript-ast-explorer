@@ -3,12 +3,18 @@ import * as contrib from 'blessed-contrib'
 
 export type Node = blessed.Widgets.Node
 export type Box = blessed.Widgets.BoxElement
-export type TextElement = blessed.Widgets.TextElement
 
+export type TextElement = blessed.Widgets.TextElement
 export type Element = blessed.Widgets.BlessedElement
 export type LayoutIterator = blessed.Widgets.LayoutIterator
 export type Padding = blessed.Widgets.Padding
 export type NodeWithEvents = blessed.Widgets.NodeWithEvents
+export type Textarea = blessed.Widgets.TextareaElement
+export type Button = blessed.Widgets.ButtonElement
+
+export type Layout = blessed.Widgets.LayoutElement
+export type Checkbox = blessed.Widgets.CheckboxElement
+export type Screen = blessed.Widgets.Screen
 
 export type BoxOptions = blessed.Widgets.BoxOptions
 export type ElementOptions = blessed.Widgets.ElementOptions
@@ -18,10 +24,7 @@ export type TextareaOptions = blessed.Widgets.TextareaOptions
 export type ButtonOptions = blessed.Widgets.ButtonOptions
 export type InputOptions = blessed.Widgets.InputOptions
 
-export type LayoutElement = blessed.Widgets.LayoutElement
-export type CheckboxElement = blessed.Widgets.CheckboxElement
 export type PositionCoords = blessed.Widgets.PositionCoords
-export type Screen = blessed.Widgets.Screen
 
 export type IMouseEventArg = blessed.Widgets.Events.IMouseEventArg
 export type NodeMouseEventType = blessed.Widgets.NodeMouseEventType

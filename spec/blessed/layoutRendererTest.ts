@@ -25,6 +25,7 @@ var layout = blessed.layout({
   width: '50%',
   height: '50%',
   border: 'line',
+  padding: 1,
   style: {
     ...checkboxOptions.style,
     overflow: 'hidden'
@@ -32,7 +33,7 @@ var layout = blessed.layout({
   renderer
 })
 
-installCollapsible(layout, { collapsedHeight: 3 })
+installCollapsible(layout, { collapsedHeight: 5 })
 
 const collapsedCheckbox = blessed.checkbox({
   ...checkboxOptions,
@@ -56,9 +57,11 @@ const note = contrib.markdown({
     display: 'block'
   },
   markdown: `
-   * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
-   * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
-   * 
+# Welcome
+
+  * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
+  * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
+  * 
     `
 })
 

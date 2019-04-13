@@ -1,14 +1,14 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { getObjectProperty, setObjectProperty } from '../util/misc'
-import { CheckboxElement, Element } from './blessedTypes'
+import { Checkbox, Element, Node } from './blessedTypes'
 import { closeModal, isModalVisible } from './modal'
 
 export function isBlessedElement(n: any): n is Element {
   return n && n.screenshot && n.enableDrag
 }
 
-export function visitDescendantNodes(node: Element, fn: (l: blessed.Widgets.Node) => boolean) {
+export function visitDescendantNodes(node: Node, fn: (l: blessed.Widgets.Node) => boolean) {
   let stop: boolean = false
   node.children.forEach(c => {
     if (stop) {
@@ -24,15 +24,15 @@ export function visitDescendantNodes(node: Element, fn: (l: blessed.Widgets.Node
   })
 }
 
-export function visitDescendantElements(node: Element, fn: (l: Element) => boolean) {
+export function visitDescendantElements(node: Node, fn: (l: Element) => boolean) {
   return visitDescendantNodes(node, n => (isBlessedElement(n) ? fn(n) : false))
 }
 
-export function findDescendantNode(node: Element, fn: (l: blessed.Widgets.Node) => boolean) {
-  var found: blessed.Widgets.Node | undefined
+export function findDescendantNode<T extends Node = Node>(node: Node, fn: (l: blessed.Widgets.Node) => boolean) {
+  var found: T | undefined
   visitDescendantNodes(node, c => {
     if (fn(c)) {
-      found = c
+      found = c as any
       return true
     }
     return false
@@ -100,8 +100,8 @@ export function setElementData<T>(e: Element, path: string, value: T) {
   setObjectProperty(e.$, path, value)
 }
 
-export function onValueChange(el: CheckboxElement, cb: (this: CheckboxElement, value: boolean) => void) {
-  function listener(this: CheckboxElement) {
+export function onValueChange(el: Checkbox, cb: (this: Checkbox, value: boolean) => void) {
+  function listener(this: Checkbox) {
     cb.apply(this, [this.checked])
   }
   el.on('check', listener)
@@ -109,7 +109,7 @@ export function onValueChange(el: CheckboxElement, cb: (this: CheckboxElement, v
   setElementData(el, 'onChangeCallback', listener)
 }
 
-export function offValueChange(el: CheckboxElement) {
+export function offValueChange(el: Checkbox) {
   const listener = getElementData<(...args: any[]) => void>(el, 'onChangeCallback')
   if (listener) {
     el.on('unchecked', listener)

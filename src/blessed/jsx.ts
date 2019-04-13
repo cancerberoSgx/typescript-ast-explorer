@@ -12,7 +12,11 @@ import {
   NodeGenericEventType,
   NodeMouseEventType,
   NodeWithEvents,
-  TextareaOptions
+  TextareaOptions,
+  Button,
+  Textarea,
+  Layout,
+  Box
 } from './blessedTypes'
 
 type On<T> =
@@ -33,23 +37,33 @@ enum ArtificialEventOptionNames {
   onClick = 'onClick'
 }
 
-interface EventOptions {
+// type ArtificialEventAttributeData=
+type ArtificialEventAttributes = {[a in ArtificialEventOptionNames ]:{methodName: EventOptionNames, eventType: NodeMouseEventType|NodeGenericEventType|'keypress'|'warning'}}
+const artificialAttributesToMethodName:ArtificialEventAttributes = {
+  [ArtificialEventOptionNames.onClick] : {methodName: EventOptionNames.on, eventType: 'click'}
+}
+
+interface ArtificialEvent<T extends Element  > {
+  currentTarget: T
+}
+
+type ArtificialEventHandler <T extends Element  >= (this: T, e: IMouseEventArg&ArtificialEvent<T>) => void
+interface EventOptions<T extends Element  > {
   [EventOptionNames.key]?: Parameters<NodeWithEvents['key']>
   [EventOptionNames.onceKey]?: Parameters<NodeWithEvents['onceKey']>
   [EventOptionNames.on]?: On<this>
   [EventOptionNames.once]?: On<this>
-  [ArtificialEventOptionNames.onClick]?: (e: IMouseEventArg) => void
+  [ArtificialEventOptionNames.onClick]?: ArtificialEventHandler<T>
 }
 
 declare global {
   export namespace JSX {
     export interface IntrinsicElements {
-      box: BoxOptions & EventOptions
-      layout: LayoutOptions & EventOptions
-      text: TextareaOptions & EventOptions
-      textarea: TextareaOptions & EventOptions
-      button: ButtonOptions & EventOptions
-      input: InputOptions & EventOptions
+      box: BoxOptions & EventOptions<Box>
+      layout: LayoutOptions & EventOptions<Layout>
+      text: TextareaOptions & EventOptions<Textarea>
+      textarea: TextareaOptions & EventOptions<Textarea>
+      button: ButtonOptions & EventOptions<Button>
     }
   }
 }
@@ -80,21 +94,42 @@ export const React: {
     attrs = attrs || {}
     const eventOptionNames = enumKeys(EventOptionNames)
     const artificialEventOptionNames = enumKeys(ArtificialEventOptionNames)
-    const genericEventAttributes: any = {}
-    const artificialEventAttributes: any = {}
+    const blessedEventMethodAttributes= {} as  {[a in EventOptionNames]: any}
+    const artificialEventAttributes = {} as  {[a in ArtificialEventOptionNames]: ArtificialEventHandler<Element>}
 
     Object.keys(attrs).forEach(a => {
       const value = attrs![a]
       if (eventOptionNames.includes(a)) {
-        genericEventAttributes[a] = value
+        blessedEventMethodAttributes[a as EventOptionNames] = value
         delete attrs![a]
       }
       if (artificialEventOptionNames.includes(a)) {
-        artificialEventAttributes[a] = value
+        artificialEventAttributes[a as ArtificialEventOptionNames] = value
         delete attrs![a]
       }
     })
     const el = fn(attrs) as Element
+    // generic event handlers
+    Object.keys(blessedEventMethodAttributes).forEach(methodName=>{
+      const args = blessedEventMethodAttributes[methodName as EventOptionNames] as  any[]
+      (el as any)[methodName](...args.map(a=>typeof a==='function' ? a.bind(el) : a))
+    })
+    // artificial event handlers like onClick (these doesn't exist on blessed - we need to map them manually)
+    Object.keys(artificialEventAttributes).forEach(attributeName=>{
+      if(attributeName===ArtificialEventOptionNames.onClick) {
+        const fn = artificialEventAttributes[attributeName] 
+        el.on('click', e=>{
+          fn.bind(el)({...e, currentTarget: el})//, {...e, currentTarget: el})
+        })
+      }
+      else {
+        //TODO
+      }
+    
+      // const eventInstall = artificialAttributesToMethodName[attributeName as ArtificialEventOptionNames] 
+      // el[eventInstall.methodName](eventInstall.eventType, fn.bind(el))
+    })
+    // append children
     children.forEach(c => {
       if (isElement(c)) {
         el.append(c)
