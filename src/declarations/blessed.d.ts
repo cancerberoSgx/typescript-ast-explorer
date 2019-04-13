@@ -844,7 +844,7 @@ export namespace Widgets {
     | 'mousewheel'
     | 'wheeldown'
     | 'wheelup'
-    | 'mousemove' 
+    | 'mousemove'
     | 'click'
 
   type NodeGenericEventType =
@@ -1859,7 +1859,8 @@ export namespace Widgets {
      * Free up the element. Automatically unbind all events that may have been bound to the screen
      * object. This prevents memory leaks. For use with onScreenEvent(), removeScreenEvent(),
      * and destroy().
-     */ 
+     */
+
     free(): void
 
     /**

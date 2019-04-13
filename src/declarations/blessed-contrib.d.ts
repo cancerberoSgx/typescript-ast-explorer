@@ -431,9 +431,9 @@ declare namespace BlessedContrib {
       markdown?: string
 
       /**
-       * Custom Markdown renderer implementation, by default, marked and MarkedTerminal is used.  
+       * Custom Markdown renderer implementation, by default, marked and MarkedTerminal is used.
        */
-      renderer?: (src: string)=> string
+      renderer?: (src: string) => string
     }
 
     export class MarkdownElement extends CanvasElement implements IHasOptions<MarkdownOptions> {

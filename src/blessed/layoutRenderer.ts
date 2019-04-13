@@ -1,5 +1,5 @@
+import { getObjectProperty } from '../util/misc'
 import { isElement, LayoutElement, LayoutIterator } from './blessedTypes'
-import { getObjectProperty } from '../util/misc';
 
 /**
  * The same blessed Layout renderer function with a few modifications and adapted to TypeScript. Modifications:
@@ -55,18 +55,14 @@ export function renderer(this: LayoutElement, coords: { xl: number; xi: number; 
         el.position.left += highWidth - (last.lpos.xl - last.lpos.xi)
       }
 
-      if(el.type==='markdown'){
-        this.screen.log('hell0', this.options.style.display, el.options.style.display)// getObjectProperty(el, 'options.style.display')+'')
-      // console.log( this.options.el.options.style.display)// getObjectProperty(el, 'options.style.display'));
-      
+      if (el.type === 'markdown') {
+        this.screen.log('hell0', this.options.style.display, el.options.style.display) // getObjectProperty(el, 'options.style.display')+'')
+        // console.log( this.options.el.options.style.display)// getObjectProperty(el, 'options.style.display'));
       }
       // If our child does not overlap the right side of the Layout, set it's
       // `top`/`y` to the current `rowOffset` (the coordinate for the current
       // row).
-      if (
-        getObjectProperty(el, 'options.style.display') !== 'block' &&
-        el.position.left + el.width <= width
-      ) {
+      if (getObjectProperty(el, 'options.style.display') !== 'block' && el.position.left + el.width <= width) {
         el.position.top = rowOffset
       } else {
         // Otherwise we need to start a new row and calculate a new
@@ -105,7 +101,7 @@ export function renderer(this: LayoutElement, coords: { xl: number; xi: number; 
 
     // If our child overflows the Layout, do not render it!
     if (
-      getObjectProperty(this, 'options.style.overflow')==='hidden'  &&
+      getObjectProperty(this, 'options.style.overflow') === 'hidden' &&
       (el.position.top + el.height > height || (el.getLines() && el.getLines().length > height))
     ) {
       // Returning false tells blessed to ignore this child.

@@ -18,17 +18,13 @@ describe('astExplorerSpec', () => {
 
   afterAll(async done => {
     await helper.clear()
-    console.log(new Array(100).fill('\n').join('\n'))
-    console.log(await helper.getStrippedALlData())
-
     await client.destroy().catch()
     helper = null as any
-
     done()
   })
 
   it('should quit with q', async done => {
-    client.enter('npx ts-node src/cli/cliMain')
+    await client.enter('npx ts-node src/cli/cliMain')
     expect(await helper.waitForStrippedDataToInclude('Project View'))
     // expect(await helper.waitForStrippedDataToInclude('Code View'))
     await client.enter('q')
@@ -37,7 +33,7 @@ describe('astExplorerSpec', () => {
   })
 
   it('should toggle view with v, should fail toggle to code view and modal should close with q but not the app', async done => {
-    client.enter('npx ts-node src/cli/cliMain')
+    await client.enter('npx ts-node src/cli/cliMain')
     expect(await helper.waitForStrippedDataToInclude('Project View'))
     await client.enter('v')
     let s = await helper.waitForStrippedDataToInclude('try again')

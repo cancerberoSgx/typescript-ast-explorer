@@ -118,7 +118,8 @@ export class Helper {
   }
 
   async waitForStrippedDataToInclude(s: string) {
-    return await this.client.waitUntil(async () => (await this.client.getStrippedDataFromLastWrite()).includes(s) && s)
+    let d:string
+    return await this.client.waitUntil(async () => (d = await this.client.getStrippedDataFromLastWrite()).includes(s) && d)
   }
 }
 /**

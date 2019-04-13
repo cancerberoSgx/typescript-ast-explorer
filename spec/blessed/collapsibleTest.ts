@@ -61,10 +61,10 @@ onValueChange(collapsedCheckbox, value => {
 contrib.markdown({
   ...checkboxOptions,
   parent: layout,
-  padding:  2,
-  style: { 
+  padding: 2,
+  style: {
     ...checkboxOptions.style,
-    display: 'block' ,
+    display: 'block'
   },
   markdown: `
 

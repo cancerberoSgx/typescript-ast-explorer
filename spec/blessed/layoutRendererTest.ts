@@ -5,7 +5,7 @@ import { BoxOptions } from '../../src/blessed/blessedTypes'
 import { installCollapsible, toggleCollapsed } from '../../src/blessed/collapsible'
 import { renderer } from '../../src/blessed/layoutRenderer'
 
-const screen = blessed.screen({ smartCSR: true,  log: './log.txt' })
+const screen = blessed.screen({ smartCSR: true, log: './log.txt' })
 
 const checkboxOptions: BoxOptions = {
   input: true,
@@ -59,11 +59,11 @@ const note = contrib.markdown({
    * Because layout style.overflow=hidden when collapsed, because this text wont be shown. 
    * because this element has style.display=block it will be rendered in a new line no mater the layout is inline and there is space for it.
    * 
-    `  
+    `
 })
 
 installExitKeys(screen)
 
 screen.render()
 //@ts-ignore
-console.log(  note.label);
+console.log(note.label)
