@@ -106,14 +106,14 @@ export function renderer(this: Layout, coords: { xl: number; xi: number; yl: num
       el.atop + el.height > this.atop + this.height ||
       el.position.top + el.height > height ||
       (el.getLines() || []).length > height
-    if (!overflow) {
-      //@ts-ignore
-      el.screen.log({
-        type: el.type,
-        el: [el.atop, el.abottom, el.height, el.iheight],
-        this: [this.atop, this.abottom, this.height, this.iheight]
-      })
-    }
+    // if (!overflow) {
+      // //@ts-ignore
+      // el.screen.log({
+      //   type: el.type,
+      //   el: [el.atop, el.abottom, el.height, el.iheight],
+      //   this: [this.atop, this.abottom, this.height, this.iheight]
+      // })
+    // }
     // If our child overflows the Layout, do not render it!
     if (overflowHidden && overflow) {
       // Returning false tells blessed to ignore this child.

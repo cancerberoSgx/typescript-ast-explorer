@@ -1,16 +1,47 @@
 import { randomIntBetween } from 'misc-utils-of-mine-generic'
-import { BoxOptions } from '../../../src/blessed/blessedTypes'
+import { BoxOptions, ListElementStyle } from '../../../src/blessed/blessedTypes'
 
-export const commonOptions: BoxOptions = {
+export const commonOptions: ()=> ListElementStyle =()=> ({
   style: {
     bg: 'gray',
-    fg: 'black'
-  }
+    fg: 'black',
+    focus: {
+      // border:{
+      // // type: 'line',
+      //   fg: 'red'
+      // },  
+      // bg:  'blue',
+      fg: 'red',
+      bold: true
+    },
+    hover: {
+      // border: {
+      //   fg: 'black',
+      //   // bg: 'cyan'
+      // },
+      bg: 'green'
+    },
+    selected: {
+      // border: {
+      //   fg: 'cyan',
+      // //   bg: ''
+      // },
+      bg: 'cyan'
+    },
+    item: {
+      bg: 'yellow',
+      // padding: 1,
+      
+      // border: {
+        // fg: 'green'
+      // }
+    }
+  } as ListElementStyle
   // mouse: true,
   // clickable: true,
   // keys: true,
   // keyable: true
-}
+})
 export function number(a = 0, b = 10) {
   return randomIntBetween(a, b)
 }

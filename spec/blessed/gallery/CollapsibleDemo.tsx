@@ -3,34 +3,58 @@ import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collap
 import { Component, React } from '../../../src/blessed/jsx'
 import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
+import { commonOptions } from './util';
 
 export class CollapsibleDemo extends Component {
   render() {
-    const common: BoxOptions = {
+    const common: ()=>BoxOptions = ()=>({
+      ...commonOptions(),
       mouse: true,
       clickable: true,
       keys: true,
-      keyable: true
-      // draggable: false
-    }
-    const buttonOptions: BoxOptions = {
-      ...common,
-      border: 'line',
+      keyable: true,
+      focusable: true,
+      
       style: {
+        ...commonOptions().style,
+        selected: {
+          border: {
+            bg: 'blue'
+          },
+          bg: 'magenta'
+        }, 
         hover: {
           bg: 'blue'
         },
+        // bg: 'yellow'
+      }
+      // draggable: false
+    })
+    const buttonOptions: ()=>BoxOptions = ()=>({
+      ...common(),
+      padding: 1, 
+      border:'line',
+      // // border: 'line',
+      style: {
+        ...common().style,
+        boder: {
+          fg: 'cyan',
+        },
+
+        // hover: {
+          // bg: 'blue'
+        // },
         bg: 'yellow'
       }
-    }
-    const radioOptions: BoxOptions = {
-      ...common,
-      style: {
-        hover: {
-          fg: 'red'
-        }
-      }
-    }
+    })
+    // const radioOptions: BoxOptions = {
+    //   ...common,
+    //   // style: {
+    //   //   hover: {
+    //   //     fg: 'red'
+    //   //   }
+    //   // }
+    // }
     const el = (
       <Div>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
@@ -56,24 +80,24 @@ export class CollapsibleDemo extends Component {
               width="100%"
               height="100%"
               border="line">
-              <textbox {...common} content="Tell us your name" />
+              <textbox {...common()} content="Tell us your name" />
               <Br />
-              <checkbox {...common} content="Female?" />
+              <checkbox {...common()} content="Female?" />
               <Br />
               <radioset label="Level" height={5} border="line">
-                <radiobutton {...radioOptions} top={0} content="Afraid of hights" />
-                <radiobutton {...radioOptions} top={1} content="Sometimes I'm fast" checked={true} />
-                <radiobutton {...radioOptions} top={2} content="Petrol in my veins" />
+                <radiobutton {...common()} top={0} content="Afraid of hights" />
+                <radiobutton {...common()} top={1} content="Sometimes I'm fast" checked={true} />
+                <radiobutton {...common()} top={2} content="Petrol in my veins" />
               </radioset>
               <Br />
               <checkbox
-                {...common}
+                {...common()}
                 content="Do you Accept the licence and foo bar a lot of text here that needs to be collapsed"
               />
               <Br />
-              <button {...buttonOptions} content="Submit" />
+              <button {...buttonOptions()} content="Submit" />
               ---
-              <button {...buttonOptions} content="Go back" />
+              <button {...buttonOptions()} content="Go back" />
             </layout>
           </layout>
 
@@ -82,7 +106,7 @@ export class CollapsibleDemo extends Component {
             <Strong>Manual mode:</Strong>
             <Br />
             <layout
-              onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 5 })}
+              onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 4 })}
               label="Search Hero"
               renderer={renderer}
               style={{ overflow: 'hidden' }}
@@ -91,35 +115,34 @@ export class CollapsibleDemo extends Component {
               border="line">
               <Br />
               <checkbox
-                {...common}
-                style={{ fg: 'magenta' }}
+                {...common()}
+                style={{ ...common().style, fg: 'magenta' }}
                 content="Collapsed"
                 checked={false}
                 onChange={e => toggleCollapsed(e.currentTarget.parent as any, true)}
               />
               <Br />
+              <textbox {...common()} content="By Name" />
               <Br />
-              <textbox {...common} content="By Name" />
-              <Br />
-              <checkbox {...common} content="Female?" />
+              <checkbox {...common()} content="Female?" />
               <Br />
               <radioset label="Comic" height={5} border="line">
-                <radiobutton {...radioOptions} top={0} content="X-Men" />
-                <radiobutton {...radioOptions} top={1} content="Caballeros del Zoodiaco" checked={true} />
-                <radiobutton {...radioOptions} top={2} content="StarCraft" />
+                <radiobutton {...common()} top={0} content="X-Men" />
+                <radiobutton {...common()} top={1} content="Caballeros del Zoodiaco" checked={true} />
+                <radiobutton {...common()} top={2} content="StarCraft" />
               </radioset>
               <Br />
               <radioset label="Power Kind" height={5} border="line">
-                <radiobutton {...radioOptions} top={0} content="Psionic" />
-                <radiobutton {...radioOptions} top={1} content="Brute force" checked={true} />
-                <radiobutton {...radioOptions} top={2} content="Magic" />
+                <radiobutton {...common()} top={0} content="Psionic" />
+                <radiobutton {...common()} top={1} content="Brute force" checked={true} />
+                <radiobutton {...common()} top={2} content="Magic" />
               </radioset>
               <Br />
-              <checkbox {...common} content="Include Secondary Heroes" />
+              <checkbox {...common()} content="Include Secondary Heroes" />
               <Br />
-              <button {...buttonOptions} content="Submit" />
+              <button {...buttonOptions()} content="Submit" />
               ---
-              <button {...buttonOptions} content="Go back" />
+              <button {...buttonOptions()} content="Go back" />
             </layout>
           </layout>
         </layout>

@@ -2,6 +2,7 @@ import * as blessed from 'blessed'
 import { installExitKeys } from '../../../src/blessed/blessed'
 import { React } from '../../../src/blessed/jsx'
 import { App } from './App'
+import { installFocusHandler } from '../../../src/blessed/focus';
 
 export const screen = blessed.screen({
   smartCSR: true,
@@ -14,6 +15,12 @@ installExitKeys(screen)
 React.render(<App screen={screen} />)
 screen.render()
 
+screen.key('tab', k=>screen.focusNext())
+screen.key('S-tab', k=>screen.focusPrevious())
+
+
 setInterval(() => {
-  screen.render()
-}, 5000)
+  // screen.cursorReset()
+  // screen.restoreFocus()
+  screen.render() // i need to do this because when I click outside the clickable elements then they stop receiving clicks !
+}, 2000)

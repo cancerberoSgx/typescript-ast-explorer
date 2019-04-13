@@ -8,7 +8,11 @@ WIP
  * Navigate through the AST and source code like. 
 
 
-### Issues
+## Issues
+
+### blessing issues
+ * it seems that some state is stored in options.style and so, if the same object is passed to multiple elements constructurs, they all start sharing the state , like focus, selected, etc. WOrkaround: user always copy the object but IMO is blessing issue. 
+
 
  * in file view - remove details parent and leave the children only.
  * should we add the code view in the file view?

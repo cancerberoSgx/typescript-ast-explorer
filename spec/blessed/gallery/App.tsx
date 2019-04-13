@@ -6,6 +6,7 @@ import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { commonOptions } from './util'
+import { Strong, Div, Br } from '../../../src/blessed/jsxUtil';
 
 enum Demo {
   button,
@@ -37,22 +38,28 @@ export class App extends Component<P, S> {
   render() {
     const { screen } = this.props
     return (
-      <box {...commonOptions} parent={screen} top="0%" left="0%" border="line" label="Blessed Gallery">
+      <Div parent={screen} width="95%" height="100%" border="line" label="Blessed Gallery">
+      <Br/>
+      <Strong>Chose a Demo:</Strong>
+      <Br/>
         <listbar
-          {...commonOptions}
+          {...commonOptions()}
           padding={1}
+          top={3}
+          align="center"
           keys={true}
           mouse={true}
           clickable={true}
           focusable={true}
           focused={true}
           border="line"
+          width="95%"
           autoCommandKeys={true}
           commands={arrayToObject(enumNoValueKeys(Demo), d => () =>
             showInModal(screen, this.renderDemo(d), `${d} demo (press q to close)`, '100%', '100%')
           )}
         />
-      </box>
+      </Div>
     )
   }
 }

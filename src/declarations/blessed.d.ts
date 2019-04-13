@@ -454,7 +454,7 @@ export namespace Widgets {
     interface TStyle {
       // leave it open for custom style properties
       [name: string]: any
-      type?: any
+      type?: BorderType
       bg?: string
       fg?: string
       ch?: string
@@ -465,10 +465,10 @@ export namespace Widgets {
       invisible?: boolean
       transparent?: boolean
       shadow?: boolean
-      border?: TStyle
+      // border?: TStyle|Border|BorderType
       label?: string
       track?: TStyle
-      scrollbar?: TStyle | true
+      // scrollbar?: TStyle | true
       focus?: TStyle
       hover?: TStyle
     }
@@ -477,7 +477,7 @@ export namespace Widgets {
       /**
        * Type of border (line or bg). bg by default.
        */
-      type?: 'line' | 'bg'
+      type?: BorderType
 
       /**
        * Character to use if bg type, default is space.
@@ -493,8 +493,8 @@ export namespace Widgets {
       /**
        * Border attributes.
        */
-      bold?: string
-      underline?: string
+      bold?: boolean
+      underline?: boolean
     }
 
     interface TCursor {
@@ -1541,11 +1541,12 @@ export namespace Widgets {
     bottom: number | string
   }
 
+  type BorderType = 'line'|'bg'
   interface Border {
     /**
      * Type of border (line or bg). bg by default.
      */
-    type?: 'line' | 'bg'
+    type?: BorderType
 
     /**
      * Character to use if bg type, default is space.
@@ -1561,8 +1562,8 @@ export namespace Widgets {
     /**
      * Border attributes.
      */
-    bold?: string
-    underline?: string
+    bold?: boolean
+    underline?: boolean
 
     top?: boolean
     left?: boolean
@@ -1575,15 +1576,15 @@ export namespace Widgets {
 
     fg?: string
     bg?: string
-    bold?: string
-    underline?: string
+    bold?: boolean
+    underline?: boolean
 
     style?: Widgets.Types.TStyle
 
     /**
      * Border object, see below.
      */
-    border?: Border | 'line' | 'bg'
+    border?: Border | BorderType
 
     /**
      * Element's text content.
@@ -2097,7 +2098,7 @@ export namespace Widgets {
      * Object enabling a scrollbar.
      * Style of the scrollbar track if present (takes regular style options).
      */
-    scrollbar?: { style?: any; track?: any; ch?: string }
+    scrollbar?: { style?: Widgets.Types.TStyle; track?: any; ch?: string }|boolean
   }
 
   interface ScrollableTextOptions extends ScrollableBoxOptions {
@@ -2288,8 +2289,8 @@ export namespace Widgets {
   }
 
   interface ListElementStyle extends Widgets.Types.TStyle {
-    selected?: any
-    item?: any
+    selected?: Widgets.Types.TStyle
+    item?: Widgets.Types.TStyle
   }
 
   interface ListOptions<TStyle extends ListElementStyle = {}> extends BoxOptions {

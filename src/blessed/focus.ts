@@ -111,7 +111,7 @@ export function installFocusHandler(
   focusFirst = false
 ) {
   if (lastFocus[focusId] === -Infinity && typeof lastFocus[focusId] !== 'undefined') {
-    throw new Error('Focusq handler with key already installed: ' + focusId)
+    throw new Error('Focus handler with key already installed: ' + focusId)
   } else if (lastFocus[focusId] === -Infinity || typeof lastFocus[focusId] === 'undefined') {
     lastFocus[focusId] = 0
     screen.key(keys, function(ch, key) {
