@@ -106,27 +106,6 @@ export function objectFilter<O extends { [k in keyof O]: O[keyof O] } = any>(
   return r
 }
 
-// export function objectMapValues<O extends { [k in keyof O]: O[keyof O] } = any, T = any>(
-//   o: O,
-//   p: (k: keyof O, v: O[keyof O]) => T
-// ): { [k in keyof O]: T } {
-//   var r: { [k in keyof O]: T } = {} as any
-//   objectKeys(o).forEach(k => {
-//     r[k] = p(k, o[k])
-//   })
-//   return r
-// }
-// export const objectMap = objectMapValues
-
-// export function objectFilter<O extends { [k in keyof O]: O[keyof O] } = any>(
-//   o: O,
-//   p: (k: keyof O, v: O[keyof O]) => boolean
-// ): Partial<O> {
-//   var r: Partial<O> = {}
-//   objectKeys(o)
-//     .filter((k, v) => p(k, o[k]))
-//     .forEach(k => {
-//       r[k] = o[k]
-//     })
-//   return r
-// }
+export type RemoveProperties<O, K extends keyof O>=Pick<O, Exclude<keyof O, K>>
+// type o = {a: number, b: boolean}
+// type o1 = RemoveProperties<o, 'a'>

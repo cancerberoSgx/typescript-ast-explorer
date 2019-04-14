@@ -1,5 +1,5 @@
 import { getObjectProperty, setObjectProperty } from '../../util/misc'
-import { AllOptions, Element, isElement } from '../blessedTypes'
+import { BlessedElementOptionsIntersection, Element, isElement } from '../blessedTypes'
 import { React } from './createElement'
 
 // TODO: what about properties that propagates from children to parents ?
@@ -28,7 +28,7 @@ interface Options {
   filter?: { optionPath: string; predicate: (node: Element) => boolean; stopPropagation?: boolean }[]
 
   /** TODO. include properties outside options. Careful! */
-  otherOptions?: (keyof AllOptions)[]
+  otherOptions?: (keyof BlessedElementOptionsIntersection)[]
 
   /** Like CSS !important. for keys in  here, children options will be override no matter if they explicitly have tgen in their options. Use with care*/
   important?: string[]

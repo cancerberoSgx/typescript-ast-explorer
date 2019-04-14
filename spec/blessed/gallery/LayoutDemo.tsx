@@ -1,6 +1,6 @@
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div } from '../../../src/blessed/jsxUtil'
+import { Br, Div } from '../../../src/blessed/jsx-components/jsxUtil'
 import { color, number } from './util'
 
 export class LayoutDemo extends Component {

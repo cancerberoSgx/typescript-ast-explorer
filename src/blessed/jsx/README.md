@@ -69,7 +69,7 @@ By default, for each JSXText node found, a new blessed.text is created. This is 
 
 TODO: performance? use another thing ? use content? join several JSXText in one ?  right now it behaves well with layouts.. perhaps content='' is better. or text?
 
-
+ * styles could be adapted from blessed like its options and modeled with classhierarchies, but also try to create a new feature and see how it plays there. For example a new option in ComponentWithOptions called cursor (since all elements should support it and don't)
 
 # TODO / questions / ideas / issues
 

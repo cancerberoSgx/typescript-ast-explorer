@@ -1,5 +1,6 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
+import { RemoveProperties } from '../util/misc';
 
 export type Node = blessed.Widgets.Node
 export type Box = blessed.Widgets.BoxElement
@@ -26,25 +27,26 @@ export type Textbox = blessed.Widgets.TextboxElement
 export type RadioSet = blessed.Widgets.RadioSetElement
 export type RadioButton = blessed.Widgets.RadioButtonElement
 
-export type BoxOptions = blessed.Widgets.BoxOptions
-export type ListTableOptions = blessed.Widgets.ListTableOptions
-export type ListbarOptions = blessed.Widgets.ListbarOptions
-export type BigTextOptions = blessed.Widgets.BigTextOptions
-export type ListOptions = blessed.Widgets.ListOptions
-export type FileManagerOptions = blessed.Widgets.FileManagerOptions
-export type LineOptions = blessed.Widgets.LineOptions
-export type TextOptions = blessed.Widgets.TextOptions
-export type ElementOptions = blessed.Widgets.ElementOptions
-export type LayoutOptions = blessed.Widgets.LayoutOptions
-export type TextElementOptions = blessed.Widgets.TextOptions
-export type TextareaOptions = blessed.Widgets.TextareaOptions
-export type ButtonOptions = blessed.Widgets.ButtonOptions
-export type InputOptions = blessed.Widgets.InputOptions
-export type CheckboxOptions = blessed.Widgets.CheckboxOptions
-export type FormOptions = blessed.Widgets.FormOptions
-export type TextboxOptions = blessed.Widgets.TextboxOptions
-export type RadioSetOptions = blessed.Widgets.RadioSetOptions
-export type RadioButtonOptions = blessed.Widgets.RadioButtonOptions
+// Heads up - The users need need to reference blessed element options removing children property
+export type BoxOptions = RemoveProperties<blessed.Widgets.BoxOptions, 'children'>
+export type ListTableOptions = RemoveProperties<blessed.Widgets.ListTableOptions, 'children'>
+export type ListbarOptions = RemoveProperties<blessed.Widgets.ListbarOptions, 'children'>
+export type BigTextOptions = RemoveProperties<blessed.Widgets.BigTextOptions, 'children'>
+export type ListOptions = RemoveProperties<blessed.Widgets.ListOptions, 'children'>
+export type FileManagerOptions = RemoveProperties<blessed.Widgets.FileManagerOptions, 'children'>
+export type LineOptions = RemoveProperties<blessed.Widgets.LineOptions, 'children'>
+export type TextOptions = RemoveProperties<blessed.Widgets.TextOptions, 'children'>
+export type ElementOptions = RemoveProperties<blessed.Widgets.ElementOptions, 'children'>
+export type LayoutOptions = RemoveProperties<blessed.Widgets.LayoutOptions, 'children'>
+export type TextElementOptions = RemoveProperties<blessed.Widgets.TextOptions, 'children'>
+export type TextareaOptions = RemoveProperties<blessed.Widgets.TextareaOptions, 'children'>
+export type ButtonOptions = RemoveProperties<blessed.Widgets.ButtonOptions, 'children'>
+export type InputOptions = RemoveProperties<blessed.Widgets.InputOptions, 'children'>
+export type CheckboxOptions = RemoveProperties<blessed.Widgets.CheckboxOptions, 'children'>
+export type FormOptions = RemoveProperties<blessed.Widgets.FormOptions, 'children'>
+export type TextboxOptions = RemoveProperties<blessed.Widgets.TextboxOptions, 'children'>
+export type RadioSetOptions = RemoveProperties<blessed.Widgets.RadioSetOptions, 'children'>
+export type RadioButtonOptions = RemoveProperties<blessed.Widgets.RadioButtonOptions, 'children'>
 
 export type PositionCoords = blessed.Widgets.PositionCoords
 
@@ -64,8 +66,8 @@ export type Program = blessed.BlessedProgram
 
 export type Markdown = contrib.Widgets.MarkdownElement
 export const colors = blessed.colors.colorNames
-export type AllCommonOptions = BoxOptions | TextOptions | TextareaOptions | ListTableOptions | ListOptions
-export type AllOptions = BoxOptions & TextOptions & TextareaOptions & ListTableOptions & ListOptions
+export type BlessedElementOptionsUnion = BoxOptions | TextOptions | TextareaOptions | ListTableOptions | ListOptions
+export type BlessedElementOptionsIntersection = BoxOptions & TextOptions & TextareaOptions & ListTableOptions & ListOptions
 
 export {blessed}
 
@@ -74,16 +76,16 @@ export function isElement(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 /** isElement type guard that cast to a concrete type by without really asserting on the concrete type - use only if sure */
-export function isElementUnSafe<E extends Element = Element>(n: any): n is Element {
+export function isElementUnSafe<E extends Element = Element>(n: any): n is E {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 
 /** isNode type guard by asserting on a given type name (recommended) */
-export function isNodeByType<E extends Element = Element>(n: any, type :  WidgetTypeNames): n is WidgetTypes[typeof type] {
+export function isNodeByType<E extends Element = Element>(n: any, type :  WidgetTypeNames): n is E {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 export function isScreen(n: any): n is Screen {
-  return isNodeByType(n, 'screen')
+  return isNodeByType(n,WidgetTypesEnum.screen)
   // return n && isNode(n) && n.type === 'screen'
 }
 /** isNode type guard without type parameters */
@@ -91,25 +93,78 @@ export function isNode(n: any): n is Node {
   return n && n.insertBefore && n.forDescendants
 }
 
+export enum WidgetTypesEnum { // TODO: finish
+  'element' = 'element',
+    'node' = 'node',
+    'screen' = 'screen',
+    'box' = 'box',
+    'text' = 'text',
+    'line' = 'line',
+    'textarea' = 'textarea',
+    'layout' = 'layout',
+    'button' = 'button',
+    'checkbox' = 'checkbox',
+    'bigtext' = 'bigtext',
+    'list' = 'list',
+    'filemanager' = 'filemanager',
+    'listtable' = 'listtable',
+    'listbar' = 'listbar',
+    'form' = 'form',
+    'textbox' = 'textbox',
+    'radioset' = 'radioset',
+    'radiobutton' = 'radiobutton',
+  }
 export interface WidgetTypes { // TODO: finish
-  element: Element
-    node: Node
-    screen: Screen
-    box:   Box
-    text: Text
-    line: Line
-    textarea: Textarea
-    layout: Layout
-    button: Button
-    checkbox: Button
-    bigtext: BigText
-    list: List
-    filemanager: FileManager
-    listtable: ListTable
-    listbar: ListBar
-    form: Form
-    textbox: Textbox
-    radioset: RadioSet
-    radiobutton: RadioButton
+  [WidgetTypesEnum.element]: Element
+    [WidgetTypesEnum.node]: Node
+    [WidgetTypesEnum.screen]: Screen
+    [WidgetTypesEnum.box]:   Box
+    [WidgetTypesEnum.text]: Text
+    [WidgetTypesEnum.line]: Line
+    [WidgetTypesEnum.textarea]: Textarea
+    [WidgetTypesEnum.layout]: Layout
+    [WidgetTypesEnum.button]: Button
+    [WidgetTypesEnum.checkbox]: Button
+    [WidgetTypesEnum.bigtext]: BigText
+    [WidgetTypesEnum.list]: List
+    [WidgetTypesEnum.filemanager]: FileManager
+    [WidgetTypesEnum.listtable]: ListTable
+    [WidgetTypesEnum.listbar]: ListBar
+    [WidgetTypesEnum.form]: Form
+    [WidgetTypesEnum.textbox]: Textbox
+    [WidgetTypesEnum.radioset]: RadioSet
+    [WidgetTypesEnum.radiobutton]: RadioButton
   }
   type WidgetTypeNames = keyof WidgetTypes
+
+
+
+  // quickly categorization of visual related - no-styles- options. Notes: consider text as a widget not as content. some options could be in more than one category since same names are used for different semantis. Also the separation between styles and options is kind of arbitrary.
+  export type MouseInputActivationOptions = 'mouse'|'clickable'|'draggable'|'alwaysScroll'|'focusable'
+export type InputActivationOption = MouseInputActivationOptions|'keys'|'keyable'|'vi'|'inputOnFocus'
+export type DimensionOptions = 'padding'|'width'|'height'|'shrink'|'fill'
+export type PositionOptions = 'top'|'left'|'align'|'valign'|'position'
+export type TextStyleOptions = 'underline'|'bold'|'blink'|'inverse'|'text'
+export type DecorationOptions = 'border'|'type'|'label'|'shadow'|'content'|'hoverText'|'ScrollStyleOptions'
+export type EventEStyleOptions = 'selected'|'hover'|'focus'
+export type ColorOptions = 'fg'|'fg'|'transparent'|'ch'|'invisible'
+export type CompositionStyleOptions='item'
+export type ContainerOptions = 'layout'|'children'|'parent'
+export type ScrollStyleOptions = 'track'|'scrollbar'  
+export type ScrollOptions = 'baseLimit'
+export type ValueOptions = 'secret'|'checked'|'censor'|'text'|'text'
+export type VisualOptions = MouseInputActivationOptions|InputActivationOption|DimensionOptions|PositionOptions
+
+//TODO: for each of these build the partials: 
+export type MouseInputActivationOptionNames = Pick<BlessedElementOptionsIntersection, MouseInputActivationOptions>
+export type InputActivationOptionNames = Pick<BlessedElementOptionsIntersection, InputActivationOption>
+export type DimensionOptionsNames = Pick<BlessedElementOptionsIntersection, DimensionOptions>
+export type PositionOptionsNames = Pick<BlessedElementOptionsIntersection, PositionOptions>
+
+// TODO: Map Options and Styles with element types
+
+export interface ElementTypeOptions {
+  [WidgetTypesEnum.box]: MouseInputActivationOptions|DimensionOptions|PositionOptions|TextStyleOptions|DecorationOptions|ColorOptions|ContainerOptions|ScrollStyleOptions
+  [WidgetTypesEnum.listbar]: ElementTypeOptions[WidgetTypesEnum.box]|InputActivationOption|EventEStyleOptions|CompositionStyleOptions
+//TODO: the rest
+}

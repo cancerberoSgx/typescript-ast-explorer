@@ -40,6 +40,7 @@
   * a grid horizontal/vertical that automatically adjuts children and let me add new
   * editor like paradigm so i can group input widgets easily
 * tool/paradigm to group/mximizize/minimaszi panels ? 
+ * idea: igual que unicode icons pero deja hacer MediaQueryListEvent, mostrar solo los iconos y cuando hacen click mostrar el getConfigFileParsingDiagnostics,  - extraer labels o tags y poder hacer queries con eso - hacer un wdget table dinamico con sorting y queies ? 
 
 # query-selection-tree node
 

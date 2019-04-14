@@ -2,6 +2,7 @@ import { Textarea, Screen, blessed } from '../src/blessed/blessedTypes'
 import { React } from '../src/blessed/jsx/createElement'
 import { find } from '../src/blessed/node'
 import { testJsx, TestDriver } from './blessedTestUtil'
+import { scrollabletext } from '../src/declarations/blessed';
 
 describe('blessed node', () => {
   it('should find and filter', async done => {
@@ -47,6 +48,3 @@ describe('without test util', () => {
   })
 })
 
-// function isBlessedElement<T extends Element>(a: any): a is T{
-// return true
-// }

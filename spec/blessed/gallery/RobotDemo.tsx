@@ -1,9 +1,8 @@
 import { Screen, colors, blessed } from '../../../src/blessed/blessedTypes'
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div, Button } from '../../../src/blessed/jsxUtil'
-import { number, color } from './util'
-import { wait } from 'misc-utils-of-mine-generic';
+import { Br, Div } from '../../../src/blessed/jsx-components/jsxUtil'
+import { Button } from '../../../src/blessed/jsx-components/Button';
 
 export class RobotDemo extends Component<{ screen: Screen }> {
   render() {
