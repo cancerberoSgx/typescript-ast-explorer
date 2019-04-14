@@ -5,8 +5,6 @@ import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
 import { Br, Div, NbrSpc, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
-// import { screen } from './main'
-import { commonOptions } from './util'
 
 export class CollapsibleDemo extends Component {
   render() {
@@ -20,19 +18,19 @@ export class CollapsibleDemo extends Component {
       focusable: true,
       style: {
         // ...commonOptions(),
-        // selected: {
-        //   border: {
-        //     fg: colors.lightgreen
-        //   },
-        //   bg: 'magenta'
-        // },
-        // hover: {
-        //   bg: 'blue'
-        // }
+        selected: {
+          border: {
+            fg: colors.lightgreen
+          },
+          bg: 'magenta'
+        },
+        hover: {
+          bg: 'blue'
+        }
       }
     })
     const buttonOptions: () => BoxOptions = () => ({
-      // ...common(),
+      ...common(),
       padding: 1,
       border: 'line',
       style: {
@@ -44,21 +42,21 @@ export class CollapsibleDemo extends Component {
       }
     })
     const inputTextOptions: () => InputOptions = () => ({
-      // ...common(),
-      // padding: 1,
-      // width: '100%',
+      ...buttonOptions(),
+      padding: 0,
+      width: '90%',
       // border: 'line',
       // inputOnFocus: true,
-      // style: {
-      //   ...common().style,
-      //   border: {
-      //     fg: 'cyan'
-      //   },
-      //   bg: colors.lightyellow
-      // }
+      style: {
+        ...common().style,
+        border: {
+          fg: 'cyan'
+        },
+        bg: colors.lightyellow
+      }
     })
     const el = (
-      <Div  style={{bg: 'cyan', fg: 'black'}}>  //style={{hover: {bg: colors.lightred}}}>
+      <Div style={{ bg: 'cyan', fg: 'black' }}>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
         "collapse"/"expand" functionality in any blessed Element. <Br />
         Has mainly two modes,
@@ -109,14 +107,14 @@ export class CollapsibleDemo extends Component {
             <Br />
             <Strong>Manual mode:</Strong>
             <Br />
-            <layout  
+            <layout
               onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 4 })}
               label="Search Hero"
               renderer={renderer}
               style={{
                 //@ts-ignore
                 overflow: 'hidden',
-                ...{bg: 'black', fg: 'lightred'}
+                ...{ bg: 'black', fg: 'lightred' }
               }}
               width="100%"
               height="100%"

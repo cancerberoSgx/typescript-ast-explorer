@@ -1,4 +1,4 @@
-import { objectKeys } from 'misc-utils-of-mine-generic';
+import { objectKeys } from 'misc-utils-of-mine-generic'
 
 export function notUndefined<T>(a: T): a is Exclude<T, undefined> {
   return typeof a !== 'undefined'
@@ -6,7 +6,11 @@ export function notUndefined<T>(a: T): a is Exclude<T, undefined> {
 /**
  * Returns a nested property of given object and given path. For example path could be 'foo.bar' and it will return `object['foo']['bar']`
  */
-export function getObjectProperty<T>(object: any, path: string, defaultValue: T|undefined = undefined): T | undefined {
+export function getObjectProperty<T>(
+  object: any,
+  path: string,
+  defaultValue: T | undefined = undefined
+): T | undefined {
   if (!path) {
     return object
   } else if (object) {
@@ -77,21 +81,52 @@ export function enumValueFromString<T>(key: string, anEnum: any): T | undefined 
   return anEnum[key]
 }
 
-
-export function objectMapValues<O extends {[k in keyof O]: O[keyof O]} = any, T = any>(o: O, p:(k: keyof O, v: O[keyof O])=>T): {[k in keyof O]: T}{
-  var r: {[k in keyof O]: T} = {} as any
-  objectKeys(o).forEach(k=> {
+export function objectMapValues<O extends { [k in keyof O]: O[keyof O] } = any, T = any>(
+  o: O,
+  p: (k: keyof O, v: O[keyof O]) => T
+): { [k in keyof O]: T } {
+  var r: { [k in keyof O]: T } = {} as any
+  objectKeys(o).forEach(k => {
     r[k] = p(k, o[k])
   })
   return r
 }
 export const objectMap = objectMapValues
 
-
-export function objectFilter<O extends {[k in keyof O]: O[keyof O]} = any>(o: O, p:(k: keyof O, v: O[keyof O])=>boolean): Partial<O>{
+export function objectFilter<O extends { [k in keyof O]: O[keyof O] } = any>(
+  o: O,
+  p: (k: keyof O, v: O[keyof O]) => boolean
+): Partial<O> {
   var r: Partial<O> = {}
-  objectKeys(o).filter((k,v)=>p(k,o[k])).forEach(k=> {
-    r[k] = o[k]
-  })
+  objectKeys(o)
+    .filter((k, v) => p(k, o[k]))
+    .forEach(k => {
+      r[k] = o[k]
+    })
   return r
 }
+
+// export function objectMapValues<O extends { [k in keyof O]: O[keyof O] } = any, T = any>(
+//   o: O,
+//   p: (k: keyof O, v: O[keyof O]) => T
+// ): { [k in keyof O]: T } {
+//   var r: { [k in keyof O]: T } = {} as any
+//   objectKeys(o).forEach(k => {
+//     r[k] = p(k, o[k])
+//   })
+//   return r
+// }
+// export const objectMap = objectMapValues
+
+// export function objectFilter<O extends { [k in keyof O]: O[keyof O] } = any>(
+//   o: O,
+//   p: (k: keyof O, v: O[keyof O]) => boolean
+// ): Partial<O> {
+//   var r: Partial<O> = {}
+//   objectKeys(o)
+//     .filter((k, v) => p(k, o[k]))
+//     .forEach(k => {
+//       r[k] = o[k]
+//     })
+//   return r
+// }

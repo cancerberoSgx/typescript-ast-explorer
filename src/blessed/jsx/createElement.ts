@@ -2,7 +2,6 @@ import * as blessed from 'blessed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
 import { Checkbox, Element, isElement } from '../blessedTypes'
 import { Component } from './component'
-import { installOptionsPropagationPlugin } from './stylePropagationPlugin'
 import {
   AfterElementCreatedEvent,
   AfterElementCreatedListener,
@@ -19,7 +18,6 @@ import {
   BlessedJsxAttrs,
   EventOptionNames
 } from './types'
-import { screen } from '../../../spec/blessed/gallery/main';
 interface Options {
   dontInheritStyle?: boolean
 }
@@ -40,7 +38,7 @@ class BlessedJsxImpl implements BlessedJsx {
   render(e: JSX.Element) {
     if (!this.defaultPluginsInstalled) {
       this.defaultPluginsInstalled = true
-      installOptionsPropagationPlugin({include: ['style.bg']})
+      // installOptionsPropagationPlugin({ include: []})//['style.bg'] })
     }
 
     const event: AfterRenderEvent = { el: (e as any) as Element }

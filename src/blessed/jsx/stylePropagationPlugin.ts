@@ -1,8 +1,6 @@
-import { AllOptions, Element, isElement, } from '../blessedTypes'
+import { getObjectProperty, setObjectProperty } from '../../util/misc'
+import { AllOptions, Element, isElement } from '../blessedTypes'
 import { React } from './createElement'
-import { getObjectProperty, objectFilter, setObjectProperty } from '../../util/misc';
-import { screen } from '../../declarations/blessed';
-import { objectKeys } from 'misc-utils-of-mine-generic';
 
 // TODO: what about properties that propagates from children to parents ?
 // TODO: what about properties outsides
@@ -10,10 +8,24 @@ import { objectKeys } from 'misc-utils-of-mine-generic';
 
 interface Options {
   /**  exclude some properties for being propagated */
-  exclude?:string[]
+  exclude?: string[]
 
-  /**  */
-  include:string[]
+  /** option name path to propagate form parent to children, something like style.bg or focusable */
+  include: string[]
+
+  /** predicates, per option path given in [[include]] descendants must comply with in order to propagate a certain option to them. If filter exists for a option path and the predicate returns true for a node, then those options wont be propagated to that node.
+   *
+   * Also if filter exists and [[stopPropagation === true]] then the option propagation will stop also for its descendants.
+   *
+   * Example: `[
+   * {path: 'focusable', predicate: node=>node.type==='button'},
+   * {path: 'style.hover.bg', predicate: node=>hasAscendant(node, a=>a.type==='layout')}
+   * ]`, etc.
+   *
+   * Important: Paths here must be contained in [[include]]
+   *
+   * */
+  filter?: { optionPath: string; predicate: (node: Element) => boolean; stopPropagation?: boolean }[]
 
   /** TODO. include properties outside options. Careful! */
   otherOptions?: (keyof AllOptions)[]
@@ -23,93 +35,97 @@ interface Options {
 }
 
 /** @internal */
-export function installOptionsPropagationPlugin(options: Options = {include: []}) {//{exclude: ['hover']}) {
+export function installOptionsPropagationPlugin(options: Options = { include: [] }) {
   React.addAfterRenderListener(event => {
     try {
-      if(options.include.length===0){
-        return 
+      if (options.include.length === 0) {
+        return
       }
-    event.el.children.filter(isElement).forEach(child => copyOptions(event.el, child, options))
-      
+      // event.el.children.filter(isElement).forEach(child => copyOptions(event.el, child, options))
     } catch (error) {
       event.el.screen.log('instalPropagationPlugin error ', error)
     }
   })
 
-  function copyOptions(parent: Element, child: Element,options: Options) {
-      options.exclude = options.exclude || []
-      parent.options = parent.options|| {}
-      options.important = options.important ||[]
-      // const partial = options.exclude ? objectFilter(parent.options||{}, (k,v)=>!(options.exclude||[]).find(e=>!!getObjectProperty(v, e))) : parent.options
-      const changes :{key: string, value: any}[]=[]
-      // const 
-          // objectKeys(parent.options).filter(k=>!options.exclude!.find(e=>!!parent.options && !!getObjectProperty(parent.options, e))).forEach(k=>{
-            options.include.forEach(k=>{
-              const val = getObjectProperty(parent.options, k)
-              if(typeof val==='undefined'){
-                return 
-              }
-        // const included = options.include.includes(k)//.find(e=>!!getObjectProperty(parent.options, e))
-    // parent.screen.log(parent.type, child.type, 'included', !!included, k)
-        // if(!included){
-          // return 
-        // }
-        const excluded = options.exclude!.includes(k)//.find(e=>!!getObjectProperty(parent.options, e))
-        const important = options.important!.includes(k)
-       
-        const childVal = getObjectProperty(child.options, k)
-        let finalVal: any|undefined
-        if(excluded){
-          if(important){
-            finalVal = {...childVal||{}, ...val}
-          } 
-          else {
-            return
-          }
+  function copyOptions(parent: Element, child: Element, options: Options) {
+    options.exclude = options.exclude || []
+    parent.options = parent.options || {}
+    options.important = options.important || []
+    options.filter = options.filter || []
+    const optionsChanges: { key: string; value: any }[] = []
+    const selfChanges: { key: string; value: any }[] = []
+
+    let stopPropagation = false
+    options.include.forEach(k => {
+      const filter = options.filter!.find(f => f.optionPath === k)
+      if (filter && !filter.predicate(child)) {
+        stopPropagation = stopPropagation || !!filter.stopPropagation
+      }
+      const optionsParentValue = getObjectProperty(parent.options, k)
+      // const self = getObjectProperty(parent.options, k)
+      if (typeof optionsParentValue === 'undefined') {
+        return
+      }
+      const excluded = options.exclude!.includes(k)
+      const important = options.important!.includes(k)
+      const optionsChildValue = getObjectProperty(child.options, k)
+      let finalVal: any | undefined
+      if (excluded) {
+        if (important) {
+          // finalVal = { ...(childVal || {}), ...val }
+          finalVal = extend(optionsChildValue || {}, optionsParentValue)
+        } else {
+          return
         }
-        if(typeof childVal==='undefined'){
-          finalVal = val
-        }
-        else {
-          finalVal = {...val, ...childVal} // TODO: probably recursive merge needed
-          //excluded ? important ? val: childVal : child
-        }
-        // else {
-        //   finalVal = childVal || val
-        // }
-        if(finalVal){
-          changes.push({key: k, value: finalVal})
-          // setObjectProperty(partial, k, finalVal)
-        }
+      }
+      if (typeof optionsChildValue === 'undefined') {
+        finalVal = optionsParentValue
+      } else {
+        // finalVal = { ...val, ...childVal } // TODO: probably recursive merge needed
+        finalVal = extend(optionsParentValue, optionsChildValue)
+      }
+      if (finalVal) {
+        optionsChanges.push({ key: k, value: finalVal })
+      }
     })
-
-      // const val = getObjectProperty(parent.options, k)
-      // const childVal = getObjectProperty(child.options, k)
-      // if(typeof val!=='undefined'){
-      //   if(typeof childVal!=='undefined'){
-      //     setObjectProperty(partial, k, childVal)
-
-      //   }else {
-
-      //     setObjectProperty(partial, k, val)
-      //   }
-      // }
-      // partial[k] = parent.options![k]
-    // })
-
-    parent.screen.log(parent.type, child.type, 'partial', changes)
-    // we modify also options so in the next level, descendants will get these also
+    if (optionsChanges.length) {
+      parent.screen.log(
+        'CHNGES FOR parent: ',
+        parent.type,
+        'CHILD: ',
+        child.type,
+        'changes names: ',
+        optionsChanges.map(c => c.key),
+        optionsChanges
+      )
+    }
+    // HEADS UP: we modify also options so in the next level, descendants will get these also
     child.options = child.options || {}
-    child = child || {}
-    changes.forEach(c=>{
+    // child = child || {}
+    optionsChanges.forEach(c => {
+      // changes.
       setObjectProperty(child.options, c.key, c.value)
-      setObjectProperty(child, c.key, c.value) // TODO: review! - perhaps whitelist the keys?
+      // const parentSelfValue = getObjectProperty(parent, c.key)
+      // if(typeof parentSelfValue!=='undefined'){
+      const whiteList = ['style', 'input', 'mouse', 'clickable', 'focusable', 'keys', 'keyable', 'focused']
+      if (whiteList.includes(c.key)) {
+        // const childSelfValue = getObjectProperty(child, c.key)
+        setObjectProperty(child, c.key, c.value)
+      }
+      // }
+      // child.render()
+
+      // setObjectProperty(child, c.key, c.value) // TODO: review! - perhaps whitelist the keys?
     })
-    // Object.assign(child.options, {...partial} )
-    // set individually because is the most important
-    // Object.assign(child, {...partial||{}} )
-    child.children.filter(isElement).forEach(grandChild => {
-      copyOptions(child, grandChild, options) // TODO: passing partial to recursion could speed up things?
-    })
+    if (!stopPropagation) {
+      child.children.filter(isElement).forEach(grandChild => {
+        copyOptions(child, grandChild, options) // TODO: passing partial to recursion could speed up things?
+      })
+    }
   }
+}
+
+const deepExtend = require('deep-extend')
+function extend(a: any, b: any): any {
+  return deepExtend(a, b)
 }

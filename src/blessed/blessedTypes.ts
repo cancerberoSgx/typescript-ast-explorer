@@ -69,7 +69,7 @@ export type AllOptions = BoxOptions & TextOptions & TextareaOptions & ListTableO
 export function isScreen(n: any): n is Screen {
   return n && isNode(n) && n.type === 'screen'
 }
-export function isElement(n: any): n is Element {
+export function isElement<T extends Element = Element>(n: any): n is T {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 

@@ -1,5 +1,5 @@
 import * as blessed from 'blessed'
-import { longText } from '../assets/project1/src/text'
+import { longText } from '../../assets/project1/src/text'
 
 // Create a screen object.
 var screen = blessed.screen({
