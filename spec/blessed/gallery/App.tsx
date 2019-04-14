@@ -9,11 +9,13 @@ import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { screen } from './main'
 import { commonOptions } from './util'
+import { RobotDemo } from './RobotDemo';
 
 enum Demo {
   button,
   layout,
-  collapsible
+  collapsible, 
+  robot
 }
 interface P {
   screen: Screen
@@ -34,7 +36,10 @@ export class App extends Component<P, S> {
         return React.render(<LayoutDemo />)
       } else if (demo === Demo.collapsible) {
         return React.render(<CollapsibleDemo />)
-      } else {
+      }  else if (demo === Demo.robot) {
+        return React.render(<RobotDemo  screen={this.props.screen} />)
+      }
+      else {
         throw new Error('Demo unknown ' + d)
       }
     } catch (error) {

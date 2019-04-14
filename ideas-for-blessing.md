@@ -16,9 +16,17 @@
 
 ### widgets: 
 
+ * color picker
  resize
 * bavbar with sub-menues
  * NeverHide:  widget that, if the screen is two small, it will "pop up in a 1 height at bottom or top and if clicked it will show the "hidden" widget (cause is no whough size)
+ * date picker
+
+ using color piker and input develop a widget visual editor - that genreated code once I'm done. rezise,, composition, colors, border,etc. Then with that test things like 
+
+  * small demo of method  setEffects(el, fel, over, out, effects, temp) - Set effects based on two events and attributes.
+    // for copying effects ? 
+
 
 ## Layout
  
@@ -53,3 +61,8 @@
 ### techonoogies to exploit
  
   fonts unicode for icons?
+
+  CSS: http://fela.js.org/docs/advanced/Plugins.html
+  https://github.com/cssinjs/css-functions
+  https://github.com/jxnblk/css-to-object
+  https://github.com/lachlanjc/objectify-css

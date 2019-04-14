@@ -1,9 +1,11 @@
 import { format } from 'ansi-escape-sequences'
 import { asArray } from 'misc-utils-of-mine-generic'
-import { notUndefined } from '../util/misc'
-import { LayoutOptions } from './blessedTypes'
+import { notUndefined, objectMap, objectFilter } from '../util/misc'
+import { LayoutOptions, Button as ButtonElement, IMouseEventArg, colors, RadioButtonOptions, ButtonOptions } from './blessedTypes'
 import { React } from './jsx/createElement'
 import { renderer } from './layoutRenderer'
+import { Component } from './jsx/component';
+import { ObjectStringKeyValueUnion } from 'misc-utils-of-mine-typescript';
 
 export function Br(props: {}) {
   return (
@@ -29,6 +31,48 @@ export function Strong(props: { children?: string | string[]; color?: string }) 
   )
 }
 
+interface P extends ButtonOptions {
+  onClick: onClickHandler<Button>
+  children: string 
+}
+export class Button extends Component<P, {}> {
+  protected defaultOptions(){
+    return {  mouse: true,
+      clickable: true,
+      keys: true,
+      keyable: true,
+      width: '88%',
+      height: 3,
+      border: 'line',
+      top: 0, left: 0,
+      focusable: true,
+      style: {
+        selected: {
+          border: {
+            fg: colors.lightgreen
+          },
+          bg: 'magenta'
+        },
+        hover: {
+          bg: 'blue'
+        }
+      }}
+  }
+  render(){
+    
+    // return 'hello whoshdfihdsofh'
+    // {this.props.children}
+    // this.onCthis.props.onClick
+    // const y : ObjectStringKeyValueUnion
+    return <button onClick={e=>this.props.onClick.bind(this)} content={this.props.children+''} {...{style: this.props.style||{}}} {...this.defaultOptions()}></button>
+
+    // const content = (this.props.children as any).join(' ') // a known proble I have with JSX impls
+    // return <button onClick={e=>this.props.onClick.bind(this)} content={content} {...{style: this.props.style||{}}} {...this.defaultOptions()}></button>
+    // return <button onClick={this.props.onClick.bind(this)} content={this.props.children+''} {...}></button>
+  //  return  <button onClick={this.props.onClick.bind(this)} content={'hello'}></button>
+  }
+}
+
 export function Div(
   props: {
     children?: any
@@ -42,3 +86,5 @@ export function Div(
     </layout>
   )
 }
+// TODO: use the type
+export type onClickHandler<T extends JSX.ElementType> = (this: T, e: IMouseEventArg ) => void

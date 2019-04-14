@@ -66,7 +66,7 @@ export interface BlessedEventOptions {
 
 /** represents event handlers that doesn't exist on blessed - more high level and similar to html/react. This imply some manual event registration and mapping to blessed supported ones. */
 export interface ArtificialEventOptions<T extends Element> {
-  [ArtificialEventOptionNames.onClick]?: (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void
+  [ArtificialEventOptionNames.onClick]?: OnClickHandler<T>
   [ArtificialEventOptionNames.onKeyPress]?: (
     this: T,
     e: {
@@ -237,6 +237,9 @@ interface EventOptions<T extends Element> extends BlessedEventOptions, Artificia
   children?: JSX.BlessedJsxNode
 }
 
-interface ArtificialEvent<T extends Element> {
+export interface ArtificialEvent<T extends Element> {
+  // TODO : shouldbe JSX.ElementType not ELent cause targets can be also components, etc
   currentTarget: T
 }
+
+export type OnClickHandler<T extends Element> = (this: T, e: IMouseEventArg & ArtificialEvent<T>) => void

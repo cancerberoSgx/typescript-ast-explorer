@@ -1,5 +1,5 @@
-import { getObjectProperty } from '../util/misc'
-import { isElement, Layout, LayoutIterator } from './blessedTypes'
+import { getObjectProperty } from '../util/misc';
+import { isElement, Layout, LayoutIterator } from './blessedTypes';
 
 /**
  * The same blessed Layout renderer function with a few modifications and adapted to TypeScript. Modifications:
@@ -122,3 +122,31 @@ export function renderer(this: Layout, coords: { xl: number; xi: number; yl: num
   }
   return iterator
 }
+
+
+// declare global {
+// export namespace Widgets {
+//   export namespace Types{
+//     interface TStyle {
+//       display: string, 
+//       overflow: string
+//     }
+//   }}
+// }
+// // export declare module blessed {
+//   // export namespace blessed {
+//     // declare namespaceblessed {
+//       export namespace Widgets {
+//         export namespace Types {
+//           export interface TStyle {
+//             display: 'string', overflow: string
+//           }
+//       }
+//       // export interface LayoutOptions{
+//       //   foo: number
+//       // }
+//     }
+//     // }
+ 
+//   // }
+// // }

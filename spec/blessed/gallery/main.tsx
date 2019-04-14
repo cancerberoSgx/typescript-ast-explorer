@@ -5,9 +5,9 @@ import { App } from './App'
 
 export const screen = blessed.screen({
   smartCSR: true,
-  log: 'log.txt',
+  log: './log.txt',
   focusable: true,
-  autoPadding: true,
+  // autoPadding: true,
   sendFocus: true
 })
 try {
@@ -18,11 +18,11 @@ try {
   screen.key('tab', k => screen.focusNext())
   screen.key('S-tab', k => screen.focusPrevious())
 
-  setInterval(() => {
-    // screen.cursorReset()
-    // screen.restoreFocus()
-    screen.render() // i need to do this because when I click outside the clickable elements then they stop receiving clicks !
-  }, 2000)
+  // setInterval(() => {
+  //   // screen.cursorReset()
+  //   // screen.restoreFocus()
+  //   screen.render() // i need to do this because when I click outside the clickable elements then they stop receiving clicks !
+  // }, 2000)
 } catch (error) {
   screen.log('ERROR', error)
   console.error('ERROR', error)

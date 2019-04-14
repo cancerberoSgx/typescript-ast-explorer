@@ -60,12 +60,14 @@ export type NodeGenericEventType = blessed.Widgets.NodeGenericEventType
 export type Border = blessed.Widgets.Types.TStyle
 export type Style = blessed.Widgets.Types.TStyle
 export type ListElementStyle = blessed.Widgets.ListElementStyle
+export type Program = blessed.BlessedProgram
 
 export type Markdown = contrib.Widgets.MarkdownElement
 export const colors = blessed.colors.colorNames
 export type AllCommonOptions = BoxOptions | TextOptions | TextareaOptions | ListTableOptions | ListOptions
 export type AllOptions = BoxOptions & TextOptions & TextareaOptions & ListTableOptions & ListOptions
 
+export {blessed}
 
 /** isElement type guard without type parameters */
 export function isElement(n: any): n is Element {
