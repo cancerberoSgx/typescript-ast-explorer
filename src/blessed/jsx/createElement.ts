@@ -40,15 +40,15 @@ class BlessedJsxImpl implements BlessedJsx {
   render(e: JSX.Element) {
     if (!this.defaultPluginsInstalled) {
       this.defaultPluginsInstalled = true
-      installOptionsPropagationPlugin()
+      installOptionsPropagationPlugin({include: ['style.bg']})
     }
 
     const event: AfterRenderEvent = { el: (e as any) as Element }
     this.afterRenderListeners.forEach(l => l(event))
 
-    setTimeout(() => {
-      screen.render()
-    }, 1000);
+    // setTimeout(() => {
+    //   screen.render()
+    // }, 1000);
     return e as any
   }
 

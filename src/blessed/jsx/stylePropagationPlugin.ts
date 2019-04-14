@@ -23,9 +23,12 @@ interface Options {
 }
 
 /** @internal */
-export function installOptionsPropagationPlugin(options: Options = {include: ['styles.bg']}){//{exclude: ['hover']}) {
+export function installOptionsPropagationPlugin(options: Options = {include: []}) {//{exclude: ['hover']}) {
   React.addAfterRenderListener(event => {
     try {
+      if(options.include.length===0){
+        return 
+      }
     event.el.children.filter(isElement).forEach(child => copyOptions(event.el, child, options))
       
     } catch (error) {
@@ -41,19 +44,19 @@ export function installOptionsPropagationPlugin(options: Options = {include: ['s
       const changes :{key: string, value: any}[]=[]
       // const 
           // objectKeys(parent.options).filter(k=>!options.exclude!.find(e=>!!parent.options && !!getObjectProperty(parent.options, e))).forEach(k=>{
-      objectKeys(parent.options).forEach(k=>{
-        const included = options.include.includes(k)//.find(e=>!!getObjectProperty(parent.options, e))
-    parent.screen.log(parent.type, child.type, 'included', !!included, k)
-
-        if(!included){
-          return 
-        }
+            options.include.forEach(k=>{
+              const val = getObjectProperty(parent.options, k)
+              if(typeof val==='undefined'){
+                return 
+              }
+        // const included = options.include.includes(k)//.find(e=>!!getObjectProperty(parent.options, e))
+    // parent.screen.log(parent.type, child.type, 'included', !!included, k)
+        // if(!included){
+          // return 
+        // }
         const excluded = options.exclude!.includes(k)//.find(e=>!!getObjectProperty(parent.options, e))
         const important = options.important!.includes(k)
-        const val = getObjectProperty(parent.options, k)
-        if(typeof val==='undefined'){
-          return 
-        }
+       
         const childVal = getObjectProperty(child.options, k)
         let finalVal: any|undefined
         if(excluded){
