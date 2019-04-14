@@ -14,13 +14,13 @@ export const commonOptions: () => { style: Style } = () => ({
       fg: 'red',
       bold: true
     },
-    hover: {
-      // border: {
-      //   fg: 'black',
-      //   // bg: 'cyan'
-      // },
-      bg: 'green'
-    },
+    // hover: {
+    //   // border: {
+    //   //   fg: 'black',
+    //   //   // bg: 'cyan'
+    //   // },
+    //   bg: 'green'
+    // },
     selected: {
       // border: {
       //   fg: 'cyan',

@@ -12,53 +12,53 @@ export class CollapsibleDemo extends Component {
   render() {
     // screen.log(c)
     const common: () => BoxOptions = () => ({
-      ...commonOptions(),
+      // ...commonOptions(),
       mouse: true,
       clickable: true,
       keys: true,
       keyable: true,
       focusable: true,
       style: {
-        ...commonOptions(),
-        selected: {
-          border: {
-            fg: colors.lightgreen
-          },
-          bg: 'magenta'
-        },
-        hover: {
-          bg: 'blue'
-        }
+        // ...commonOptions(),
+        // selected: {
+        //   border: {
+        //     fg: colors.lightgreen
+        //   },
+        //   bg: 'magenta'
+        // },
+        // hover: {
+        //   bg: 'blue'
+        // }
       }
     })
     const buttonOptions: () => BoxOptions = () => ({
-      ...common(),
+      // ...common(),
       padding: 1,
       border: 'line',
       style: {
-        ...common().style,
-        border: {
-          fg: 'cyan'
-        },
-        bg: 'yellow'
+        // ...common().style,
+        // border: {
+        //   fg: 'cyan'
+        // },
+        // bg: 'yellow'
       }
     })
     const inputTextOptions: () => InputOptions = () => ({
-      ...common(),
-      padding: 1,
-      width: '100%',
-      border: 'line',
-      inputOnFocus: true,
-      style: {
-        ...common().style,
-        border: {
-          fg: 'cyan'
-        },
-        bg: colors.lightyellow
-      }
+      // ...common(),
+      // padding: 1,
+      // width: '100%',
+      // border: 'line',
+      // inputOnFocus: true,
+      // style: {
+      //   ...common().style,
+      //   border: {
+      //     fg: 'cyan'
+      //   },
+      //   bg: colors.lightyellow
+      // }
     })
     const el = (
-      <Div>
+      <Div  style={{bg: 'cyan', fg: 'black'}}>  //style={{hover: {bg: colors.lightred}}}>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
         "collapse"/"expand" functionality in any blessed Element. <Br />
         Has mainly two modes,
@@ -109,13 +109,14 @@ export class CollapsibleDemo extends Component {
             <Br />
             <Strong>Manual mode:</Strong>
             <Br />
-            <layout
+            <layout  
               onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 4 })}
               label="Search Hero"
               renderer={renderer}
               style={{
                 //@ts-ignore
-                overflow: 'hidden'
+                overflow: 'hidden',
+                ...{bg: 'black', fg: 'lightred'}
               }}
               width="100%"
               height="100%"

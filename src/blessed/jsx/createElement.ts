@@ -19,8 +19,9 @@ import {
   BlessedJsxAttrs,
   EventOptionNames
 } from './types'
+import { screen } from '../../../spec/blessed/gallery/main';
 interface Options {
-  dontInerithStyle?: boolean
+  dontInheritStyle?: boolean
 }
 
 interface ComponentConstructor<P = {}, S = {}> {
@@ -30,7 +31,6 @@ interface ComponentConstructor<P = {}, S = {}> {
 function isComponentConstructor(tag: any): tag is ComponentConstructor {
   return typeof tag === 'function' && tag.prototype && tag.prototype.render
 }
-// type  BlessedNodeImpl =  JSX.ReactNode & Element
 /** In this implementation, all the work is dont by createElement, that returns ready to use blessed elements. Attributes and children are only implemented for intrinsic elements and all blessed types in JSX.IntrinsicElement should be supported. All event handlers in types are supported.
  */
 class BlessedJsxImpl implements BlessedJsx {
@@ -45,6 +45,10 @@ class BlessedJsxImpl implements BlessedJsx {
 
     const event: AfterRenderEvent = { el: (e as any) as Element }
     this.afterRenderListeners.forEach(l => l(event))
+
+    setTimeout(() => {
+      screen.render()
+    }, 1000);
     return e as any
   }
 
