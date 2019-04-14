@@ -1,13 +1,16 @@
-import { BoxOptions } from '../../../src/blessed/blessedTypes'
+// import { colors as c } from 'blessed'
+import { BoxOptions, colors, InputOptions } from '../../../src/blessed/blessedTypes'
 import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collapsible'
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div, Strong } from '../../../src/blessed/jsxUtil'
+import { Br, Div, NbrSpc, Strong } from '../../../src/blessed/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
+// import { screen } from './main'
 import { commonOptions } from './util'
 
 export class CollapsibleDemo extends Component {
   render() {
+    // screen.log(c)
     const common: () => BoxOptions = () => ({
       ...commonOptions(),
       mouse: true,
@@ -15,47 +18,45 @@ export class CollapsibleDemo extends Component {
       keys: true,
       keyable: true,
       focusable: true,
-
       style: {
-        ...commonOptions().style,
+        ...commonOptions(),
         selected: {
           border: {
-            bg: 'blue'
+            fg: colors.lightgreen
           },
           bg: 'magenta'
         },
         hover: {
           bg: 'blue'
         }
-        // bg: 'yellow'
       }
-      // draggable: false
     })
     const buttonOptions: () => BoxOptions = () => ({
       ...common(),
       padding: 1,
       border: 'line',
-      // // border: 'line',
       style: {
         ...common().style,
-        boder: {
+        border: {
           fg: 'cyan'
         },
-
-        // hover: {
-        // bg: 'blue'
-        // },
         bg: 'yellow'
       }
     })
-    // const radioOptions: BoxOptions = {
-    //   ...common,
-    //   // style: {
-    //   //   hover: {
-    //   //     fg: 'red'
-    //   //   }
-    //   // }
-    // }
+    const inputTextOptions: () => InputOptions = () => ({
+      ...common(),
+      padding: 1,
+      width: '100%',
+      border: 'line',
+      inputOnFocus: true,
+      style: {
+        ...common().style,
+        border: {
+          fg: 'cyan'
+        },
+        bg: colors.lightyellow
+      }
+    })
     const el = (
       <Div>
         Collapsible are a couple of functions, implemented by me (not in blessed distribution) that allow to install
@@ -81,7 +82,7 @@ export class CollapsibleDemo extends Component {
               width="100%"
               height="100%"
               border="line">
-              <textbox {...common()} content="Tell us your name" />
+              <textbox {...inputTextOptions()} content="Tell us your name" />
               <Br />
               <checkbox {...common()} content="Female?" />
               <Br />
@@ -97,12 +98,14 @@ export class CollapsibleDemo extends Component {
               />
               <Br />
               <button {...buttonOptions()} content="Submit" />
-              ---
+              <NbrSpc />
+              <NbrSpc />
+              <NbrSpc />
               <button {...buttonOptions()} content="Go back" />
             </layout>
           </layout>
 
-          <layout width="50%" height="100%" renderer={renderer}>
+          <layout width="50%" height="90%" renderer={renderer}>
             <Br />
             <Strong>Manual mode:</Strong>
             <Br />
@@ -110,7 +113,10 @@ export class CollapsibleDemo extends Component {
               onRender={e => installCollapsible(e.currentTarget, { collapsedHeight: 4 })}
               label="Search Hero"
               renderer={renderer}
-              style={{ overflow: 'hidden' }}
+              style={{
+                //@ts-ignore
+                overflow: 'hidden'
+              }}
               width="100%"
               height="100%"
               border="line">
@@ -123,7 +129,7 @@ export class CollapsibleDemo extends Component {
                 onChange={e => toggleCollapsed(e.currentTarget.parent as any, true)}
               />
               <Br />
-              <textbox {...common()} content="By Name" />
+              <textbox {...inputTextOptions()} content="By Name" />
               <Br />
               <checkbox {...common()} content="Female?" />
               <Br />
@@ -142,22 +148,15 @@ export class CollapsibleDemo extends Component {
               <checkbox {...common()} content="Include Secondary Heroes" />
               <Br />
               <button {...buttonOptions()} content="Submit" />
-              ---
+              <NbrSpc />
+              <NbrSpc />
+              <NbrSpc />
               <button {...buttonOptions()} content="Go back" />
             </layout>
           </layout>
         </layout>
       </Div>
     )
-
     return el
   }
-  // protected installCollapsible1(e: INodeGenericEventArg){
-  //     installCollapsible(this.blessedElement.f, {})
-  //   // closeModal(screen)
-  //   showInModal(screen,  !!this.blessedElement+' - '+ JSON.stringify(e))
-  //   // console.log(e);
-  //   // screen.render()
-
-  // }
 }

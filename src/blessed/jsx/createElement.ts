@@ -1,10 +1,19 @@
 import * as blessed from 'blessed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
-import { BoxOptions, Checkbox, Element, ElementOptions, isElement } from '../blessedTypes'
+import { Checkbox, Element, isElement } from '../blessedTypes'
 import { Component } from './component'
+import { installStylePropagationPlugin } from './stylePropagationPlugin'
 import {
+  AfterElementCreatedEvent,
+  AfterElementCreatedListener,
+  AfterRenderEvent,
+  AfterRenderListener,
   ArtificialEventOptionNames,
   ArtificialEventOptions,
+  BeforeAppendChildEvent,
+  BeforeAppendChildListener,
+  BeforeElementCreatedEvent,
+  BeforeElementCreatedListener,
   BlessedEventOptions,
   BlessedJsx,
   BlessedJsxAttrs,
@@ -21,15 +30,21 @@ interface ComponentConstructor<P = {}, S = {}> {
 function isComponentConstructor(tag: any): tag is ComponentConstructor {
   return typeof tag === 'function' && tag.prototype && tag.prototype.render
 }
-
 // type  BlessedNodeImpl =  JSX.ReactNode & Element
-/**
- In this implementation, all the work is dont by createElement, that returns ready to use blessed elements. Attributes and children are only implemented for intrinsic elements and all blessed types in JSX.IntrinsicElement should be supported. All event handlers in types are supported. 
-  */
+/** In this implementation, all the work is dont by createElement, that returns ready to use blessed elements. Attributes and children are only implemented for intrinsic elements and all blessed types in JSX.IntrinsicElement should be supported. All event handlers in types are supported.
+ */
 class BlessedJsxImpl implements BlessedJsx {
   constructor(protected options: Options = {}) {}
 
+  private defaultPluginsInstalled = false
   render(e: JSX.Element) {
+    if (!this.defaultPluginsInstalled) {
+      this.defaultPluginsInstalled = true
+      installStylePropagationPlugin()
+    }
+
+    const event: AfterRenderEvent = { el: (e as any) as Element }
+    this.afterRenderListeners.forEach(l => l(event))
     return e as any
   }
 
@@ -208,45 +223,24 @@ class BlessedJsxImpl implements BlessedJsx {
   }
 
   private afterElementCreatedListeners: AfterElementCreatedListener[] = []
-  /** add listeners that will be notifies just after the Blessed Element instance is created. Attributes and children have not yet been set, besides blessed options native ones.*/
   addAfterElementCreatedListener(l: AfterElementCreatedListener): void {
     this.afterElementCreatedListeners.push(l)
   }
 
   private beforeAppendChildListeners: BeforeAppendChildListener[] = []
-  /** add listeners that will be notified just before a child is appended to its parent blessed element even for notes created from JSXText. If any listener return true the notification chain will stop, the children won't be appended to the element. */
   addBeforeAppendChildListener(l: BeforeAppendChildListener): void {
     this.beforeAppendChildListeners.push(l)
   }
 
   private beforeElementCreatedListeners: BeforeElementCreatedListener[] = []
-  /** add listeners that will be notified just before the blessed.foo() function is call with all the options as they are (normalized and valid) and  also children blessed elements. If any of the listeners returns a blessed element, it will interrupt the listener chain and that instance will be used instead of calling the blessed function. */
   addBeforeElementCreatedListener(l: BeforeElementCreatedListener): void {
     this.beforeElementCreatedListeners.push(l)
+  }
+
+  private afterRenderListeners: AfterRenderListener[] = []
+  addAfterRenderListener(l: AfterRenderListener): void {
+    this.afterRenderListeners.push(l)
   }
 }
 
 export const React: BlessedJsx = new BlessedJsxImpl()
-
-type AfterElementCreatedListener = (event: AfterElementCreatedEvent) => void
-interface AfterElementCreatedEvent {
-  el: Element
-  tag: JSX.ElementType
-  attrs: BlessedJsxAttrs
-  children: JSX.BlessedJsxNode[]
-  component?: Component
-}
-
-type BeforeAppendChildListener = (event: BeforeAppendChildEvent) => boolean
-interface BeforeAppendChildEvent {
-  el: Element
-  child: Element
-}
-
-type BeforeElementCreatedListener = (event: BeforeElementCreatedEvent) => Element | undefined
-interface BeforeElementCreatedEvent<Options extends ElementOptions = BoxOptions> {
-  fn: (options: Options) => Element
-  options: Options
-  name: keyof JSX.IntrinsicElements
-  children: Element[]
-}

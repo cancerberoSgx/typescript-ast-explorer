@@ -1,7 +1,7 @@
 import { randomIntBetween } from 'misc-utils-of-mine-generic'
-import { ListElementStyle } from '../../../src/blessed/blessedTypes'
+import { Style } from '../../../src/blessed/blessedTypes'
 
-export const commonOptions: () => ListElementStyle = () => ({
+export const commonOptions: () => { style: Style } = () => ({
   style: {
     bg: 'gray',
     fg: 'black',
@@ -36,7 +36,7 @@ export const commonOptions: () => ListElementStyle = () => ({
       // fg: 'green'
       // }
     }
-  } as ListElementStyle
+  }
   // mouse: true,
   // clickable: true,
   // keys: true,

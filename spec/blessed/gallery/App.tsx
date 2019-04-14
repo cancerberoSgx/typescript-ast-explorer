@@ -7,6 +7,7 @@ import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../sr
 import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
+import { screen } from './main'
 import { commonOptions } from './util'
 
 enum Demo {
@@ -22,19 +23,24 @@ interface S {
 }
 export class App extends Component<P, S> {
   private renderDemo(d: string) {
-    const demo = enumValueFromString(d, Demo)
-    if (typeof demo === 'undefined') {
-      throw new Error('Demo not found ' + d)
+    try {
+      const demo = enumValueFromString(d, Demo)
+      if (typeof demo === 'undefined') {
+        throw new Error('Demo not found ' + d)
+      }
+      if (demo === Demo.button) {
+        return React.render(<ButtonDemo screen={this.props.screen} />)
+      } else if (demo === Demo.layout) {
+        return React.render(<LayoutDemo />)
+      } else if (demo === Demo.collapsible) {
+        return React.render(<CollapsibleDemo />)
+      } else {
+        throw new Error('Demo unknown ' + d)
+      }
+    } catch (error) {
+      screen.log('Error in demo ', error)
     }
-    if (demo === Demo.button) {
-      return React.render(<ButtonDemo screen={this.props.screen} />)
-    } else if (demo === Demo.layout) {
-      return React.render(<LayoutDemo />)
-    } else if (demo === Demo.collapsible) {
-      return React.render(<CollapsibleDemo />)
-    } else {
-      throw new Error('Demo unknown ' + d)
-    }
+    throw new Error('Demo unknown ' + d)
   }
   render() {
     const { screen } = this.props

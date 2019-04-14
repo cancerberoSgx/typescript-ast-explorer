@@ -28,6 +28,7 @@ var layout = blessed.layout({
   padding: 1,
   style: {
     ...checkboxOptions.style,
+    //@ts-ignore
     overflow: 'hidden'
   },
   renderer
@@ -53,6 +54,7 @@ const note = contrib.markdown({
   label: 'Notes',
   style: {
     ...checkboxOptions.style,
+    //@ts-ignore
     display: 'block'
   },
   markdown: `

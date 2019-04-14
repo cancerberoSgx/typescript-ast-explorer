@@ -8,7 +8,7 @@ var screen = blessed.screen()
 var grid = new contrib.grid({ rows: 1, cols: 2, screen: screen })
 
 var tree = grid.set(0, 0, 1, 1, contrib.tree, {
-  style: { text: 'red' },
+  style: { fg: 'red' },
   template: { lines: true },
   label: 'Filesystem Tree'
 })

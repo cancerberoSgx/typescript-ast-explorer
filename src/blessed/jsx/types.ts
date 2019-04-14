@@ -8,6 +8,7 @@ import {
   CheckboxOptions,
   Element as BlessedElement,
   Element,
+  ElementOptions,
   FileManager,
   FileManagerOptions,
   Form,
@@ -167,7 +168,59 @@ export interface BlessedJsx {
    * Creates a blessed.element from given JSX expression. Will create blessed nodes recursively, bottom-up.
    */
   render(e: JSX.Element, options?: RenderOptions): Element
+
+  /** add listeners that will be notifies just after the Blessed Element instance is created. Attributes and children have not yet been set, besides blessed options native ones.*/
+  addAfterElementCreatedListener(l: AfterElementCreatedListener): void
+
+  /** add listeners that will be notified just before a child is appended to its parent blessed element even for notes created from JSXText. If any listener return true the notification chain will stop, the children won't be appended to the element. */
+  addBeforeAppendChildListener(l: BeforeAppendChildListener): void
+
+  /**
+   * add listeners that will be notified just before the blessed.foo() function is call with all the options as they
+   *  are (normalized and valid).Children are blessed elements unless the TextNodes that are still literals so be careful!.
+   * If any of the listeners returns a blessed element, it will interrupt the listener chain and that instance will be
+   * used instead of calling the blessed function.
+   * */
+  addBeforeElementCreatedListener(l: BeforeElementCreatedListener): void
+
+  /**
+   * Add listeners that will be called after React.render() call finished rendering a whole hierarchy of items
+   */
+  addAfterRenderListener(l: AfterRenderListener): void
 }
+
+/** @internal */
+export type AfterElementCreatedListener = (event: AfterElementCreatedEvent) => void
+/** @internal */
+export interface AfterElementCreatedEvent {
+  el: Element
+  tag: JSX.ElementType
+  attrs: BlessedJsxAttrs
+  children: JSX.BlessedJsxNode[]
+  component?: Component
+}
+/** @internal */
+export type BeforeAppendChildListener = (event: BeforeAppendChildEvent) => boolean
+/** @internal */
+export interface BeforeAppendChildEvent {
+  el: Element
+  child: Element
+}
+/** @internal */
+export type BeforeElementCreatedListener = (event: BeforeElementCreatedEvent) => Element | undefined
+/** @internal */
+export interface BeforeElementCreatedEvent<Options extends ElementOptions = BoxOptions> {
+  fn: (options: Options) => Element
+  options: Options
+  name: keyof JSX.IntrinsicElements
+  children: (Element | JSX.BlessedJsxText)[]
+}
+/** @internal */
+export interface AfterRenderEvent {
+  el: Element
+}
+/** @internal */
+export type AfterRenderListener = (event: AfterRenderEvent) => void
 
 interface RenderOptions {}
 

@@ -6,7 +6,19 @@ import { React } from './jsx/createElement'
 import { renderer } from './layoutRenderer'
 
 export function Br(props: {}) {
-  return <text style={{ display: 'block' }} content=" " />
+  return (
+    <text
+      style={{
+        //@ts-ignore
+        display: 'block'
+      }}
+      content=""
+    />
+  )
+}
+
+export function NbrSpc(props: {}) {
+  return <text content=" " />
 }
 
 export function Strong(props: { children?: string | string[]; color?: string }) {

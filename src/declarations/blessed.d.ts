@@ -451,13 +451,32 @@ export namespace Widgets {
 
     type TMouseAction = 'mousedown' | 'mouseup' | 'mousemove'
 
+    interface TBorder extends TStyle {
+      /** Type of border (line or bg). bg by default. */
+      type?: BorderType
+
+      /** Character to use if bg type, default is space.   */
+      ch?: string
+      // /** border background color */
+      // bg?: Color
+      // /** border foreground color */
+      // fg?: Color
+
+      //   /** border bold attribute */
+      // bold?: boolean
+      //   /** border underline attribute */
+      // underline?: boolean
+
+      top?: boolean
+      left?: boolean
+      right?: boolean
+      bottom?: boolean
+    }
     interface TStyle {
       // leave it open for custom style properties
-      [name: string]: any
-      type?: BorderType
-      bg?: string
-      fg?: string
-      ch?: string
+      // [name: string]: any
+      bg?: Color
+      fg?: Color
       bold?: boolean
       underline?: boolean
       blink?: boolean
@@ -465,37 +484,66 @@ export namespace Widgets {
       invisible?: boolean
       transparent?: boolean
       shadow?: boolean
-      // border?: TStyle|Border|BorderType
+      border?: TBorder | BorderType
       label?: string
       track?: TStyle
-      // scrollbar?: TStyle | true
+      scrollbar?: TStyle | true
       focus?: TStyle
+      item?: TStyle
+      selected?: TStyle
       hover?: TStyle
+
+      //   /**
+      //    * Type of border (line or bg). bg by default.
+      //    */
+      //   type?: BorderType
+
+      //   /**
+      //    * Character to use if bg type, default is space.
+      //    */
+      //   ch?: string
+
+      //   /**
+      //    * Border foreground and background, must be numbers (-1 for default).
+      //    */
+      //   bg?: number
+      //   fg?: number
+
+      //   /**
+      //    * Border attributes.
+      //    */
+      //   bold?: boolean
+      //   underline?: boolean
+
+      //   top?: boolean
+      //   left?: boolean
+      //   right?: boolean
+      //   bottom?: boolean
     }
 
-    interface TBorder {
-      /**
-       * Type of border (line or bg). bg by default.
-       */
-      type?: BorderType
+    // interface TBorder {
+    //   /**
+    //    * Type of border (line or bg). bg by default.
+    //    */
+    //   type?: BorderType
 
-      /**
-       * Character to use if bg type, default is space.
-       */
-      ch?: string
+    //   /**
+    //    * Character to use if bg type, default is space.
+    //    */
+    //   ch?: string
 
-      /**
-       * Border foreground and background, must be numbers (-1 for default).
-       */
-      bg?: number
-      fg?: number
+    //   /**
+    //    * Border foreground and background, must be numbers (-1 for default).
+    //    */
+    //   bg?: number
+    //   fg?: number
 
-      /**
-       * Border attributes.
-       */
-      bold?: boolean
-      underline?: boolean
-    }
+    //   /**
+    //    * Border attributes.
+    //    */
+    //   bold?: boolean
+    //   underline?: boolean
+    // }
 
     interface TCursor {
       /**
@@ -805,8 +853,8 @@ export namespace Widgets {
      */
     emitDescendants(type?: string, ...args: any[]): void
     emitAncestors(): void
-    hasDescendant(target: Node): void
-    hasAncestor(target: Node): boolean
+    hasDescendant<T extends Node = Node>(target: Node): Node
+    hasAncestor<T extends Node = Node>(target: Node): Node
     destroy(): void
 
     /**
@@ -1527,6 +1575,8 @@ export namespace Widgets {
     bottom?: number
   }
 
+  type Color = number | string
+
   class PositionCoords {
     xi: number
     xl: number
@@ -1542,40 +1592,40 @@ export namespace Widgets {
   }
 
   type BorderType = 'line' | 'bg'
-  interface Border {
-    /**
-     * Type of border (line or bg). bg by default.
-     */
-    type?: BorderType
+  // interface Border {
+  //   /**
+  //    * Type of border (line or bg). bg by default.
+  //    */
+  //   type?: BorderType
 
-    /**
-     * Character to use if bg type, default is space.
-     */
-    ch?: string
+  //   /**
+  //    * Character to use if bg type, default is space.
+  //    */
+  //   ch?: string
 
-    /**
-     * Border foreground and background, must be numbers (-1 for default).
-     */
-    bg?: number
-    fg?: number
+  //   /**
+  //    * Border foreground and background, must be numbers (-1 for default).
+  //    */
+  //   bg?: number
+  //   fg?: number
 
-    /**
-     * Border attributes.
-     */
-    bold?: boolean
-    underline?: boolean
+  //   /**
+  //    * Border attributes.
+  //    */
+  //   bold?: boolean
+  //   underline?: boolean
 
-    top?: boolean
-    left?: boolean
-    right?: boolean
-    bottom?: boolean
-  }
+  //   top?: boolean
+  //   left?: boolean
+  //   right?: boolean
+  //   bottom?: boolean
+  // }
 
   interface ElementOptions extends INodeOptions {
     tags?: boolean
 
-    fg?: string
-    bg?: string
+    fg?: Color
+    bg?: Color
     bold?: boolean
     underline?: boolean
 
@@ -1584,7 +1634,7 @@ export namespace Widgets {
     /**
      * Border object, see below.
      */
-    border?: Border | BorderType
+    border?: TBorder | BorderType
 
     /**
      * Element's text content.
@@ -2098,7 +2148,7 @@ export namespace Widgets {
      * Object enabling a scrollbar.
      * Style of the scrollbar track if present (takes regular style options).
      */
-    scrollbar?: { style?: Widgets.Types.TStyle; track?: any; ch?: string } | boolean
+    scrollbar?: { style?: Widgets.Types.TStyle; track?: Widgets.Types.TStyle; ch?: string } | boolean
   }
 
   interface ScrollableTextOptions extends ScrollableBoxOptions {
@@ -2242,8 +2292,8 @@ export namespace Widgets {
      * Treated the same as a border object. (attributes can be contained in style).
      */
     type?: string
-    bg?: string
-    fg?: string
+    bg?: Color
+    fg?: Color
     ch?: string
   }
 
@@ -3494,8 +3544,49 @@ export function terminal(options?: Widgets.TerminalOptions): Widgets.TerminalEle
 export function layout(options?: Widgets.LayoutOptions): Widgets.LayoutElement
 export function escape(item: any): any
 
+type ColorRgb = [number, number.number]
 export const colors: {
-  match(hexColor: string): string
+  match(r1: Widgets.Color | ColorRgb, g1?: number, b1?: number): number
+  convert(color: Widgets.Color): number
+  mixColors(c1: number, c2: number, alpha: number): number
+  RGBToHex(r: number, g: number, b: number): string
+  RGBToHex(hex: string): ColorRgbr
+  blend(attr: number, attr2?: number, alpha?: number): number
+  colorNames: {
+    black: 0
+    red: 1
+    green: 2
+    yellow: 3
+    blue: 4
+    magenta: 5
+    cyan: 6
+    white: 7
+    // light
+    lightblack: 8
+    lightred: 9
+    lightgreen: 10
+    lightyellow: 11
+    lightblue: 12
+    lightmagenta: 13
+    lightcyan: 14
+    lightwhite: 15
+    // bright
+    brightblack: 8
+    brightred: 9
+    brightgreen: 10
+    brightyellow: 11
+    brightblue: 12
+    brightmagenta: 13
+    brightcyan: 14
+    brightwhite: 15
+    // alternate spellings
+    grey: 8
+    gray: 8
+    lightgrey: 7
+    lightgray: 7
+    brightgrey: 7
+    brightgray: 7
+  }
 }
 
 export const unicode: Unicode

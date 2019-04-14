@@ -75,3 +75,4 @@ TODO: performance? use another thing ? use content? join several JSXText in one 
 
  * props.children typings
  * shuld we support also blessed-contrib ? here ? another project?
+ //TODO: research: to work purely with data / options and not with the elements already instantiated, we should create an intermediary representation  n createElement() and only create the blessed elements in render() so we have the time to process the option/tree before calling blessed constructors. for exapmle propagate style plugin is costly because it manipultes the elements instead of options AFTER they are rendered.... 

@@ -1,6 +1,6 @@
 import * as blessed from 'blessed'
 import { installExitKeys } from '../../src/blessed/blessed'
-import { BoxOptions } from '../../src/blessed/blessedTypes'
+import { BoxOptions, Style } from '../../src/blessed/blessedTypes'
 import { React } from '../../src/blessed/jsx/createElement'
 import { renderer } from '../../src/blessed/layoutRenderer'
 
@@ -43,33 +43,35 @@ abstract class Component<P = {}> {
 
 class Comp2 extends Component<{ friends: string[] }> {
   render() {
+    //@ts-ignore
+    const style: Style = { style: { display: 'block' } }
     return (
       <layout {...commonOptions} width="100%" height="100%" parent={screen} renderer={renderer}>
         A Duplex stream is one that implements both Readable and Writable, such as a TCP socket connection. Because
         JavaScript does not have support for multiple inheritance, the stream.Duplex class is extended to implement a
         Duplex stream (as opposed to extending the stream.Readable and stream.Writable classes).
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
-        <checkbox content="understand?" style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
+        <checkbox {...style} content="understand?" />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
         The stream.Duplex class prototypically inherits from stream.Readable and parasitically from stream.Writable, but
         instanceof will work properly for both base classes due to overriding Symbol.hasInstance on stream.Writable.
         Custom Duplex streams must call the new stream.Duplex([options]) constructor and implement both the
         readable._read() and writable._write() methods.
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
-        <checkbox content="really?" style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
+        <checkbox {...style} content="really?" />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
         {this.props.friends.map(f => (
           <text content={f}> - </text>
         ))}
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
         <text content="years old" />
-        <text content={''} style={{ display: 'block' }} />
-        <text content={''} style={{ display: 'block' }} />
+        <text {...style} content={''} />
+        <text {...style} content={''} />
       </layout>
     )
   }
