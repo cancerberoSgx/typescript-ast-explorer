@@ -66,13 +66,48 @@ export const colors = blessed.colors.colorNames
 export type AllCommonOptions = BoxOptions | TextOptions | TextareaOptions | ListTableOptions | ListOptions
 export type AllOptions = BoxOptions & TextOptions & TextareaOptions & ListTableOptions & ListOptions
 
-export function isScreen(n: any): n is Screen {
-  return n && isNode(n) && n.type === 'screen'
+
+/** isElement type guard without type parameters */
+export function isElement(n: any): n is Element {
+  return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
-export function isElement<T extends Element = Element>(n: any): n is T {
+/** isElement type guard that cast to a concrete type by without really asserting on the concrete type - use only if sure */
+export function isElementUnSafe<E extends Element = Element>(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 
+/** isNode type guard by asserting on a given type name (recommended) */
+export function isNodeByType<E extends Element = Element>(n: any, type :  WidgetTypeNames): n is WidgetTypes[typeof type] {
+  return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
+}
+export function isScreen(n: any): n is Screen {
+  return isNodeByType(n, 'screen')
+  // return n && isNode(n) && n.type === 'screen'
+}
+/** isNode type guard without type parameters */
 export function isNode(n: any): n is Node {
   return n && n.insertBefore && n.forDescendants
 }
+
+export interface WidgetTypes { // TODO: finish
+  element: Element
+    node: Node
+    screen: Screen
+    box:   Box
+    text: Text
+    line: Line
+    textarea: Textarea
+    layout: Layout
+    button: Button
+    checkbox: Button
+    bigtext: BigText
+    list: List
+    filemanager: FileManager
+    listtable: ListTable
+    listbar: ListBar
+    form: Form
+    textbox: Textbox
+    radioset: RadioSet
+    radiobutton: RadioButton
+  }
+  type WidgetTypeNames = keyof WidgetTypes

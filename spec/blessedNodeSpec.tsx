@@ -15,7 +15,6 @@ describe('blessed node', () => {
       assert: e => {
         expect(find<Textarea>(e, c => c.type === 'button')!.getContent()).toContain('button123')
         // console.log(find<Textbox>(e, c => isElement<Textbox>(c) && c.secret)!.getContent());
-
         // expect(find<Textbox>(e, c => isElement<Textbox>(c) && c.secret)!.getContent()).toContain('helelele')
         done()
       }
