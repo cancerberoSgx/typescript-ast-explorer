@@ -2,7 +2,7 @@ import * as blessed from 'blessed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
 import { Checkbox, Element, isElement } from '../blessedTypes'
 import { Component } from './component'
-import { installStylePropagationPlugin } from './stylePropagationPlugin'
+import { installOptionsPropagationPlugin } from './stylePropagationPlugin'
 import {
   AfterElementCreatedEvent,
   AfterElementCreatedListener,
@@ -40,7 +40,7 @@ class BlessedJsxImpl implements BlessedJsx {
   render(e: JSX.Element) {
     if (!this.defaultPluginsInstalled) {
       this.defaultPluginsInstalled = true
-      installStylePropagationPlugin()
+      installOptionsPropagationPlugin()
     }
 
     const event: AfterRenderEvent = { el: (e as any) as Element }
