@@ -1,4 +1,5 @@
 import * as blessed from 'blessed'
+import { Element, isElement } from '../../../src/blessed/blessedTypes'
 const screen = blessed.screen({ smartCSR: true })
 
 var layout = blessed.layout({
@@ -34,7 +35,7 @@ var layout = blessed.layout({
     var rowIndex = 0
 
     return function iterator(
-      el: { shrink: boolean; position: { left: number; top: number }; width: number; height: number },
+      el: Element, //{ shrink: boolean; position: { left: number; top: number }; width: number; height: number },
       i: number | undefined
     ) {
       // Make our children shrinkable. If they don't have a height, for
@@ -64,8 +65,9 @@ var layout = blessed.layout({
           // `rowOffset` and `rowIndex` (the index of the child on the current
           // row).
           rowOffset += self.children
+            .filter(isElement)
             .slice(rowIndex, i)
-            .reduce(function(out: number, el: { lpos: { yl: number; yi: number } }) {
+            .reduce(function(out: number, el: Element) {
               if (!self.isRendered(el)) return out
               out = Math.max(out, el.lpos.yl - el.lpos.yi)
               return out

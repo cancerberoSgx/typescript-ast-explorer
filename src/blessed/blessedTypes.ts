@@ -1,6 +1,6 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import { RemoveProperties } from '../util/misc';
+import { RemoveProperties } from '../util/misc'
 
 export type Node = blessed.Widgets.Node
 export type Box = blessed.Widgets.BoxElement
@@ -67,9 +67,13 @@ export type Program = blessed.BlessedProgram
 export type Markdown = contrib.Widgets.MarkdownElement
 export const colors = blessed.colors.colorNames
 export type BlessedElementOptionsUnion = BoxOptions | TextOptions | TextareaOptions | ListTableOptions | ListOptions
-export type BlessedElementOptionsIntersection = BoxOptions & TextOptions & TextareaOptions & ListTableOptions & ListOptions
+export type BlessedElementOptionsIntersection = BoxOptions &
+  TextOptions &
+  TextareaOptions &
+  ListTableOptions &
+  ListOptions
 
-export {blessed}
+export { blessed }
 
 /** isElement type guard without type parameters */
 export function isElement(n: any): n is Element {
@@ -81,11 +85,11 @@ export function isElementUnSafe<E extends Element = Element>(n: any): n is E {
 }
 
 /** isNode type guard by asserting on a given type name (recommended) */
-export function isNodeByType<E extends Element = Element>(n: any, type :  WidgetTypeNames): n is E {
+export function isNodeByType<E extends Element = Element>(n: any, type: WidgetTypeNames): n is E {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 export function isScreen(n: any): n is Screen {
-  return isNodeByType(n,WidgetTypesEnum.screen)
+  return isNodeByType(n, WidgetTypesEnum.screen)
   // return n && isNode(n) && n.type === 'screen'
 }
 /** isNode type guard without type parameters */
@@ -95,67 +99,66 @@ export function isNode(n: any): n is Node {
 
 export enum WidgetTypesEnum { // TODO: finish
   'element' = 'element',
-    'node' = 'node',
-    'screen' = 'screen',
-    'box' = 'box',
-    'text' = 'text',
-    'line' = 'line',
-    'textarea' = 'textarea',
-    'layout' = 'layout',
-    'button' = 'button',
-    'checkbox' = 'checkbox',
-    'bigtext' = 'bigtext',
-    'list' = 'list',
-    'filemanager' = 'filemanager',
-    'listtable' = 'listtable',
-    'listbar' = 'listbar',
-    'form' = 'form',
-    'textbox' = 'textbox',
-    'radioset' = 'radioset',
-    'radiobutton' = 'radiobutton',
-  }
-export interface WidgetTypes { // TODO: finish
+  'node' = 'node',
+  'screen' = 'screen',
+  'box' = 'box',
+  'text' = 'text',
+  'line' = 'line',
+  'textarea' = 'textarea',
+  'layout' = 'layout',
+  'button' = 'button',
+  'checkbox' = 'checkbox',
+  'bigtext' = 'bigtext',
+  'list' = 'list',
+  'filemanager' = 'filemanager',
+  'listtable' = 'listtable',
+  'listbar' = 'listbar',
+  'form' = 'form',
+  'textbox' = 'textbox',
+  'radioset' = 'radioset',
+  'radiobutton' = 'radiobutton'
+}
+export interface WidgetTypes {
+  // TODO: finish
   [WidgetTypesEnum.element]: Element
-    [WidgetTypesEnum.node]: Node
-    [WidgetTypesEnum.screen]: Screen
-    [WidgetTypesEnum.box]:   Box
-    [WidgetTypesEnum.text]: Text
-    [WidgetTypesEnum.line]: Line
-    [WidgetTypesEnum.textarea]: Textarea
-    [WidgetTypesEnum.layout]: Layout
-    [WidgetTypesEnum.button]: Button
-    [WidgetTypesEnum.checkbox]: Button
-    [WidgetTypesEnum.bigtext]: BigText
-    [WidgetTypesEnum.list]: List
-    [WidgetTypesEnum.filemanager]: FileManager
-    [WidgetTypesEnum.listtable]: ListTable
-    [WidgetTypesEnum.listbar]: ListBar
-    [WidgetTypesEnum.form]: Form
-    [WidgetTypesEnum.textbox]: Textbox
-    [WidgetTypesEnum.radioset]: RadioSet
-    [WidgetTypesEnum.radiobutton]: RadioButton
-  }
-  type WidgetTypeNames = keyof WidgetTypes
+  [WidgetTypesEnum.node]: Node
+  [WidgetTypesEnum.screen]: Screen
+  [WidgetTypesEnum.box]: Box
+  [WidgetTypesEnum.text]: Text
+  [WidgetTypesEnum.line]: Line
+  [WidgetTypesEnum.textarea]: Textarea
+  [WidgetTypesEnum.layout]: Layout
+  [WidgetTypesEnum.button]: Button
+  [WidgetTypesEnum.checkbox]: Button
+  [WidgetTypesEnum.bigtext]: BigText
+  [WidgetTypesEnum.list]: List
+  [WidgetTypesEnum.filemanager]: FileManager
+  [WidgetTypesEnum.listtable]: ListTable
+  [WidgetTypesEnum.listbar]: ListBar
+  [WidgetTypesEnum.form]: Form
+  [WidgetTypesEnum.textbox]: Textbox
+  [WidgetTypesEnum.radioset]: RadioSet
+  [WidgetTypesEnum.radiobutton]: RadioButton
+}
+type WidgetTypeNames = keyof WidgetTypes
 
-
-
-  // quickly categorization of visual related - no-styles- options. Notes: consider text as a widget not as content. some options could be in more than one category since same names are used for different semantis. Also the separation between styles and options is kind of arbitrary.
-  export type MouseInputActivationOptions = 'mouse'|'clickable'|'draggable'|'alwaysScroll'|'focusable'
-export type InputActivationOption = MouseInputActivationOptions|'keys'|'keyable'|'vi'|'inputOnFocus'
-export type DimensionOptions = 'padding'|'width'|'height'|'shrink'|'fill'
-export type PositionOptions = 'top'|'left'|'align'|'valign'|'position'
-export type TextStyleOptions = 'underline'|'bold'|'blink'|'inverse'|'text'
-export type DecorationOptions = 'border'|'type'|'label'|'shadow'|'content'|'hoverText'|'ScrollStyleOptions'
-export type EventEStyleOptions = 'selected'|'hover'|'focus'
-export type ColorOptions = 'fg'|'fg'|'transparent'|'ch'|'invisible'
-export type CompositionStyleOptions='item'
-export type ContainerOptions = 'layout'|'children'|'parent'
-export type ScrollStyleOptions = 'track'|'scrollbar'  
+// quickly categorization of visual related - no-styles- options. Notes: consider text as a widget not as content. some options could be in more than one category since same names are used for different semantis. Also the separation between styles and options is kind of arbitrary.
+export type MouseInputActivationOptions = 'mouse' | 'clickable' | 'draggable' | 'alwaysScroll' | 'focusable'
+export type InputActivationOption = MouseInputActivationOptions | 'keys' | 'keyable' | 'vi' | 'inputOnFocus'
+export type DimensionOptions = 'padding' | 'width' | 'height' | 'shrink' | 'fill'
+export type PositionOptions = 'top' | 'left' | 'align' | 'valign' | 'position'
+export type TextStyleOptions = 'underline' | 'bold' | 'blink' | 'inverse' | 'text'
+export type DecorationOptions = 'border' | 'type' | 'label' | 'shadow' | 'content' | 'hoverText' | 'ScrollStyleOptions'
+export type EventEStyleOptions = 'selected' | 'hover' | 'focus'
+export type ColorOptions = 'fg' | 'fg' | 'transparent' | 'ch' | 'invisible'
+export type CompositionStyleOptions = 'item'
+export type ContainerOptions = 'layout' | 'children' | 'parent'
+export type ScrollStyleOptions = 'track' | 'scrollbar'
 export type ScrollOptions = 'baseLimit'
-export type ValueOptions = 'secret'|'checked'|'censor'|'text'|'text'
-export type VisualOptions = MouseInputActivationOptions|InputActivationOption|DimensionOptions|PositionOptions
+export type ValueOptions = 'secret' | 'checked' | 'censor' | 'text' | 'text'
+export type VisualOptions = MouseInputActivationOptions | InputActivationOption | DimensionOptions | PositionOptions
 
-//TODO: for each of these build the partials: 
+//TODO: for each of these build the partials:
 export type MouseInputActivationOptionNames = Pick<BlessedElementOptionsIntersection, MouseInputActivationOptions>
 export type InputActivationOptionNames = Pick<BlessedElementOptionsIntersection, InputActivationOption>
 export type DimensionOptionsNames = Pick<BlessedElementOptionsIntersection, DimensionOptions>
@@ -164,7 +167,19 @@ export type PositionOptionsNames = Pick<BlessedElementOptionsIntersection, Posit
 // TODO: Map Options and Styles with element types
 
 export interface ElementTypeOptions {
-  [WidgetTypesEnum.box]: MouseInputActivationOptions|DimensionOptions|PositionOptions|TextStyleOptions|DecorationOptions|ColorOptions|ContainerOptions|ScrollStyleOptions
-  [WidgetTypesEnum.listbar]: ElementTypeOptions[WidgetTypesEnum.box]|InputActivationOption|EventEStyleOptions|CompositionStyleOptions
-//TODO: the rest
+  [WidgetTypesEnum.box]:
+    | MouseInputActivationOptions
+    | DimensionOptions
+    | PositionOptions
+    | TextStyleOptions
+    | DecorationOptions
+    | ColorOptions
+    | ContainerOptions
+    | ScrollStyleOptions
+  [WidgetTypesEnum.listbar]:
+    | ElementTypeOptions[WidgetTypesEnum.box]
+    | InputActivationOption
+    | EventEStyleOptions
+    | CompositionStyleOptions
+  //TODO: the rest
 }

@@ -1,20 +1,20 @@
 import { Screen } from '../../../src/blessed/blessedTypes'
+import { Br, Div, Strong } from '../../../src/blessed/jsx-components/jsxUtil'
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div, Strong } from '../../../src/blessed/jsx-components/jsxUtil'
 import { showInModal } from '../../../src/blessed/modal'
 import { arrayToObject, enumNoValueKeys, enumValueFromString } from '../../../src/util/misc'
 import { ButtonDemo } from './ButtonDemo'
 import { CollapsibleDemo } from './CollapsibleDemo'
 import { LayoutDemo } from './LayoutDemo'
 import { screen } from './main'
+import { RobotDemo } from './RobotDemo'
 import { commonOptions } from './util'
-import { RobotDemo } from './RobotDemo';
 
 enum Demo {
   button,
   layout,
-  collapsible, 
+  collapsible,
   robot
 }
 interface P {
@@ -36,10 +36,9 @@ export class App extends Component<P, S> {
         return React.render(<LayoutDemo />)
       } else if (demo === Demo.collapsible) {
         return React.render(<CollapsibleDemo />)
-      }  else if (demo === Demo.robot) {
-        return React.render(<RobotDemo  screen={this.props.screen} />)
-      }
-      else {
+      } else if (demo === Demo.robot) {
+        return React.render(<RobotDemo screen={this.props.screen} />)
+      } else {
         throw new Error('Demo unknown ' + d)
       }
     } catch (error) {

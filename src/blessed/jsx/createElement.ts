@@ -16,7 +16,8 @@ import {
   BlessedEventOptions,
   BlessedJsx,
   BlessedJsxAttrs,
-  EventOptionNames
+  EventOptionNames,
+  is__Virtual
 } from './types'
 interface Options {
   dontInheritStyle?: boolean
@@ -174,17 +175,18 @@ class BlessedJsxImpl implements BlessedJsx {
 
     // CHILDREN
     children.forEach(c => {
-      if (!c) {
+      if (!c || is__Virtual(c)) {
         // HEADS UP: don't print falsy values so we can write `{list.length && <div>}` or `{error && <p>}` etc
         return
-      }
-      if (isElement(c)) {
+      } else if (isElement(c)) {
         if (!c.options || !c.options.parent) {
           this.appendChild(el, c)
         }
       } else if (Array.isArray(c)) {
         c.forEach(c => {
-          if (isElement(c)) {
+          if (!c || is__Virtual(c)) {
+            return
+          } else if (isElement(c)) {
             if (!c.options || !c.options.parent) {
               this.appendChild(el, c)
             }
@@ -246,3 +248,13 @@ class BlessedJsxImpl implements BlessedJsx {
 }
 
 export const React: BlessedJsx = new BlessedJsxImpl()
+
+// export function create__Virtual<Data=any>(data: Data): __Virtual<Data>{//TODO should we publish this in React object or better implementors  create this hack manually if they want...
+//   return {
+//   __virtual: '__virtual', data
+// }
+// }
+// function __virtu
+// export class __VirtualImpl implements  {
+//   tag
+// }

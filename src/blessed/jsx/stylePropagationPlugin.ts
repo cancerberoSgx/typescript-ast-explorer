@@ -101,8 +101,7 @@ export function installOptionsPropagationPlugin(options: Options = { include: []
     }
 
     // TODO: check setEffects(el, fel, over, out, effects, temp) - Set effects based on two events and attributes.
-    // for copying effects ? 
-
+    // for copying effects ?
 
     // HEADS UP: we modify also options so in the next level, descendants will get these also
     child.options = child.options || {}

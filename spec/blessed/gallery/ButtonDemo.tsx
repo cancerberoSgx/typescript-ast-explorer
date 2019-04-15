@@ -1,7 +1,7 @@
 import { Screen } from '../../../src/blessed/blessedTypes'
+import { Br, Div } from '../../../src/blessed/jsx-components/jsxUtil'
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div } from '../../../src/blessed/jsx-components/jsxUtil'
 import { number } from './util'
 
 export class ButtonDemo extends Component<{ screen: Screen }> {

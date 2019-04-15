@@ -21,7 +21,7 @@ declare namespace BlessedContrib {
       rows?: number
       cols?: number
       screen: Blessed.Widgets.Screen
-      border?: Blessed.Widgets.Border
+      border?: Blessed.Widgets.Types.TBorder
       hideBorder?: boolean
     }
 

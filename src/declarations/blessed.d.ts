@@ -8,10 +8,10 @@
 
 /// <reference types="node" />
 
-import * as child_process from 'child_process';
-import { EventEmitter } from 'events';
-import * as stream from 'stream';
-import { Readable, Writable } from 'stream';
+import * as child_process from 'child_process'
+import { EventEmitter } from 'events'
+import * as stream from 'stream'
+import { Readable, Writable } from 'stream'
 
 export interface IBlessedProgramOptions {
   input?: Readable
@@ -232,7 +232,7 @@ export class BlessedProgram extends EventEmitter {
   deviceStatuses(param?: string, callback?: Function, dec?: boolean, noBypass?: boolean): boolean
   dsr(param?: string, callback?: Function, dec?: boolean, noBypass?: boolean): boolean
 
-  getCursor(callback: (err: Error, data: IMouseEventArg) => any): boolean
+  getCursor(callback: (err: Error, data: Widgets.Events.IMouseEventArg) => any): boolean
   saveReportedCursor(callback: Function): void
 
   restoreReportedCursor: () => boolean
@@ -590,9 +590,41 @@ export namespace Widgets {
       right?: boolean
       bottom?: boolean
     }
+
+    type BorderType = string //'line' | 'bg'
+
+    // interface TBorder {
+    //   /**
+    //    * Type of border (line or bg). bg by default.
+    //    */
+    //   type?: BorderType
+
+    //   /**
+    //    * Character to use if bg type, default is space.
+    //    */
+    //   ch?: string
+
+    //   /**
+    //    * Border foreground and background, must be numbers (-1 for default).
+    //    */
+    //   bg?: number
+    //   fg?: number
+
+    //   /**
+    //    * Border attributes.
+    //    */
+    //   bold?: boolean
+    //   underline?: boolean
+
+    //   top?: boolean
+    //   left?: boolean
+    //   right?: boolean
+    //   bottom?: boolean
+    // }
+
     export interface TStyle {
       /** artificial type for user custom data (it doesn't exists just a type) */
-      custom?: {[name: string]: any}
+      custom?: { [name: string]: any }
 
       // leave it open for custom style properties
       // [name: string]: any
@@ -614,7 +646,6 @@ export namespace Widgets {
       selected?: TStyle
       hover?: TStyle
     }
-
 
     interface TCursor {
       /**
@@ -735,7 +766,7 @@ export namespace Widgets {
     destroy(): void
   }
 
-  interface IOptions { }
+  interface IOptions {}
 
   interface IHasOptions<T extends IOptions> {
     options: T
@@ -814,6 +845,9 @@ export namespace Widgets {
     screen?: Screen
     parent?: Node
     children?: Node[]
+    /**
+     * If true, the node will obtain focus when m
+     */
     focusable?: boolean
   }
 
@@ -829,8 +863,14 @@ export namespace Widgets {
     /** Received when node is detached from the screen directly or somewhere in its ancestry. */
     | 'detach'
 
-  abstract class Node extends EventEmitter implements IHasOptions<INodeOptions>, IDestroyable {
+  /**
+   * The base node which everything inherits from.
+   */
+  export abstract class Node extends EventEmitter implements IHasOptions<INodeOptions>, IDestroyable {
     constructor(options: INodeOptions)
+
+    /** Unique identifier for Node instances. @internal */
+    uid: number
 
     focusable: boolean
 
@@ -853,6 +893,8 @@ export namespace Widgets {
      * An object for any miscellanous user data.
      */
     $: { [index: string]: any }
+
+    lpos: PositionCoords
 
     /**
      * Type of the node (e.g. box).
@@ -914,18 +956,24 @@ export namespace Widgets {
      */
     detach(): void
     free(): void
-    forDescendants(iter: (node: Node) => void, s: any): void
-    forAncestors(iter: (node: Node) => void, s: any): void
-    collectDescendants(s: any): void
-    collectAncestors(s: any): void
+    /**
+     * Visit each node's descendants, with [[iter]] function,  parents first. If `s` is provided it will call [[iter]] on self first.
+     */
+    forDescendants(iter: (node: Node) => void, s?: boolean): void
+    forAncestors(iter: (node: Node) => void, s?: boolean): void
+    collectDescendants(s?: boolean): void
+    collectAncestors(s?: boolean): void
 
     /**
-     * Emit event for element, and recursively emit same event for all descendants.
+     * Emit event for element, and recursively emit same event for all descendants. If `s` is provided it will call [[iter]] on self first.
      */
     emitDescendants(type?: string, ...args: any[]): void
     emitAncestors(): void
     hasDescendant<T extends Node = Node>(target: Node): Node
     hasAncestor<T extends Node = Node>(target: Node): Node
+    /**
+     * [[detach]]() this node from its parent, and will also detach and destroy each of its descendant nodes each of them emitting [[destory]] event also.
+     */
     destroy(): void
 
     /**
@@ -938,8 +986,17 @@ export namespace Widgets {
      */
     set(name: string, value: any): void
 
+    /** Received when node gains a new parent. If the node was detached from the sreen, newParent will be undefined. */
+    on(event: 'reparent', listener: (this: this, newParent?: Node) => void): void
+    /** emitted by a parent node when adding a new chhild node. */
+    on(event: 'adopt', listener: (this: this, newChildren: Node) => void): void
+    on(event: 'attach', listener: (this: this, newParent: Node) => void): void
+    /** Emitted by a node that is being detached frmo the screen or ancester. */
+    on(event: 'detach', listener: (this: this, newParent: Node) => void): void
+    /** Triggered by a parent node when removing a child node */
+    on(event: 'remove', listener: (this: this, removedChild: Node) => void): void
     on(event: string, listener: (...args: any[]) => void): this
-    on(event: NodeEventType, callback: (arg: Node) => void): this
+    // on(event: NodeEventType, callback: (arg: Node) => void): this
   }
 
   type NodeScreenEventType =
@@ -1084,7 +1141,7 @@ export namespace Widgets {
     debug?: boolean
 
     /**
-     * Instance of the debug console that is enabled when calling debug options is actuve and key f12 is pressed. 
+     * Instance of the debug console that is enabled when calling debug options is actuve and key f12 is pressed.
      * Useful to programmatically access it in case keys don't wonk.
      * @internal
      */
@@ -1242,11 +1299,27 @@ export namespace Widgets {
     title?: string
   }
 
+  /**
+   * The screen on which every other node renders. Can be compared wih the DOM document and manages many aspects of its descendants such as :
+   *
+   * ## Focus:
+   *
+   * The focus of all its descendant Elements is managed by the Screen, which adds any [[focusable]] node an index, in order of evaluation.
+   *
+   * Focus can be changed using mehods public methods like [[focusPrevious]], [[focusNext]], Also it support focusing elements in a region and save/restor the focus state.
+   *
+   * Lsteners can be subscribed for focus changes with evenst [[focus]] and [[blur]]. The current focused element, if any, is available in attribtue [[focused]]
+   *
+   * A common scenario is to call focusNext or focusPrev on certain key presses (tab, S-tab).
+   */
   class Screen extends NodeWithEvents implements IHasOptions<IScreenOptions> {
     constructor(opts: IScreenOptions)
 
-    /**  Parse the sides of an element to determine whether an element has uniform cells on both sides. If it does, we can use CSR to optimize scrolling on a scrollable element. Not exactly sure how worthwile this is. This will cause a performance/cpu-usage hit, but will it be less or greater than the performance hit of slow-rendering scrollable boxes with clean sides? */
-    cleanSides(el: Element): boolean
+    /**
+     * Parse the sides of an element to determine whether an element has uniform cells on both sides.
+     * If it does, we can use CSR to optimize scrolling on a scrollable element. Not exactly sure how worthwile this is.
+     * This will cause a performance/cpu-usage hit, but will it be less or greater than the performance hit of slow-rendering scrollable boxes with clean sides? */
+    cleanSides(el: Widgets.BlessedElement): boolean
 
     /** true is the terminal was destroyed. @internal.  */
     destroyed?: boolean
@@ -1485,7 +1558,7 @@ export namespace Widgets {
     draw(start: number, end: number): void
 
     /**
-     * Will reset the focus, buffers, clear the sreen, alloc new memory, reset the keypad keys, stop listening to the mouse, etc. But won't emit destroy or other events nor unregister any listener. (I guess is like a reset)
+     * Resets the focus, buffers, clear the sreen, alloc new memory, reset the keypad keys, stop listening to the mouse, etc. But won't emit destroy or other events nor unregister any listener. (I guess is like a reset)
      * @internal
      */
     leave(): void
@@ -1516,12 +1589,12 @@ export namespace Widgets {
     focusOffset(offset: number): any
 
     /**
-     * Focus previous element in the index.
+     * Focus previous [[focusable]] element in the index.
      */
     focusPrevious(): void
 
     /**
-     * Focus next element in the index.
+     * Focus next [[focusable]] element in the index.
      */
     focusNext(): void
 
@@ -1687,36 +1760,6 @@ export namespace Widgets {
     bottom: number | string
   }
 
-  type BorderType = 'line' | 'bg'
-  // interface Border {
-  //   /**
-  //    * Type of border (line or bg). bg by default.
-  //    */
-  //   type?: BorderType
-
-  //   /**
-  //    * Character to use if bg type, default is space.
-  //    */
-  //   ch?: string
-
-  //   /**
-  //    * Border foreground and background, must be numbers (-1 for default).
-  //    */
-  //   bg?: number
-  //   fg?: number
-
-  //   /**
-  //    * Border attributes.
-  //    */
-  //   bold?: boolean
-  //   underline?: boolean
-
-  //   top?: boolean
-  //   left?: boolean
-  //   right?: boolean
-  //   bottom?: boolean
-  // }
-
   interface ElementOptions extends INodeOptions {
     tags?: boolean
 
@@ -1730,7 +1773,7 @@ export namespace Widgets {
     /**
      * Border object, see below.
      */
-    border?: TBorder | BorderType
+    border?: Widgets.Types.TBorder | Widgets.Types.BorderType
 
     /**
      * Element's text content.
@@ -1869,6 +1912,7 @@ export namespace Widgets {
    * be a string.
    */
   abstract class BlessedElement extends NodeWithEvents implements IHasOptions<ElementOptions> {
+    shrink: boolean
     constructor(opts: ElementOptions)
 
     /**
@@ -1884,7 +1928,7 @@ export namespace Widgets {
     /**
      * Border object.
      */
-    border: Border
+    border: Widgets.Types.TBorder
 
     /** Current element padding */
     padding: Required<Padding>
@@ -1906,6 +1950,7 @@ export namespace Widgets {
      * Border attributes.
      */
     bold: string
+
     underline: string
 
     /**
@@ -1988,15 +2033,13 @@ export namespace Widgets {
      */
     rbottom: Types.TPosition
 
-    lpos: PositionCoords
-
     /**
      * Write content and children to the screen buffer.
      */
     render(): Coords
 
     /**
-     * Hide element.
+     * Hide element and triggers [[hide]] event
      */
     hide(): void
 
@@ -2014,6 +2057,11 @@ export namespace Widgets {
      * Focus element.
      */
     focus(): void
+
+    /**
+     * @internal parses given content string with no tags before rendering. Removes / transform characters that break the output . For example, double-width chars will eat the next char after render in this case it creates a blank character after it so it doesn't eat the real next char.
+     */
+    parseContent(noTags: string): boolean
 
     /**
      * Same asel.on('screen', ...) except this will automatically keep track of which listeners
@@ -2107,6 +2155,10 @@ export namespace Widgets {
      * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
      */
     screenshot(xi: number, xl: number, yi: number, yl: number): string
+    /**
+     * Take an SGR screenshot of the whole screen. Returns a string containing only
+     * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
+     */
     screenshot(): void
 
     /**
@@ -2336,7 +2388,7 @@ export namespace Widgets {
    * A scrollable text box which can display and scroll text, as well as handle
    * pre-existing newlines and escape codes.
    */
-  class ScrollableTextElement extends ScrollableBoxElement { }
+  class ScrollableTextElement extends ScrollableBoxElement {}
 
   /**
    * A box element which draws a simple box containing content or other elements.
@@ -2841,7 +2893,7 @@ export namespace Widgets {
     on(event: 'cancel' | 'reset', callback: (this: FormElement) => void): this
   }
 
-  interface InputOptions extends BoxOptions { }
+  interface InputOptions extends BoxOptions {}
 
   abstract class InputElement extends BoxElement {
     constructor(opts: InputOptions)
@@ -2976,7 +3028,7 @@ export namespace Widgets {
     censor: boolean
   }
 
-  interface ButtonOptions extends BoxOptions { }
+  interface ButtonOptions extends BoxOptions {}
 
   class ButtonElement extends InputElement implements IHasOptions<ButtonOptions> {
     constructor(opts: ButtonOptions)
@@ -3053,7 +3105,7 @@ export namespace Widgets {
     on(event: 'uncheck', callback: (this: CheckboxElement) => void): this
   }
 
-  interface RadioSetOptions extends BoxOptions { }
+  interface RadioSetOptions extends BoxOptions {}
 
   /**
    * An element wrapping RadioButtons. RadioButtons within this element will be mutually exclusive
@@ -3063,7 +3115,7 @@ export namespace Widgets {
     constructor(opts: RadioSetOptions)
   }
 
-  interface RadioButtonOptions extends CheckboxOptions { }
+  interface RadioButtonOptions extends CheckboxOptions {}
 
   /**
    * A radio button which can be used in a form element.
@@ -3072,7 +3124,7 @@ export namespace Widgets {
     constructor(opts: RadioButtonOptions)
   }
 
-  interface PromptOptions extends BoxOptions { }
+  interface PromptOptions extends BoxOptions {}
 
   /**
    * A prompt box containing a text input, okay, and cancel buttons (automatically hidden).
@@ -3090,7 +3142,7 @@ export namespace Widgets {
     readInput(text: string, value: string, callback: (err: any, value: string) => void): void
   }
 
-  interface QuestionOptions extends BoxOptions { }
+  interface QuestionOptions extends BoxOptions {}
 
   /**
    * A question box containing okay and cancel buttons (automatically hidden).
@@ -3106,7 +3158,7 @@ export namespace Widgets {
     ask(question: string, callback: (err: any, value: string) => void): void
   }
 
-  interface MessageOptions extends BoxOptions { }
+  interface MessageOptions extends BoxOptions {}
 
   /**
    * A box containing a message to be displayed (automatically hidden).
@@ -3132,7 +3184,7 @@ export namespace Widgets {
     error(text: string, callback: () => void): void
   }
 
-  interface LoadingOptions extends BoxOptions { }
+  interface LoadingOptions extends BoxOptions {}
 
   /**
    * A box with a spinning line to denote loading (automatically hidden).
@@ -3556,7 +3608,7 @@ export namespace Widgets {
      * A callback which is called right before the children are iterated over to be rendered. Should return an
      * iterator callback which is called on each child element: iterator(el, i).
      */
-    renderer?(this: Layout, coords: PositionCoords, i: number | undefined): LayoutIterator
+    renderer?(this: LayoutElement, coords: PositionCoords, i: number | undefined): LayoutIterator
     /**
      * Using the default renderer, it provides two layouts: inline, and grid. inline is the default and will render
      * akin to inline-block. grid will create an automatic grid based on element dimensions. The grid cells'
@@ -3605,10 +3657,44 @@ export namespace Widgets {
   }
 }
 
+// publish classes on existin gpaths so users can reference the real values for extending
 export namespace widget {
-  class Terminal extends Widgets.TerminalElement { }
+  class Node extends Widgets.Node {}
+  class Element extends Widgets.BlessedElement {}
+  class Box extends Widgets.BoxElement {}
+  class List extends Widgets.ListElement {}
+  class Screen extends Widgets.Screen {}
+  class BoxElement extends Widgets.BoxElement {}
+  class TextElement extends Widgets.TextElement {}
+  class LineElement extends Widgets.LineElement {}
+  class BigTextElement extends Widgets.BigTextElement {}
+  class ListElement extends Widgets.ListElement {}
+  class FileManagerElement extends Widgets.FileManagerElement {}
+  class ListTableElement extends Widgets.ListTableElement {}
+  class ListbarElement extends Widgets.ListbarElement {}
+  class FormElement extends Widgets.FormElement {}
+  class InputElement extends Widgets.InputElement {}
+  class TextareaElement extends Widgets.TextareaElement {}
+  class TextboxElement extends Widgets.TextboxElement {}
+  class ButtonElement extends Widgets.ButtonElement {}
+  class CheckboxElement extends Widgets.CheckboxElement {}
+  class RadioSetElement extends Widgets.RadioSetElement {}
+  class RadioButtonElement extends Widgets.RadioButtonElement {}
+  class TableElement extends Widgets.TableElement {}
+  class PromptElement extends Widgets.PromptElement {}
+  class QuestionElement extends Widgets.QuestionElement {}
+  class MessageElement extends Widgets.MessageElement {}
+  class LoadingElement extends Widgets.LoadingElement {}
+  class Log extends Widgets.Log {}
+  class ProgressBarElement extends Widgets.ProgressBarElement {}
+  class TerminalElement extends Widgets.TerminalElement {}
+  class LayoutElement extends Widgets.LayoutElement {}
+  class Terminal extends Widgets.TerminalElement {}
 }
 
+// TODO: verify that all these are real classes :   'Node',  'Screen',  'Element',  'Box',  'Text',  'Line',  'ScrollableBox',  'ScrollableText',  'BigText',  'List',  'Form',  'Input',  'Textarea',  'Textbox',  'Button',  'ProgressBar',  'FileManager',  'Checkbox',  'RadioSet',  'RadioButton',  'Prompt',  'Question',  'Message',  'Loading',  'Listbar',  'Log',  'Table',  'ListTable',  'Terminal',  'Image',  'ANSIImage',  'OverlayImage',  'Video',  'Layout'
+
+/** @inheritdoc */
 export function screen(options?: Widgets.IScreenOptions): Widgets.Screen
 export function box(options?: Widgets.BoxOptions): Widgets.BoxElement
 export function text(options?: Widgets.TextOptions): Widgets.TextElement
@@ -3640,13 +3726,13 @@ export function terminal(options?: Widgets.TerminalOptions): Widgets.TerminalEle
 export function layout(options?: Widgets.LayoutOptions): Widgets.LayoutElement
 export function escape(item: any): any
 
-type ColorRgb = [number, number.number]
+type ColorRgb = [number, number, number]
 export const colors: {
   match(r1: Widgets.Color | ColorRgb, g1?: number, b1?: number): number
   convert(color: Widgets.Color): number
   mixColors(c1: number, c2: number, alpha: number): number
   RGBToHex(r: number, g: number, b: number): string
-  RGBToHex(hex: string): ColorRgbr
+  RGBToHex(hex: string): ColorRgb
   blend(attr: number, attr2?: number, alpha?: number): number
   colorNames: {
     black: 0
@@ -3708,21 +3794,21 @@ interface Unicode {
     /**
      * All surrogate pair wide chars.
      */
-    wide: Regexp
+    wide: RegExp
 
     /**
      * All wide chars including surrogate pairs.
      */
-    all: Regexp
+    all: RegExp
 
     /**
      * Regex to detect a surrogate pair.
      */
-    surrogate: Regexp
+    surrogate: RegExp
     /**
      * Regex to find combining characters.
      */
-    combining: Regexp
+    combining: RegExp
   }
 }
 
@@ -3742,6 +3828,5 @@ interface Unicode {
 // stripTags(text) - Strip text of tags and SGR sequences.
 // cleanTags(text) - Strip text of tags, SGR escape code, and leading/trailing whitespace.
 // dropUnicode(text) - Drop text of any >U+FFFF characters.
-
 
 /**  terminfo/cap aliases for blessed. */

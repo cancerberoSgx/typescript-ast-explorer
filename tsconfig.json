@@ -9,7 +9,6 @@
     "moduleResolution": "node",
     "rootDir": ".",
     "declaration": true,
-    "skipLibCheck": true,
     "strict": true,
     "baseUrl": ".",
     "paths": {
@@ -17,8 +16,7 @@
       "blessed": ["src/declarations/blessed"]
     },
     "jsx": "React",
-    
-    // "skipLibCheck": true
+    "skipLibCheck": true
   },
   "include": [
     "src", "spec"

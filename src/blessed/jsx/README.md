@@ -73,6 +73,15 @@ TODO: performance? use another thing ? use content? join several JSXText in one 
 
 # TODO / questions / ideas / issues
 
+ * since components are associatged to blessed elements, would it be useful to also associate elements to componetns ?
  * props.children typings
  * shuld we support also blessed-contrib ? here ? another project?
  //TODO: research: to work purely with data / options and not with the elements already instantiated, we should create an intermediary representation  n createElement() and only create the blessed elements in render() so we have the time to process the option/tree before calling blessed constructors. for exapmle propagate style plugin is costly because it manipultes the elements instead of options AFTER they are rendered.... 
+  * for state / update we will have the same problem as with jsx-alone-dom ex: .we want to represetn focus, hover, etc with component state and update the state. two alternatives:. Other ex: user center text of select an optionor etc - this will require components to be updated. 
+
+RESEARCH PROBLEM -
+   * an option here that we dont ahve in dom is, because we can assume that elemeents in terminal are much kess, we can associate a Component instance to EACH native elemnt so and this take care of the update. 
+
+   Stateless (recreating the whole thing like with virtual dom is not viable here I think.)
+
+   * don't ise blessed effects amd implement it from scrach

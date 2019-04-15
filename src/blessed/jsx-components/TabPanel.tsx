@@ -1,22 +1,17 @@
-import { IMouseEventArg, colors, ButtonOptions } from '../blessedTypes';
-import { Component } from '../jsx/component';
+import { ButtonOptions, colors, ElementOptions } from '../blessedTypes'
+import { Component } from '../jsx/component'
 import { React } from '../jsx/createElement'
-import { Div } from './jsxUtil';
+import { Div } from './jsxUtil'
 
-interface P extends ButtonOptions {
-  // children: Tab[];
-}
-
-abstract  class Base<T={}, S={}> extends Component<T, S>  {
+abstract class Base<T = {}, S = {}> extends Component<T, S> {
   protected optionsBase() {
     return {
-
       width: '88%',
       height: 3,
       border: 'line',
-      top: 0, left: 0,
-      
-    }
+      top: 0,
+      left: 0
+    } as ElementOptions
   }
   protected optionsInputBase() {
     return {
@@ -51,27 +46,31 @@ abstract  class Base<T={}, S={}> extends Component<T, S>  {
 </TabPanel>
  ```
  */
-export class TabPanel extends Base<P, {}> {
- 
+export class TabPanel extends Base<TabProps, {}> {
   render() {
-    return null
-// return   <Div {...this.optionsBase()} width="100%" height="100%">
-//       <listbar {...this.optionsInputBase()}  padding={1}
-//           top={0}
-//           align="center"
-//           border="line"
-//           width="95%"
-//           autoCommandKeys={true}
-//           commands={arrayToObject(enumNoValueKeys(Demo), d => () =>
-//             showInModal(screen, this.renderDemo(d), `${d} demo (press q to close)`, '100%', '100%')
-//           )}
-//         /></Div>></listbar>
-//     </Div>
+    return (
+      <Div {...this.optionsBase()} width="100%" height="100%">
+        {/* <listbar {...this.optionsInputBase()}  padding={1}
+              top={0}
+              align="center"
+              border="line"
+              width="95%"
+              autoCommandKeys={true}
+              commands={arrayToObject(enumNoValueKeys(Demo), d => () =>
+                showInModal(screen, this.renderDemo(d), `${d} demo (press q to close)`, '100%', '100%')
+              )}
+            /></Div>></listbar> */}
+      </Div>
+    )
   }
 }
-
+interface TabPanelState {
+  selectedTab?: string
+}
 interface TabProps {
   focused?: boolean
 }
 
-
+interface P extends ButtonOptions {
+  // children: Tab[];
+}

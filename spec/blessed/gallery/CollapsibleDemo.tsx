@@ -1,9 +1,9 @@
 // import { colors as c } from 'blessed'
 import { BoxOptions, colors, InputOptions } from '../../../src/blessed/blessedTypes'
 import { installCollapsible, toggleCollapsed } from '../../../src/blessed/collapsible'
+import { Br, Div, NbrSpc, Strong } from '../../../src/blessed/jsx-components/jsxUtil'
 import { Component } from '../../../src/blessed/jsx/component'
 import { React } from '../../../src/blessed/jsx/createElement'
-import { Br, Div, NbrSpc, Strong } from '../../../src/blessed/jsx-components/jsxUtil'
 import { renderer } from '../../../src/blessed/layoutRenderer'
 
 export class CollapsibleDemo extends Component {

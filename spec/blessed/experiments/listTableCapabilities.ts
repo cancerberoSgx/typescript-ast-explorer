@@ -1,6 +1,6 @@
 import * as blessed from 'blessed'
-import { enumKeys } from 'misc-utils-of-mine-typescript';
-import { BlessedTerminalCapabilitiesBooleans } from '../../../src/declarations/blessedTermCap';
+import { enumKeys } from 'misc-utils-of-mine-typescript'
+import { BlessedTerminalCapabilitiesBooleans } from '../../../src/declarations/blessedTermCap'
 
 const screen = blessed.screen({
   // autoPadding: false,
@@ -8,7 +8,7 @@ const screen = blessed.screen({
   log: 'log.txt'
 })
 
-const TRUE = 0x0B70
+const TRUE = 0x0b70
 const FALSE = 0x02591
 const capabilities = enumKeys(BlessedTerminalCapabilitiesBooleans)
 // console.log(capabilities.length , capabilities[0], );
@@ -16,7 +16,7 @@ const capabilities = enumKeys(BlessedTerminalCapabilitiesBooleans)
 
 var stringData = [
   ['{red-fg}Capability{/red-fg}', '{red-fg}Supported?{/red-fg}'],
-  ...capabilities.map(c=>[c, screen.program.has(c) ? 'yes' : 'no'])
+  ...capabilities.map(c => [c, screen.program.has(c) ? 'yes' : 'no'])
 ]
 
 var table = blessed.listtable({
@@ -50,7 +50,6 @@ var table = blessed.listtable({
   }
 } as any)
 
-
 screen.key('q', function() {
   return screen.destroy()
 })
@@ -58,4 +57,3 @@ screen.key('q', function() {
 table.focus()
 
 screen.render()
-

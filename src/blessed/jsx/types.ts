@@ -102,6 +102,7 @@ declare global {
       textbox: TextboxOptions & EventOptions<Textbox>
       radioset: RadioSetOptions & EventOptions<RadioSet>
       radiobutton: RadioButtonOptions & EventOptions<RadioButton>
+      __virtual: __Virtual
     }
 
     export interface Element<P extends { children?: BlessedJsxNode } = {}> {
@@ -148,6 +149,13 @@ declare global {
       children: {}
     }
   }
+}
+
+/** an intrinsic element wihtout children, that won't be renderd. Can be used by JSXElements that need to declare data markwup that is not supported by blessed optoins . Examplle: listbar buttons are declaren in the same list optoins but I want to declared them as JSX children, . So I do it by returning __Virtual with the informatio in the markup that the parent can consume., */
+export type __Virtual<Data = any> = { __virtual: '__virtual'; data: Data }
+
+export function is__Virtual(a: any): a is __Virtual {
+  return a && a.__virtual === '__virtual' // TODO: use symbol
 }
 
 /**
