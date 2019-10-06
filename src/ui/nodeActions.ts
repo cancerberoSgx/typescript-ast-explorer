@@ -1,4 +1,4 @@
-import * as blessed from 'blessed'
+import {blessed} from 'accursed'
 import { showInModal } from '../blessed/modal'
 import { getCurrentView } from '../store/state'
 import { Store } from '../store/store'

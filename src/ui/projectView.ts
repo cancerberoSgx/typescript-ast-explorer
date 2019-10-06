@@ -1,7 +1,6 @@
-import * as blessed from 'blessed'
-import * as contrib from 'blessed-contrib'
+import {blessed, contrib} from 'accursed'
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from '../blessed/blessed'
+import { installExitKeys, onTreeNodeFocus, visitDescendants, visitDescendantElements } from '../blessed/blessed'
 import { installFocusHandler } from '../blessed/focus'
 import { ActionType } from '../store/actions'
 import { getCurrentView, View } from '../store/state'
@@ -33,7 +32,7 @@ export function buildExplorer(store: Store) {
   const tree = grid.set(0, 0, 12 - offset, 6, contrib.tree, {
     template: { lines: true },
     label: 'Project View'
-  } as contrib.Widgets.TreeOptions<TreeNode>)
+  } as contrib.Widgets.TreeOptions<TreeNode>) as contrib.Widgets.TreeElement<TreeNode>
 
   // TODO:the following should be done in a Dispatcher
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }

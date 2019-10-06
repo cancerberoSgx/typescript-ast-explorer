@@ -1,94 +1,97 @@
-import { RemoveProperties } from '../../util/misc'
-import { BlessedElementOptionsIntersection, Element, Style, WidgetTypesEnum } from '../blessedTypes'
-import { ElementPredicate, filterChildren, filterDescendants, findChildren, findDescendant, visitDescendants, Visitor, VisitorOptions } from '../node'
+export * from 'accursed'
+export {React} from 'accursed'
 
-/**
- * Very simple abstract Component class (like React.Component) but without life cycle methods, or Refs. Has a
- * dummy state that will update the blessed element if changed by default
- */
-export abstract class Component<P = {}, S = {}> {
-  constructor(protected props: P, protected state: S) { }
+// import { RemoveProperties } from '../../util/misc'
+// import { BlessedElementOptionsIntersection, Element, Style, WidgetTypesEnum } from '../blessedTypes'
+// import { ElementPredicate, filterChildren, filterDescendants, findChildren, findDescendant, visitDescendants, Visitor, VisitorOptions } from '../node'
 
-  abstract render(): JSX.BlessedJsxNode
+// /**
+//  * Very simple abstract Component class (like React.Component) but without life cycle methods, or Refs. Has a
+//  * dummy state that will update the blessed element if changed by default
+//  */
+// export abstract class Component<P = {}, S = {}> {
+//   constructor(protected props: P, protected state: S) { }
 
-  /**
-   * All class elements will have a reference to its rendered blessed element
-   */
-  protected blessedElement: Element = undefined as any
+//   abstract render(): JSX.BlessedJsxNode
 
-  /**
-   * return the type name of ths component container blessed element
-   */
-  get type() {
-    return this.blessedElement.type as WidgetTypesEnum
-  }
+//   /**
+//    * All class elements will have a reference to its rendered blessed element
+//    */
+//   protected blessedElement: Element = undefined as any
 
-  /**
-   * subclasses can override to prevent the blessed element to be rendered when the state changes
-   */
-  protected dontRenderOnStateChange = false
+//   /**
+//    * return the type name of ths component container blessed element
+//    */
+//   get type() {
+//     return this.blessedElement.type as WidgetTypesEnum
+//   }
 
-  /**
-   * Dummy state, by default calls element's render() unless [[dontRenderOnStateChange]]
-   */
-  protected setState(s: Partial<S>) {
-    this.state = { ...this.state, ...s }
-    if (!this.dontRenderOnStateChange) {
-      this.blessedElement.render()
-    }
-  }
+//   /**
+//    * subclasses can override to prevent the blessed element to be rendered when the state changes
+//    */
+//   protected dontRenderOnStateChange = false
 
-  protected visitDescendants(v: Visitor, o: VisitorOptions = {}): boolean {
-    return visitDescendants(this.blessedElement, v)
-  }
+//   /**
+//    * Dummy state, by default calls element's render() unless [[dontRenderOnStateChange]]
+//    */
+//   protected setState(s: Partial<S>) {
+//     this.state = { ...this.state, ...s }
+//     if (!this.dontRenderOnStateChange) {
+//       this.blessedElement.render()
+//     }
+//   }
 
-  protected findDescendant(p: ElementPredicate) {
-    return findDescendant(this.blessedElement, p)
-  }
-  protected filterDescendants(p: ElementPredicate) {
-    return filterDescendants(this.blessedElement, p)
-  }
+//   protected visitDescendants(v: Visitor, o: VisitorOptions = {}): boolean {
+//     return visitDescendants(this.blessedElement, v)
+//   }
 
-  protected findChildren(p: ElementPredicate) {
-    return findChildren(this.blessedElement, p)
-  }
-  protected filterChildren(p: ElementPredicate) {
-    return filterChildren(this.blessedElement, p)
-  }
-  //TODO: ancestors, direct children and siblings. nice to have getFirstDescendantOfType, etc
-}
+//   protected findDescendant(p: ElementPredicate) {
+//     return findDescendant(this.blessedElement, p)
+//   }
+//   protected filterDescendants(p: ElementPredicate) {
+//     return filterDescendants(this.blessedElement, p)
+//   }
 
-/**
- * esthetic options like color font styles that doesn't change the postiion dimention at all ! (so they can me
- * safely applied in a general manner (declared in a theme)) safely
- */
-// type VisualNoPositionImpactOptions =TextStyleOptions| 'ColorOptions' EventEStyleOptions ?
+//   protected findChildren(p: ElementPredicate) {
+//     return findChildren(this.blessedElement, p)
+//   }
+//   protected filterChildren(p: ElementPredicate) {
+//     return filterChildren(this.blessedElement, p)
+//   }
+//   //TODO: ancestors, direct children and siblings. nice to have getFirstDescendantOfType, etc
+// }
 
-interface ComponentWithOptionsProps
-  extends Style,
-  RemoveProperties<BlessedElementOptionsIntersection, 'border' | 'scrollbar'> { }
-/**
- * Represent components that can accept Blessed elements options as Properties.
- * 
- * Inheriting from this abstract component wil give the change to all components of an app to share and extends 
- * the same option
- * semantics, mostly for style coherence. TODO: in the future use advanced theme framework css in jss, etc
- * 
- */
-export abstract class ComponentWithOptions<P extends ComponentWithOptionsProps = {}, S = {}> extends Component<P, S> {
-  /** subclasses */
-  // abstract elementType: ElementType
-  // protected style: Partial<Style>
-  // protected visualOptions: Partial<Style>
-}
+// /**
+//  * esthetic options like color font styles that doesn't change the postiion dimention at all ! (so they can me
+//  * safely applied in a general manner (declared in a theme)) safely
+//  */
+// // type VisualNoPositionImpactOptions =TextStyleOptions| 'ColorOptions' EventEStyleOptions ?
 
-interface ComponentWithEffectsProps extends ComponentWithOptionsProps { }
+// interface ComponentWithOptionsProps
+//   extends Style,
+//   RemoveProperties<BlessedElementOptionsIntersection, 'border' | 'scrollbar'> { }
+// /**
+//  * Represent components that can accept Blessed elements options as Properties.
+//  * 
+//  * Inheriting from this abstract component wil give the change to all components of an app to share and extends 
+//  * the same option
+//  * semantics, mostly for style coherence. TODO: in the future use advanced theme framework css in jss, etc
+//  * 
+//  */
+// export abstract class ComponentWithOptions<P extends ComponentWithOptionsProps = {}, S = {}> extends Component<P, S> {
+//   /** subclasses */
+//   // abstract elementType: ElementType
+//   // protected style: Partial<Style>
+//   // protected visualOptions: Partial<Style>
+// }
 
-/**
- * Component that model bless element effect state like focus, selected, blur, hover , text input, using their
- * internal state. Also understand semantics on how these effects relate with options
- */
-export abstract class ComponentWithEffects<
-  P extends ComponentWithEffectsProps = {},
-  S = {}
-  > extends ComponentWithOptions<P, S> { }
+// interface ComponentWithEffectsProps extends ComponentWithOptionsProps { }
+
+// /**
+//  * Component that model bless element effect state like focus, selected, blur, hover , text input, using their
+//  * internal state. Also understand semantics on how these effects relate with options
+//  */
+// export abstract class ComponentWithEffects<
+//   P extends ComponentWithEffectsProps = {},
+//   S = {}
+//   > extends ComponentWithOptions<P, S> { }

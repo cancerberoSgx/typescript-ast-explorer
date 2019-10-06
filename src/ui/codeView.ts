@@ -1,10 +1,6 @@
-import * as blessed from 'blessed'
-import * as contrib from 'blessed-contrib'
 import { Node } from 'ts-morph'
 import { getRelativePath, isNode } from 'ts-simple-ast-extra'
-import { installExitKeys, onTreeNodeFocus } from '../blessed/blessed'
-import { installFocusHandler } from '../blessed/focus'
-import { showInModal } from '../blessed/modal'
+import { installExitKeys, onTreeNodeFocus, installFocusHandler , showInModal, blessed, contrib} from 'accursed'
 import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView, View } from '../store/state'
 import { ActionListenerType, Store } from '../store/store'
@@ -39,7 +35,7 @@ export function buildCodeAst(store: Store) {
   const tree = grid.set(0, 0, 5, 6, contrib.tree, {
     template: { lines: true },
     label: 'Code View'
-  } as contrib.Widgets.TreeOptions<TreeNode>)
+  } as contrib.Widgets.TreeOptions) as contrib.Widgets.TreeElement<TreeNode>
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
   const rootNode = {
     extended: true,
@@ -50,7 +46,7 @@ export function buildCodeAst(store: Store) {
       }
     }
   }
-  tree.setData(rootNode)
+  tree.setData(rootNode as any)
 
   const editor: blessed.Widgets.ScrollableTextElement = grid.set(0, 6, 12 - offset - 3, 6, blessed.scrollabletext, {
     ...scrollableOptions

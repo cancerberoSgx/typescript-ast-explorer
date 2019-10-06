@@ -1,4 +1,5 @@
-import * as Blessed from 'blessed'
+import { blessed } from 'accursed'
+
 export = BlessedContrib
 declare namespace BlessedContrib {
   export type Optionals<T, K extends keyof T> = { [P in keyof K]?: T[K] }

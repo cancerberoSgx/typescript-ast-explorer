@@ -1,6 +1,5 @@
-import * as blessed from 'blessed'
+import {blessed, showInModal, contrib} from 'accursed'
 import { isNode } from 'ts-simple-ast-extra'
-import { showInModal } from '../blessed/modal'
 import { help } from '../options/help'
 import { getCurrentView } from '../store/state'
 import { Store } from '../store/store'

@@ -21,18 +21,18 @@ WIP
  * when switching from files view to code view it should open in last viewed node and vice versa - auto-expanding the tree
 
 ## TODO 
-
- * query elements across the project using CSS-like language (tsquery)
- * filter nodes by kind or name  or query
- * apply refactors interactively
- * tree expand all - collapse all
- * move the tree to its own file
- * stateful modal, selections, expansions, etc
- * show errors except in modals
- + navigate with arrows 2-d instead of tab only (1-d)
- * a general option/menu to hide boxes - or perhaps a halo on them to collapse ?
- * confirmation before exit
- * move blessed reusable utilities to their own package
+ - [x] use accursed and remove a lots of files. 
+ - [ ] query elements across the project using CSS-like language (tsquery)
+ - [x] filter nodes by kind or name  or query
+ - [x] apply refactors interactively
+ - [ ] tree expand all - collapse all
+ - [x] move the tree to its own file
+ - [ ] stateful modal, selections, expansions, etc
+ - [ ] show errors except in modals
+ - [x] navigate with arrows 2-d instead of tab only (1-d)
+ - [x] a general option/menu to hide boxes - or perhaps a halo on them to collapse ?
+ - [ ] confirmation before exit
+ - [x] move blessed reusable utilities to their own package
  
 ## crazy
 

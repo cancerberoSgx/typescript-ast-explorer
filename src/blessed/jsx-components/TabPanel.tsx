@@ -1,7 +1,7 @@
 import { ButtonOptions, colors, ElementOptions } from '../blessedTypes'
 import { Component } from '../jsx/component'
 import { React } from '../jsx/createElement'
-import { Div } from './jsxUtil'
+import { Div } from 'accursed'
 
 abstract class Base<T = {}, S = {}> extends Component<T, S> {
   protected optionsBase() {
@@ -23,7 +23,7 @@ abstract class Base<T = {}, S = {}> extends Component<T, S> {
       style: {
         selected: {
           border: {
-            fg: colors.lightgreen
+            fg: colors.colorNames.lightgreen
           },
           bg: 'magenta'
         },

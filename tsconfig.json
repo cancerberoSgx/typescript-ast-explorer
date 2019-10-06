@@ -12,8 +12,8 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "blessed-contrib": ["src/declarations/blessed-contrib"],      
-      "blessed": ["src/declarations/blessed"]
+      "blessed-contrib": ["node_modules/accursed/dist/src/declarations/blessed-contrib"],      
+      "blessed": ["node_modules/accursed/dist/src/declarations/blessed"]
     },
     "jsx": "React",
     "skipLibCheck": true
