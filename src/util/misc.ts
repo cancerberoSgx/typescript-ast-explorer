@@ -1,4 +1,18 @@
 export * from 'misc-utils-of-mine-generic'
+
+
+/**
+ * return the Enum type from given string enum key obtained with key [[enumNoValueKeys]]
+ */
+export function enumValueFromString<T>(key: string, anEnum: any): T | undefined {
+  return anEnum[key]
+}
+import { Element, isBlessedElement, Node, visitDescendants } from 'accursed'
+
+export function visitDescendantElements(node: Node, fn: (l: Element) => boolean) {
+  return visitDescendants(node, n => (isBlessedElement(n) ? fn(n) : false))
+}
+
 // import { str } from 'misc-utils-of-mine-generic'
 
 // export function notUndefined<T>(a: T): a is Exclude<T, undefined> {
@@ -75,13 +89,6 @@ export function strip(s: string) {
 //   })
 //   return o
 // }
-/**
- * return the Enum type from given string enum key obtained with key [[enumNoValueKeys]]
- */
-export function enumValueFromString<T>(key: string, anEnum: any): T | undefined {
-  return anEnum[key]
-}
-
 // export function objectMapValues<O extends { [k in keyof O]: O[keyof O] } = any, T = any>(
 //   o: O,
 //   p: (k: keyof O, v: O[keyof O]) => T

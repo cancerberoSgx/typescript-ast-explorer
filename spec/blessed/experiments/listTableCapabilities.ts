@@ -1,6 +1,5 @@
-import * as blessed from 'blessed'
+import {blessed, BlessedTerminalCapabilitiesBooleans} from 'accursed'
 import { enumKeys } from 'misc-utils-of-mine-typescript'
-import { BlessedTerminalCapabilitiesBooleans } from '../../../src/declarations/blessedTermCap'
 
 const screen = blessed.screen({
   // autoPadding: false,
