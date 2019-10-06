@@ -77,7 +77,7 @@
 // Change **Collapse** to collapse / uncollapse the box.
 
 // Note: if Collapsible is false, then the box won't never be collapsed.
-  
+
 //     `
 // })
 

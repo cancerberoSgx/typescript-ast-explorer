@@ -1,4 +1,3 @@
-import { blessed } from 'accursed'
 
 export = BlessedContrib
 declare namespace BlessedContrib {

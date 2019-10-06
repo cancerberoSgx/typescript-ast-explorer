@@ -1,5 +1,5 @@
 export * from 'accursed'
-export {React} from 'accursed'
+export { React } from 'accursed'
 
 // import { RemoveProperties } from '../../util/misc'
 // import { BlessedElementOptionsIntersection, Element, Style, WidgetTypesEnum } from '../blessedTypes'

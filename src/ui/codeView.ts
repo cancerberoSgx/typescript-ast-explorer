@@ -1,6 +1,6 @@
+import { blessed, contrib, installExitKeys, installFocusHandler, onTreeNodeFocus, showInModal } from 'accursed'
 import { Node } from 'ts-morph'
 import { getRelativePath, isNode } from 'ts-simple-ast-extra'
-import { installExitKeys, onTreeNodeFocus, installFocusHandler , showInModal, blessed, contrib} from 'accursed'
 import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView, View } from '../store/state'
 import { ActionListenerType, Store } from '../store/store'

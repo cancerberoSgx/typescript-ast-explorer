@@ -1,27 +1,45 @@
 # typescript-ast-explorer
 
-WIP
+## Contents
 
- * Early proof of the concept [screen casts](https://cancerberosgx.github.io/demos/typescript-ast-explorer/index.html)
- * explore a local TypeScript project with an Command Line interactive tool. 
+<!-- toc -->
+
+- [Summary](#summary)
+- [Install](#install)
+- [Usage](#usage)
+- [Options](#options)
+- [TODO](#todo)
+
+<!-- tocstop -->
+
+## Summary
+
+ * Demo [screen casts](https://cancerberosgx.github.io/demos/typescript-ast-explorer/index.html)
+ * Explore a local TypeScript project with an Command Line interactive tool. 
+ * Navigate through the AST nodes and source code at same time 
  * See it file structure and the AST nodes inside each file. 
- * Navigate through the AST and source code like. 
+ * JavaScript / TypeScript API for GUI component to select files/folders/nodes interactively (based on blessed/accursed/ts-morph)
 
+## Install 
+```
+npm install -g typescript-ast-explorer
+```
 
-## Issues
+## Usage
+```
+cd my/typescript/project
+typescript-ast-explorer
+```
 
-### blessing issues
- * it seems that some state is stored in options.style and so, if the same object is passed to multiple elements constructurs, they all start sharing the state , like focus, selected, etc. WOrkaround: user always copy the object but IMO is blessing issue. 
+## Options
 
-
- * in file view - remove details parent and leave the children only.
- * should we add the code view in the file view?
- * currently, because of custom  .d.ts, the project needs to declare the types in its own ts.config.json
- * file view: expand first folder automatically.
- * when switching from files view to code view it should open in last viewed node and vice versa - auto-expanding the tree
+No options - WIP - it's mostly an interactive tool
 
 ## TODO 
+
+ - [ ] --tsConfigPath - to load a ts project other then current folder's
  - [x] use accursed and remove a lots of files. 
+ - [ ] API to reuse as AST node selector - project file / folder selector
  - [ ] query elements across the project using CSS-like language (tsquery)
  - [x] filter nodes by kind or name  or query
  - [x] apply refactors interactively
@@ -34,13 +52,8 @@ WIP
  - [ ] confirmation before exit
  - [x] move blessed reusable utilities to their own package
  
-## crazy
-
- * jsx render implementations are "forced" to consume the ast frmo the children to the parent (becase mostly of how the getberated fnuction call expressions are evaluated). But in gereal the mediums support first creating the parent and THEN creating and appending the children so this is the crazy idea. Instead of genrerating function expressoin calls generate a similar structure, and before rendering (React.render()) REVERSE the TREE. then render it upside down, level by level in order.  And It should be mandatory to generate an intermediate representation. The function calls can bewrapped in other function calls (instead of `h('div',{}, [h()])` generate  `(()=>h('div',{}, [()=>h())]))`  (similar how behavior JSX tahs like <If> are implemented... so they dont hget evaluated.
-  * try to implement this in a second implementation or "mode" for blessed to see if this  easy the poroblem of plugins.
-
-## blessed TODO/ideas
- 
- * jsx screen
- * a provider for common props so style is propagated and mixed in childern
- * refs ? 
+ * in file view - remove details parent and leave the children only.
+ * should we add the code view in the file view?
+ * currently, because of custom  .d.ts, the project needs to declare the types in its own ts.config.json
+ * file view: expand first folder automatically.
+ * when switching from files view to code view it should open in last viewed node and vice versa - auto-expanding the tree

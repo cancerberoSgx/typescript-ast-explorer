@@ -1,4 +1,4 @@
-import { visitDescendants, isBlessedElement, Node, Element } from './jsx'
+import { Element, isBlessedElement, Node, visitDescendants } from './jsx'
 
 export * from 'accursed'
 

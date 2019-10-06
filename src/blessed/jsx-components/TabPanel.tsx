@@ -1,7 +1,7 @@
+import { Div } from 'accursed'
 import { ButtonOptions, colors, ElementOptions } from '../blessedTypes'
 import { Component } from '../jsx/component'
 import { React } from '../jsx/createElement'
-import { Div } from 'accursed'
 
 abstract class Base<T = {}, S = {}> extends Component<T, S> {
   protected optionsBase() {

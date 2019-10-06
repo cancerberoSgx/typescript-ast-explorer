@@ -2,9 +2,9 @@
 
 // is modeled the state will be modeled with a general event emitter - no more redux for this time
 
+import { contrib, Screen } from 'accursed'
 import { Project } from 'ts-morph'
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { blessed , contrib, Screen} from 'accursed'
 
 /**
  * the state is mutable and not serializable (to follow best practices :)
@@ -13,7 +13,7 @@ export interface State {
   project: Project
   // selectedSourceFile?: SourceFile
   offset?: number
-  screen:  Screen
+  screen: Screen
   currentView?: ViewType
   fileView: View
   codeView: View

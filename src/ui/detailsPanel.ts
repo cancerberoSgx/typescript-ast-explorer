@@ -1,5 +1,5 @@
 // import {blessed} from 'accursed'
-import {blessed} from 'accursed'
+import { blessed } from 'accursed'
 import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { isNode } from 'ts-simple-ast-extra'

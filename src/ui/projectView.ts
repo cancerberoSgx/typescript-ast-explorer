@@ -1,6 +1,6 @@
-import {blessed, contrib} from 'accursed'
+import { blessed, contrib } from 'accursed'
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { installExitKeys, onTreeNodeFocus, visitDescendants, visitDescendantElements } from '../blessed/blessed'
+import { installExitKeys, onTreeNodeFocus, visitDescendantElements } from '../blessed/blessed'
 import { installFocusHandler } from '../blessed/focus'
 import { ActionType } from '../store/actions'
 import { getCurrentView, View } from '../store/state'

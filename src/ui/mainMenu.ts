@@ -1,4 +1,4 @@
-import {blessed, showInModal, contrib} from 'accursed'
+import { blessed, showInModal } from 'accursed'
 import { isNode } from 'ts-simple-ast-extra'
 import { help } from '../options/help'
 import { getCurrentView } from '../store/state'

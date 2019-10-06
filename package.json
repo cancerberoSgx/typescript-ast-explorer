@@ -12,10 +12,11 @@
     "test": "ts-node node_modules/jasmine/bin/jasmine",
     "test-debug": "node --inspect-brk node_modules/ts-node/dist/bin node_modules/jasmine/bin/jasmine.js",
     "prepare": "tsc",
-    "all-publish": "npm run all && npm version patch && npm publish",
+    "docs": "npx markdown-toc README.md -i",
     "lint": " npx ts-refactor format \"src/**/*.ts*\" \"spec/**/*.ts*\" ./formatCodeSettings.json --tsConfigPath ./tsconfig.json --dontAsk",
     "clean": "rm -rf dist",
-    "all": "npm run clean && npm run lint && npm run build && npm test"
+    "all-publish": "npm run all && npm version patch && npm publish",
+    "all": "npm run clean && npm run lint && npm run build && npm run docs && npm test "
   },
   "author": "Sebastian Gurin",
   "license": "MIT",
@@ -35,6 +36,7 @@
     "@types/node": "^12.7.11",
     "@types/shelljs": "^0.8.5",
     "cli-driver": "0.2.4",
+    "markdown-toc": "^1.2.0",
     "jasmine": "^3.5.0",
     "javascript-stringify": "^2.0.0",
     "ts-node": "^8.4.1",
