@@ -1,11 +1,10 @@
-import { blessed, contrib, installExitKeys, onTreeNodeFocus,installFocusHandler  } from 'accursed'
+import { blessed, contrib, installExitKeys, installFocusHandler, onTreeNodeFocus } from 'accursed'
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { visitDescendantElements } from '../util/misc'
 import { ActionType } from '../store/actions'
 import { getCurrentView, View } from '../store/state'
 import { Store } from '../store/store'
 import { buildTreeNode, focusStyle } from '../util/common'
-import { notUndefined } from '../util/misc'
+import { notUndefined, visitDescendantElements } from '../util/misc'
 import { detailsPanel } from './detailsPanel'
 import { mainMenu } from './mainMenu'
 

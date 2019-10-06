@@ -1,11 +1,10 @@
 import { blessed, contrib } from 'accursed'
 import { pwd } from 'shelljs'
-import { isNode } from 'ts-simple-ast-extra'
+import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath, isNode } from 'ts-simple-ast-extra'
 import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView } from '../store/state'
 import { ActionListenerType, Store } from '../store/store'
 import { scrollableOptions } from '../util/common'
-import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from 'ts-simple-ast-extra'
 import { buildNodeActions } from './nodeActions'
 
 export function detailsPanel(store: Store) {

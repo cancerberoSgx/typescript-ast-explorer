@@ -1,8 +1,7 @@
 const ansi = require('ansi-escape-sequences')
+import { blessed, resetFocusManager, Style } from 'accursed'
 import { Project } from 'ts-morph'
-import { GeneralNode, getGeneralNodeChildren, isDirectory, getGeneralNodeKindName, getGeneralNodeName } from 'ts-simple-ast-extra'
-import { Style, blessed } from 'accursed'
-import { resetFocusManager } from 'accursed'
+import { GeneralNode, getGeneralNodeChildren, getGeneralNodeKindName, getGeneralNodeName, isDirectory } from 'ts-simple-ast-extra'
 import { State } from '../store/state'
 import { Store } from '../store/store'
 import { buildCodeView } from '../ui/codeView'
