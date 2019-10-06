@@ -8,6 +8,7 @@ import { ActionListener as AL, ActionListenerType } from './store'
 export enum ActionType {
   NODE_SELECTION = 'node:selection'
 }
+
 /**
  * Dispatcher is like Reducer but with more freedom - receive the action and the entire state and mutates it.
  */
@@ -21,6 +22,7 @@ export interface ActionListener<T extends ActionType> extends AL<ActionType, Act
   actionType: T
   handle<T extends ActionType, A extends ActionTypeMap[T]>(action: A, state: State): void
 }
+
 /**
  * centralized action map to typed actions
  */

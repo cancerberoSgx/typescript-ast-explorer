@@ -1,7 +1,3 @@
-// HEADS UP: this is very quick / dirty. We use same REDUX names but this is almost the contrary and doesn't follow best practices.. dont try it at home!. Dont lear from this
-
-// is modeled the state will be modeled with a general event emitter - no more redux for this time
-
 import { contrib, Screen } from 'accursed'
 import { Project } from 'ts-morph'
 import { GeneralNode } from 'ts-simple-ast-extra'
@@ -11,7 +7,6 @@ import { GeneralNode } from 'ts-simple-ast-extra'
  */
 export interface State {
   project: Project
-  // selectedSourceFile?: SourceFile
   offset?: number
   screen: Screen
   currentView?: ViewType
@@ -19,7 +14,7 @@ export interface State {
   codeView: View
 }
 
-type ViewType = 'file' | 'code'
+export type ViewType = 'file' | 'code'
 
 export interface View {
   /**

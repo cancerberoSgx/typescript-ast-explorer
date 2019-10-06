@@ -1,27 +1,14 @@
-import { blessed, contrib, installExitKeys, installFocusHandler, onTreeNodeFocus, showInModal } from 'accursed'
+import { blessed, contrib, installExitKeys, onTreeNodeFocus, showInModal } from 'accursed'
 import { Node } from 'ts-morph'
 import { getRelativePath, isNode } from 'ts-simple-ast-extra'
 import { ActionType, ACTION_LISTENER } from '../store/actions'
-import { getCurrentView, View } from '../store/state'
+import { getCurrentView } from '../store/state'
 import { ActionListenerType, Store } from '../store/store'
-import { buildTreeNode, focusStyle, scrollableOptions } from '../util/common'
+import { buildTreeNode, focusableBorderedOpts, scrollableOptions } from '../util/common'
 import { detailsPanel } from './detailsPanel'
 import { mainMenu } from './mainMenu'
+import { _installFocusHandler } from './_installFocusHandler'
 const ansi = require('ansi-escape-sequences')
-
-/**
- * must never accept the store, since is used to build it and reset the screen (probably given one is a empty
- * one)
- */
-export function buildCodeView(screen: blessed.Widgets.Screen): View {
-  const rows = process.stdout.rows || 24
-  const verticalOffset = rows < 20 ? 3 : rows < 40 ? 2 : 1
-  return {
-    verticalOffset,
-    name: 'code',
-    grid: new contrib.grid({ rows: 12, cols: 12, screen, top: 0, right: 0, bottom: 0, left: 0 })
-  }
-}
 
 export function buildCodeAst(store: Store) {
   const { screen, project } = store.state
@@ -31,25 +18,27 @@ export function buildCodeAst(store: Store) {
     throw new Error('Unexpected selected no kind . It is not a node selected node (directory?) in Code View')
   }
   const bar = mainMenu(store)
-
   const tree = grid.set(0, 0, 5, 6, contrib.tree, {
     template: { lines: true },
     label: 'Code View'
   } as contrib.Widgets.TreeOptions) as contrib.Widgets.TreeElement<TreeNode>
-  tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
+  tree.rows.style = { ...(tree.rows.style || {}), ...focusableBorderedOpts().style }
   const rootNode = {
     extended: true,
+        expanded: true,
     children: {
       [getRelativePath(node.getSourceFile().getFilePath(), project)]: {
         ...buildTreeNode(node.getSourceFile()),
-        expanded: true
+        expanded: true,
+        extended: true,
       }
     }
   }
   tree.setData(rootNode as any)
 
   const editor: blessed.Widgets.ScrollableTextElement = grid.set(0, 6, 12 - offset - 3, 6, blessed.scrollabletext, {
-    ...scrollableOptions
+    ...focusableBorderedOpts(),
+    ...scrollableOptions()
   } as blessed.Widgets.ScrollableTextOptions)
   editor.on('click', function(data: any) {
     showInModal(screen, JSON.stringify(data) + '  ' + JSON.stringify(editor.position))
@@ -58,7 +47,7 @@ export function buildCodeAst(store: Store) {
   const { table, value, actions } = detailsPanel(store)
 
   installExitKeys(screen)
-  installFocusHandler('codeAst', [tree, editor, bar, table, actions], screen, undefined, true, true)
+  _installFocusHandler('codeAst', [tree, editor, bar , table, value, actions ], screen, undefined, true, true)
 
   screen.render()
 
@@ -93,6 +82,8 @@ export function buildCodeAst(store: Store) {
       node: n.astNode
     })
   })
+
+  return {tree, editor, bar , table, value, actions }
 }
 
 interface TreeNode extends contrib.Widgets.TreeElementNode {

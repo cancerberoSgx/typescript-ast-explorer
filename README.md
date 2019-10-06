@@ -36,7 +36,7 @@ typescript-ast-explorer
 No options - WIP - it's mostly an interactive tool
 
 ## TODO 
-
+ - [ ] re implement the GUI using accursed, TSX without contrib, with proper focus/event managers.
  - [ ] --tsConfigPath - to load a ts project other then current folder's
  - [x] use accursed and remove a lots of files. 
  - [ ] API to reuse as AST node selector - project file / folder selector

@@ -1,5 +1,5 @@
 import { Driver, InteractionSpecHelper } from 'cli-driver'
-import { sleep } from '../src/util/misc'
+import { sleep } from 'misc-utils-of-mine-generic'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000
 
@@ -13,6 +13,7 @@ describe('astExplorerSpec', () => {
     await client.start({
       notSilent: true
     })
+    await sleep(200)
     done()
   })
 
@@ -20,6 +21,7 @@ describe('astExplorerSpec', () => {
     await helper.clear()
     await client.destroy().catch()
     helper = null as any
+    await sleep(200)
     done()
   })
 
@@ -30,8 +32,9 @@ describe('astExplorerSpec', () => {
     // expect(await helper.waitForStrippedDataToInclude('Code View'))
     await sleep(200)
     await client.enter('q')
-    // await sleep(200)
-    // await client.enter('q')
+    await sleep(200)
+    await client.enter('q')
+    await sleep(200)
     // await helper .expectLastExitCode(true)
     done()
   })
@@ -48,6 +51,7 @@ describe('astExplorerSpec', () => {
     await client.enter('h')
     s = await helper.waitForStrippedDataToInclude('Welcome to')
 
+    await client.time(300)
     await client.enter('q')
     // TODO: wait not to contain
     await client.time(300)

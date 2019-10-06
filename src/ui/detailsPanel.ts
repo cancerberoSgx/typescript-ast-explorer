@@ -4,7 +4,7 @@ import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath, isNode 
 import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView } from '../store/state'
 import { ActionListenerType, Store } from '../store/store'
-import { scrollableOptions } from '../util/common'
+import { focusableBorderedOpts, scrollableOptions } from '../util/common'
 import { buildNodeActions } from './nodeActions'
 
 export function detailsPanel(store: Store) {
@@ -14,22 +14,23 @@ export function detailsPanel(store: Store) {
   // TABLE
   const gridPositino = view.name === 'file' ? [0, 6, 5, 6] : [5, 0, 4, 6]
   const table = grid.set(...gridPositino, contrib.table, {
+    ...focusableBorderedOpts(),
     clickable: true,
-    keys: true,
     focusable: true,
-    draggable: true,
     mouse: true,
     border: 'line',
     columnWidth: [8, 30],
     label: 'Selection',
     data: { headers: ['Property', 'Value'], data: [[]] }
-  })
+  }) as blessed.Widgets.TableElement
+
   let value: blessed.Widgets.ScrollableTextElement | undefined
 
   // VALUE
   if (store.state.currentView !== 'code') {
     value = grid.set(...[3, 6, 5, 6], blessed.scrollabletext, {
-      ...scrollableOptions,
+      ...focusableBorderedOpts(),
+      ...scrollableOptions(),
       label: 'Full Value',
       draggable: true,
       border: 'line'
