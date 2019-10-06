@@ -1,7 +1,8 @@
 import { GeneralNode } from 'ts-simple-ast-extra'
-import { ActionListener, ActionListenerType, ActionType, ACTION_LISTENER } from './actions'
+import { ActionListener, ActionType, ACTION_LISTENER } from './actions'
+import { Action, ActionListenerType } from './store'
 
-export interface NodeSelectionAction {
+export interface NodeSelectionAction extends Action<ActionType.NODE_SELECTION> {
   type: ActionType.NODE_SELECTION
   node: GeneralNode
 }

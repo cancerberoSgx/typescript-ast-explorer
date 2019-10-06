@@ -75,16 +75,23 @@ export type BlessedElementOptionsIntersection = BoxOptions &
 
 export { blessed }
 
-/** isElement type guard without type parameters */
+/**
+ * isElement type guard without type parameters
+ */
 export function isElement(n: any): n is Element {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
-/** isElement type guard that cast to a concrete type by without really asserting on the concrete type - use only if sure */
+/**
+ * isElement type guard that cast to a concrete type by without really asserting on the concrete type - use only
+ * if sure
+ */
 export function isElementUnSafe<E extends Element = Element>(n: any): n is E {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
 
-/** isNode type guard by asserting on a given type name (recommended) */
+/**
+ * isNode type guard by asserting on a given type name (recommended)
+ */
 export function isNodeByType<E extends Element = Element>(n: any, type: WidgetTypeNames): n is E {
   return n && n.removeLabel && n.disableDrag && n.setContent && n.getScreenLines
 }
@@ -92,7 +99,9 @@ export function isScreen(n: any): n is Screen {
   return isNodeByType(n, WidgetTypesEnum.screen)
   // return n && isNode(n) && n.type === 'screen'
 }
-/** isNode type guard without type parameters */
+/**
+ * isNode type guard without type parameters
+ */
 export function isNode(n: any): n is Node {
   return n && n.insertBefore && n.forDescendants
 }
@@ -168,18 +177,18 @@ export type PositionOptionsNames = Pick<BlessedElementOptionsIntersection, Posit
 
 export interface ElementTypeOptions {
   [WidgetTypesEnum.box]:
-    | MouseInputActivationOptions
-    | DimensionOptions
-    | PositionOptions
-    | TextStyleOptions
-    | DecorationOptions
-    | ColorOptions
-    | ContainerOptions
-    | ScrollStyleOptions
+  | MouseInputActivationOptions
+  | DimensionOptions
+  | PositionOptions
+  | TextStyleOptions
+  | DecorationOptions
+  | ColorOptions
+  | ContainerOptions
+  | ScrollStyleOptions
   [WidgetTypesEnum.listbar]:
-    | ElementTypeOptions[WidgetTypesEnum.box]
-    | InputActivationOption
-    | EventEStyleOptions
-    | CompositionStyleOptions
+  | ElementTypeOptions[WidgetTypesEnum.box]
+  | InputActivationOption
+  | EventEStyleOptions
+  | CompositionStyleOptions
   //TODO: the rest
 }

@@ -1,6 +1,8 @@
 // export namespace TerminalCapabilities {
 
-/**These are the boolean capabilities:*/
+/**
+ * These are the boolean capabilities:
+ */
 export enum BlessedTerminalCapabilitiesBooleans {
   //         Variable                                      Cap-                               TCap                                  Description
   //         Booleans                                      name                               Code
@@ -43,7 +45,9 @@ export enum BlessedTerminalCapabilitiesBooleans {
   xon_xoff = 'xon_xoff' //                                           ['xon',                                'xo']  //                                terminal uses xon/xoff handshaking
 }
 
-/** These are the numeric capabilities: */
+/**
+ * These are the numeric capabilities:
+ */
 export enum BlessedTerminalCapabilitiesBooleansNnmbers {
   //         Variable                                      Cap-                               TCap                                  Description
   //          Numeric                                      name                               Code
@@ -88,7 +92,9 @@ export enum BlessedTerminalCapabilitiesBooleansNnmbers {
   wide_char_size = 'wide_char_size' //                                     ['widcs',                              'Yn']  //                                character step size when in double wide mode
 }
 
-/**  These are the string capabilities: */
+/**
+ * These are the string capabilities:
+ */
 export enum BlessedTerminalCapabilitiesStrings {
   //         Variable                                    Cap-                             TCap                                   Description
   //          String                                     name                             Code

@@ -7,34 +7,50 @@ import { React } from './createElement'
 //TODO: research: to work purely with data / options and not with the elements already instantiated, we should create an intermediary representation  n createElement() and only create the blessed elements in render() so we have the time to process the option/tree before calling blessed constructors.
 
 interface Options {
-  /**  exclude some properties for being propagated */
+  /**
+   * exclude some properties for being propagated
+   */
   exclude?: string[]
 
-  /** option name path to propagate form parent to children, something like style.bg or focusable */
+  /**
+   * option name path to propagate form parent to children, something like style.bg or focusable
+   */
   include: string[]
 
-  /** predicates, per option path given in [[include]] descendants must comply with in order to propagate a certain option to them. If filter exists for a option path and the predicate returns true for a node, then those options wont be propagated to that node.
-   *
-   * Also if filter exists and [[stopPropagation === true]] then the option propagation will stop also for its descendants.
-   *
+  /**
+   * predicates, per option path given in [[include]] descendants must comply with in order to propagate a certain
+   * option to them. If filter exists for a option path and the predicate returns true for a node, then those
+   * options wont be propagated to that node.
+   * 
+   * Also if filter exists and [[stopPropagation === true]] then the option propagation will stop also for its
+   * descendants.
+   * 
    * Example: `[
    * {path: 'focusable', predicate: node=>node.type==='button'},
    * {path: 'style.hover.bg', predicate: node=>hasAscendant(node, a=>a.type==='layout')}
    * ]`, etc.
-   *
+   * 
    * Important: Paths here must be contained in [[include]]
-   *
-   * */
+   * 
+   * 
+   */
   filter?: { optionPath: string; predicate: (node: Element) => boolean; stopPropagation?: boolean }[]
 
-  /** TODO. include properties outside options. Careful! */
+  /**
+   * TODO. include properties outside options. Careful!
+   */
   otherOptions?: (keyof BlessedElementOptionsIntersection)[]
 
-  /** Like CSS !important. for keys in  here, children options will be override no matter if they explicitly have tgen in their options. Use with care*/
+  /**
+   * Like CSS !important. for keys in  here, children options will be override no matter if they explicitly have
+   * tgen in their options. Use with care
+   */
   important?: string[]
 }
 
-/** @internal */
+/**
+ * @internal
+ */
 export function installOptionsPropagationPlugin(options: Options = { include: [] }) {
   React.addAfterRenderListener(event => {
     try {

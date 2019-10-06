@@ -49,7 +49,7 @@ export class App extends Component<P, S> {
   render() {
     const { screen } = this.props
     return (
-      <Div parent={screen} width="95%" height="100%" border="line" label="Blessed Gallery">
+      <Div parent={screen} width='95%' height='100%' border='line' label='Blessed Gallery'>
         <Br />
         <Strong>Chose a Demo:</Strong>
         <Br />
@@ -57,15 +57,16 @@ export class App extends Component<P, S> {
           {...commonOptions()}
           padding={1}
           top={3}
-          align="center"
+          align='center'
           keys={true}
           mouse={true}
           clickable={true}
           focusable={true}
           focused={true}
-          border="line"
-          width="95%"
+          border='line'
+          width='95%'
           autoCommandKeys={true}
+          //@ts-ignore
           commands={arrayToObject(enumNoValueKeys(Demo), d => () =>
             showInModal(screen, this.renderDemo(d), `${d} demo (press q to close)`, '100%', '100%')
           )}

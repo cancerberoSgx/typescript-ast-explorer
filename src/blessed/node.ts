@@ -1,19 +1,28 @@
 import { Node } from './blessedTypes'
 
 export type Visitor<T extends Node = Node> = (n: T) => boolean
-/** settings for visitDescendants regarding visiting order and visit interruption modes. */
+/**
+ * settings for visitDescendants regarding visiting order and visit interruption modes.
+ */
 export interface VisitorOptions {
   childrenFirst?: boolean
-  /**if a descendant visitor returned true, we stop visiting and signal up */
+  /**
+   * if a descendant visitor returned true, we stop visiting and signal up
+   */
   breakOnDescendantSignal?: boolean
-  /***no matter if visitor returns true for a node, it will still visit its descendants and then break the chain */
+  /**
+   * no matter if visitor returns true for a node, it will still visit its descendants and then break the chain
+   */
   visitDescendantsOnSelfSignalAnyway?: boolean
 }
 
 /**
- * Visit node's descendants until the visitor function return true or there are no more. In the first different modes on which visiting the rest of descendants or
- * ancestors are configurable through the options. By default, first the parent is evaluated which is configurable configurable with [[[VisitorOptions.childrenFirst]]
- * */
+ * Visit node's descendants until the visitor function return true or there are no more. In the first different
+ * modes on which visiting the rest of descendants or
+ * ancestors are configurable through the options. By default, first the parent is evaluated which is
+ * configurable configurable with [[[VisitorOptions.childrenFirst]]
+ * 
+ */
 export function visitDescendants(n: Node, v: Visitor, o: VisitorOptions = {}): boolean {
   let r = false
   if (o.childrenFirst) {
@@ -63,6 +72,7 @@ export function findDescendant<T extends Node = Node>(n: Node, p: ElementPredica
 }
 
 export function findChildren<T extends Node = Node>(n: Node, p: ElementPredicate) {
+  //@ts-ignore
   return n.children.find<T>(c => p(c))
 }
 

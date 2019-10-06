@@ -4,7 +4,9 @@ import { Component, ComponentWithOptions } from '../jsx/component'
 
 interface ListBarProps {
   keys?: string[] // TODO: this could ne also optional and querier from the markup
-  /** user can provide options callbacks both from here or implementing method getCallbacks */
+  /**
+   * user can provide options callbacks both from here or implementing method getCallbacks
+   */
   callbacks?: {}
   // children?:
 }
@@ -30,7 +32,11 @@ export class ListBar<T extends ListBarProps, S = {}> extends Component<T, S> {
   }
 }
 
-/** uses __Virtual "feature"to return markup with data that will be ignored by the renderer , Data is consumend by our ListBar parent. This way we delare things not supported by blessed options in the markupwithout impact on the output. */
+/**
+ * uses __Virtual "feature"to return markup with data that will be ignored by the renderer , Data is consumend by
+ * our ListBar parent. This way we delare things not supported by blessed options in the markupwithout impact on
+ * the output.
+ */
 export class ListBarItem<T extends ListBarItemProps, S = {}> extends ComponentWithOptions<T, S> {
   render() {
     // return create__Virtual<ListBarItemProps>(this.props)

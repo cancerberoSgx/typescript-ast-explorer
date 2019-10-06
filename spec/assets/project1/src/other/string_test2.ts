@@ -8,7 +8,8 @@ const b = `${a} b c ${Math.PI} g ${function() {
 }.toString()}`
 
 /**
- * Adapted from inquirer sources. The paginator keeps track of a pointer index in a list and returns* a subset of the choices if the list is too long.
+ * Adapted from inquirer sources. The paginator keeps track of a pointer index in a list and returns* a subset of
+ * the choices if the list is too long.
  */
 export class AbstractPaginator {
   pointer: number

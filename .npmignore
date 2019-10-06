@@ -3,5 +3,8 @@ src
 scripts
 tmp
 spec
+log.txt  
+ideas-for-blessing.md  
+.travis.yml 
 *.tgz
 package*

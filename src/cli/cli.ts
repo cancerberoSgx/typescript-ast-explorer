@@ -1,4 +1,4 @@
-import { createStore } from '../store/store'
+import { createStore } from '../store/createStore'
 import { buildExplorer } from '../ui/projectView'
 import { Options } from './cliMain'
 

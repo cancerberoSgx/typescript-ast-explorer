@@ -48,7 +48,9 @@ export function testElement({
   }
 }
 
-/** install beforeEach and afterEach so they create a new screen for its spec and destroy previous */
+/**
+ * install beforeEach and afterEach so they create a new screen for its spec and destroy previous
+ */
 export function installBeforeAndAfterMethods(options: Options) {
   let screen: Screen
   beforeEach(() => {
@@ -64,7 +66,9 @@ export function installBeforeAndAfterMethods(options: Options) {
   })
 }
 
-/** a driver manages a screen and a test session */
+/**
+ * a driver manages a screen and a test session
+ */
 export class TestDriver {
   private _screen: Screen | undefined
   public get screen(): Screen {
@@ -75,7 +79,7 @@ export class TestDriver {
     // }
     // return this._screen!;
   }
-  constructor(protected options: Options = {}) {}
+  constructor(protected options: Options = {}) { }
 
   private getScreen(mode: 'nothing' | 'reset' | 'createNew' | 'destroy' = 'nothing') {
     if (this._screen && ((!this._screen.destroyed && mode === 'createNew') || mode === 'destroy')) {
@@ -116,11 +120,16 @@ export class TestDriver {
   // }
 }
 interface Options {
-  /** installs beforeAll and afterAll instead of beforeEach . by default beforeEinstallBeforeAndAfterMethodsMethods?: 'each'|'all'
-  /** by default the screen is destroyed / created on setup / teardown - if this is true it will be reused. */
+  /**
+   * installs beforeAll and afterAll instead of beforeEach . by default
+   * beforeEinstallBeforeAndAfterMethodsMethods?: 'each'|'all'
+   *   /** by default the screen is destroyed / created on setup / teardown - if this is true it will be reused.
+   */
   reuseScreen?: boolean
 
-  /** if true will setup beforeAll / afterAll instead of beforeEachafterEach */
+  /**
+   * if true will setup beforeAll / afterAll instead of beforeEachafterEach
+   */
   installBeforeAfterAll?: boolean
 
   // /** users can provide their own Screen instance at any time */

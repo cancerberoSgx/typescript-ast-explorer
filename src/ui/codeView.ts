@@ -1,20 +1,21 @@
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { Node } from 'ts-morph'
-import { getFileRelativePath, isNode } from 'ts-simple-ast-extra'
+import { getRelativePath, isNode } from 'ts-simple-ast-extra'
 import { installExitKeys, onTreeNodeFocus } from '../blessed/blessed'
 import { installFocusHandler } from '../blessed/focus'
 import { showInModal } from '../blessed/modal'
-import { ActionListenerType, ActionType, ACTION_LISTENER } from '../store/actions'
+import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView, View } from '../store/state'
-import { Store } from '../store/store'
+import { ActionListenerType, Store } from '../store/store'
 import { buildTreeNode, focusStyle, scrollableOptions } from '../util/common'
 import { detailsPanel } from './detailsPanel'
 import { mainMenu } from './mainMenu'
 const ansi = require('ansi-escape-sequences')
 
 /**
- * must never accept the store, since is used to build it and reset the screen (probably given one is a empty one)
+ * must never accept the store, since is used to build it and reset the screen (probably given one is a empty
+ * one)
  */
 export function buildCodeView(screen: blessed.Widgets.Screen): View {
   const rows = process.stdout.rows || 24
@@ -43,7 +44,10 @@ export function buildCodeAst(store: Store) {
   const rootNode = {
     extended: true,
     children: {
-      [getFileRelativePath(node.getSourceFile(), project)]: { ...buildTreeNode(node.getSourceFile()), expanded: true }
+      [getRelativePath(node.getSourceFile().getFilePath(), project)]: {
+        ...buildTreeNode(node.getSourceFile()),
+        expanded: true
+      }
     }
   }
   tree.setData(rootNode)

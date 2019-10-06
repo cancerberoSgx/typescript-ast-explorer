@@ -1,4 +1,4 @@
-import { createStore } from '../src/store/store'
+import { createStore } from '../src/store/createStore'
 import { buildCodeAst } from '../src/ui/codeView'
 try {
   var store = createStore()

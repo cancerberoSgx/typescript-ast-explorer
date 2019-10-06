@@ -22,9 +22,9 @@ screen.key('q', function() {
 })
 
 screen.key('i', function() {
-  box.readInput(function() {})
+  box.readInput(function() { })
 })
 
 screen.key('e', function() {
-  box.readEditor(function() {})
+  box.readEditor(function() { })
 })

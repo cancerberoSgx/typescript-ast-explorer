@@ -1,4 +1,4 @@
-import { createStore } from '../src/store/store'
+import { createStore } from '../src/store/createStore'
 import { buildExplorer } from '../src/ui/projectView'
 try {
   var store = createStore()

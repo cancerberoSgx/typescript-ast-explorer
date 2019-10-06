@@ -1,6 +1,6 @@
 const ansi = require('ansi-escape-sequences')
 import * as blessed from 'blessed'
-import Project from 'ts-morph'
+import { Project } from 'ts-morph'
 import { GeneralNode, getGeneralNodeChildren, isDirectory } from 'ts-simple-ast-extra'
 import { Style } from '../blessed/blessedTypes'
 import { resetFocusManager } from '../blessed/focus'
@@ -77,7 +77,8 @@ export function createInitialState(): State {
 }
 
 /**
- * it will create a new screen , destroy the current one and regenerate everything, with the exception of the Project
+ * it will create a new screen , destroy the current one and regenerate everything, with the exception of the
+ * Project
  */
 export function resetScreen(store: Store) {
   resetFocusManager()

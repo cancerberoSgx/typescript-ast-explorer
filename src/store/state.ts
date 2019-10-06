@@ -4,10 +4,8 @@
 
 import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
-import Project from 'ts-morph'
+import { Project } from 'ts-morph'
 import { GeneralNode } from 'ts-simple-ast-extra'
-
-//
 
 /**
  * the state is mutable and not serializable (to follow best practices :)
@@ -21,9 +19,13 @@ export interface State {
   fileView: View
   codeView: View
 }
+
 type ViewType = 'file' | 'code'
+
 export interface View {
-  /**a number that depends on the height of the terminal - changes the grid to accommodate small children */
+  /**
+   * a number that depends on the height of the terminal - changes the grid to accommodate small children
+   */
   verticalOffset: number
   selectedNode?: GeneralNode
   grid: contrib.Widgets.GridElement

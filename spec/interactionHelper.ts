@@ -8,7 +8,7 @@ export class Helper {
   async clear() {
     await this.client.enter(ansi.erase.display(2))
   }
-  constructor(protected client: Driver) {}
+  constructor(protected client: Driver) { }
 
   async expectLastExitCode(zeroExitCode?: boolean) {
     if (typeof zeroExitCode === 'undefined') {

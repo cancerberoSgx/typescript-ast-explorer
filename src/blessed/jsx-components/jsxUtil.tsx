@@ -12,13 +12,13 @@ export function Br(props: {}) {
         //@ts-ignore
         display: 'block'
       }}
-      content=""
+      content=''
     />
   )
 }
 
 export function NbrSpc(props: {}) {
-  return <text content=" " />
+  return <text content=' ' />
 }
 
 export function Strong(props: { children?: string | string[]; color?: string }) {

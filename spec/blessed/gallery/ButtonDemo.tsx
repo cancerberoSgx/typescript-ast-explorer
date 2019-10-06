@@ -11,15 +11,15 @@ export class ButtonDemo extends Component<{ screen: Screen }> {
         This is a simple button that changes its label each time it's clicked.
         <Br />
         <button
-          content="click me"
+          content='click me'
           clickable={true}
           mouse={true}
-          border="line"
+          border='line'
           padding={1}
-          align="center"
-          width="50%"
+          align='center'
+          width='50%'
           height={5}
-          valign="middle"
+          valign='middle'
           style={{ border: { fg: 'cyan' }, hover: { bg: 'green' }, bg: 'magenta' }}
           onClick={e => {
             e.currentTarget.setText(e.currentTarget.getText() + number())

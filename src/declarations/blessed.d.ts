@@ -16,10 +16,14 @@ import { Readable, Writable } from 'stream'
 export interface IBlessedProgramOptions {
   input?: Readable
   output?: Writable
-  /** path to a file where to write when screen.log() or program.log are called */
+  /**
+   * path to a file where to write when screen.log() or program.log are called
+   */
   log?: string
   dump?: boolean
-  /** zero-based indexes for col, row values */
+  /**
+   * zero-based indexes for col, row values
+   */
   zero?: boolean
   buffer?: boolean
   terminal?: string
@@ -34,7 +38,9 @@ export class BlessedProgram extends EventEmitter {
   options: IBlessedProgramOptions
   input: Readable
   output: Writable
-  /** zero-based indexes for col, row values */
+  /**
+   * zero-based indexes for col, row values
+   */
   zero: boolean
   useBuffer: boolean
   x: number
@@ -58,15 +64,21 @@ export class BlessedProgram extends EventEmitter {
   isAlt: boolean
 
   constructor(options?: IBlessedProgramOptions)
-  /** writes arguments to [[log]] file passed in options*/
+  /**
+   * writes arguments to [[log]] file passed in options
+   */
   log(...args: any[]): boolean
   debug(s: string): boolean
   setupDump(): void
   setupTput(): void
   setTerminal(terminal: string): void
-  /** Queries whether the terminal has the capability `name`. */
+  /**
+   * Queries whether the terminal has the capability `name`.
+   */
   has(name: string): boolean
-  /** 	Queries whether the terminal of the type `is`. */
+  /**
+   * Queries whether the terminal of the type `is`.
+   */
   term(is: string): boolean
 
   listen(): void
@@ -96,10 +108,14 @@ export class BlessedProgram extends EventEmitter {
    * 	Flushes the buffer.
    */
   flush(): void
-  /** 	Determines whether to include text attributes when writing. */
+  /**
+   * Determines whether to include text attributes when writing.
+   */
   print(text: string, attr?: boolean): boolean
   echo(text: string, attr?: boolean): boolean
-  /** sets cursor  */
+  /**
+   * sets cursor
+   */
   setx(x: number): boolean
   sety(y: number): boolean
   move(x: number, y: number): boolean
@@ -136,7 +152,9 @@ export class BlessedProgram extends EventEmitter {
 
   tab(): boolean
   ht(): boolean
-  /** @internal  */
+  /**
+   * @internal
+   */
   _ncoords(): void
   shiftOut(): boolean
   shiftIn(): boolean
@@ -236,8 +254,10 @@ export class BlessedProgram extends EventEmitter {
   saveReportedCursor(callback: Function): void
 
   restoreReportedCursor: () => boolean
-  /** CSI Ps @
-  Insert Ps (Blank) Character(s) (default = 1) (ICH). */
+  /**
+   * CSI Ps @
+   *   Insert Ps (Blank) Character(s) (default = 1) (ICH).
+   */
   insertChars(param?: number): boolean
   ich(param?: number): boolean
 
@@ -318,36 +338,46 @@ export class BlessedProgram extends EventEmitter {
 
   restoreCursorA(): boolean
   rcA(): boolean
-  /**  Cursor Forward Tabulation Ps tab stops (default = 1) (CHT). */
+  /**
+   * Cursor Forward Tabulation Ps tab stops (default = 1) (CHT).
+   */
   cursorForwardTab(param?: number): boolean
   cht(param?: number): boolean
-  /**CSI Ps S  Scroll up Ps lines (default = 1) (SU). */
+  /**
+   * CSI Ps S  Scroll up Ps lines (default = 1) (SU).
+   */
   scrollUp(param?: number): boolean
   su(param?: number): boolean
-  /**  CSI Ps T  Scroll down Ps lines (default = 1) (SD). */
+  /**
+   * CSI Ps T  Scroll down Ps lines (default = 1) (SD).
+   */
   scrollDown(param?: number): boolean
   sd(param?: number): boolean
-  /** CSI Ps ; Ps ; Ps ; Ps ; Ps T
-  //   Initiate highlight mouse tracking.  Parameters are
-  //   [func;startx;starty;firstrow;lastrow].  See the section Mouse
-  //   Tracking. */
+  /**
+   * CSI Ps ; Ps ; Ps ; Ps ; Ps T
+   *   //   Initiate highlight mouse tracking.  Parameters are
+   *   //   [func;startx;starty;firstrow;lastrow].  See the section Mouse
+   *   //   Tracking.
+   */
   initMouseTracking(...args: string[]): boolean
   /**
    * CSI > Ps; Ps T
-    Reset one or more features of the title modes to the default
-    value.  Normally, "reset" disables the feature.  It is possi-
-    ble to disable the ability to reset features by compiling a
-    different default for the title modes into xterm.
-      Ps = 0  -> Do not set window/icon labels using hexadecimal.
-      Ps = 1  -> Do not query window/icon labels using hexadeci-
-      mal.
-      Ps = 2  -> Do not set window/icon labels using UTF-8.
-      Ps = 3  -> Do not query window/icon labels using UTF-8.
-    (See discussion of "Title Modes").
+   *     Reset one or more features of the title modes to the default
+   *     value.  Normally, "reset" disables the feature.  It is possi-
+   *     ble to disable the ability to reset features by compiling a
+   *     different default for the title modes into xterm.
+   *       Ps = 0  -> Do not set window/icon labels using hexadecimal.
+   *       Ps = 1  -> Do not query window/icon labels using hexadeci-
+   *       mal.
+   *       Ps = 2  -> Do not set window/icon labels using UTF-8.
+   *       Ps = 3  -> Do not query window/icon labels using UTF-8.
+   *     (See discussion of "Title Modes").
    */
   resetTitleModes(...args: string[]): boolean
 
-  /**  CSI Ps Z  Cursor Backward Tabulation Ps tab stops (default = 1) (CBT). */
+  /**
+   * CSI Ps Z  Cursor Backward Tabulation Ps tab stops (default = 1) (CBT).
+   */
   cursorBackwardTab(param?: number): boolean
   cbt(param?: number): boolean
 
@@ -380,14 +410,16 @@ export class BlessedProgram extends EventEmitter {
 
   disableModifieres(...args: string[]): boolean
 
-  /** CSI > Ps p
-Set resource value pointerMode.  This is used by xterm to
-decide whether to hide the pointer cursor as the user types.
-Valid values for the parameter:
-  Ps = 0  -> never hide the pointer.
-  Ps = 1  -> hide if the mouse tracking mode is not enabled.
-  Ps = 2  -> always hide the pointer.  If no parameter is
-  given, xterm uses the default, which is 1 . */
+  /**
+   * CSI > Ps p
+   * Set resource value pointerMode.  This is used by xterm to
+   * decide whether to hide the pointer cursor as the user types.
+   * Valid values for the parameter:
+   *   Ps = 0  -> never hide the pointer.
+   *   Ps = 1  -> hide if the mouse tracking mode is not enabled.
+   *   Ps = 2  -> always hide the pointer.  If no parameter is
+   *   given, xterm uses the default, which is 1 .
+   */
   setPointerMode(...args: string[]): boolean
 
   softReset(): boolean
@@ -406,45 +438,48 @@ Valid values for the parameter:
   loadLEDs(param?: number): boolean
   decll(param?: number): boolean
 
-  /** 
+  /**
    * CSI Ps SP q
-Set cursor style (DECSCUSR, VT520).
- Ps = 0  -> blinking block.
- Ps = 1  -> blinking block (default).
- Ps = 2  -> steady block.
- Ps = 3  -> blinking underline.
- Ps = 4  -> steady underline.
+   * Set cursor style (DECSCUSR, VT520).
+   *  Ps = 0  -> blinking block.
+   *  Ps = 1  -> blinking block (default).
+   *  Ps = 2  -> steady block.
+   *  Ps = 3  -> blinking underline.
+   *  Ps = 4  -> steady underline.
    */
   setCursorStyle(param?: string): boolean
   decscursr(param?: string): boolean
 
   /**
    * CSI Ps " q
-  Select character protection attribute (DECSCA).  Valid values
-  for the parameter:
-    Ps = 0  -> DECSED and DECSEL can erase (default).
-    Ps = 1  -> DECSED and DECSEL cannot erase.
-    Ps = 2  -> DECSED and DECSEL can erase.
+   *   Select character protection attribute (DECSCA).  Valid values
+   *   for the parameter:
+   *     Ps = 0  -> DECSED and DECSEL can erase (default).
+   *     Ps = 1  -> DECSED and DECSEL cannot erase.
+   *     Ps = 2  -> DECSED and DECSEL can erase.
    */
   setCharProtectionAttr(param?: number): boolean
   decsca(param?: number): boolean
   /**
-  CSI ? Pm r
-    Restore DEC Private Mode Values.  The value of Ps previously
-    saved is restored.  Ps values are the same as for DECSET. */
+   *   CSI ? Pm r
+   *     Restore DEC Private Mode Values.  The value of Ps previously
+   *     saved is restored.  Ps values are the same as for DECSET.
+   */
   restorePrivateValues(...args: string[]): boolean
 
   /**
    * CSI Pt; Pl; Pb; Pr; Ps$ r
-  Change Attributes in Rectangular Area (DECCARA), VT400 and up.
-    Pt; Pl; Pb; Pr denotes the rectangle.
-    Ps denotes the SGR attributes to change: 0, 1, 4, 5, 7.
-NOTE: xterm doesn't enable this code by default.
+   *   Change Attributes in Rectangular Area (DECCARA), VT400 and up.
+   *     Pt; Pl; Pb; Pr denotes the rectangle.
+   *     Ps denotes the SGR attributes to change: 0, 1, 4, 5, 7.
+   * NOTE: xterm doesn't enable this code by default.
    */
   setAttrInRectangle(Pt: number, Pl: number, Pb: number, Pr: number, Ps$: number): boolean
   deccara(...args: string[]): boolean
 
-  /**  Save DEC Private Mode Values.  Ps values are the same as for */
+  /**
+   * Save DEC Private Mode Values.  Ps values are the same as for
+   */
   savePrivateValues(...args: string[]): boolean
 
   manipulateWindow(...args: any[]): boolean
@@ -471,22 +506,24 @@ NOTE: xterm doesn't enable this code by default.
   decreqtparm(param: number): boolean
   /**
    * CSI Ps x  Select Attribute Change Extent (DECSACE).
-      Ps = 0  -> from start to end position, wrapped.
-      Ps = 1  -> from start to end position, wrapped.
-      Ps = 2  -> rectangle (exact).
+   *       Ps = 0  -> from start to end position, wrapped.
+   *       Ps = 1  -> from start to end position, wrapped.
+   *       Ps = 2  -> rectangle (exact).
    */
   selectChangeExtent(param?: number): boolean
   decsace(param?: number): boolean
 
   /**
-    CSI Pc; Pt; Pl; Pb; Pr$ x
-  Fill Rectangular Area (DECFRA), VT420 and up.
-    Pc is the character to use.
-    Pt; Pl; Pb; Pr denotes the rectangle.
-NOTE: xterm doesn't enable this code by default.
+   *     CSI Pc; Pt; Pl; Pb; Pr$ x
+   *   Fill Rectangular Area (DECFRA), VT420 and up.
+   *     Pc is the character to use.
+   *     Pt; Pl; Pb; Pr denotes the rectangle.
+   * NOTE: xterm doesn't enable this code by default.
    */
   fillRectangle(Pc: string, Pt: number, pl: number, pb: number, pr: number): boolean
-  /** same as fillRectangle */
+  /**
+   * same as fillRectangle
+   */
   decfra(...args: string[]): boolean
 
   enableLocatorReporting(...args: string[]): boolean
@@ -502,59 +539,66 @@ NOTE: xterm doesn't enable this code by default.
   decsera(...args: string[]): boolean
   /**
    *  CSI Ps ' |
-     Request Locator Position (DECRQLP).
-     Valid values for the parameter are:
-       Ps = 0 , 1 or omitted -> transmit a single DECLRP locator
-       report.
-  
-     If Locator Reporting has been enabled by a DECELR, xterm will
-     respond with a DECLRP Locator Report.  This report is also
-     generated on button up and down events if they have been
-     enabled with a DECSLE, or when the locator is detected outside
-     of a filter rectangle, if filter rectangles have been enabled
-     with a DECEFR.
-  
-       -> CSI Pe ; Pb ; Pr ; Pc ; Pp &  w
-  
-     Parameters are [event;button;row;column;page].
-     Valid values for the event:
-       Pe = 0  -> locator unavailable - no other parameters sent.
-       Pe = 1  -> request - xterm received a DECRQLP.
-       Pe = 2  -> left button down.
-       Pe = 3  -> left button up.
-       Pe = 4  -> middle button down.
-       Pe = 5  -> middle button up.
-       Pe = 6  -> right button down.
-       Pe = 7  -> right button up.
-       Pe = 8  -> M4 button down.
-       Pe = 9  -> M4 button up.
-       Pe = 1 0  -> locator outside filter rectangle.
-     ``button'' parameter is a bitmask indicating which buttons are
-       pressed:
-       Pb = 0  <- no buttons down.
-       Pb & 1  <- right button down.
-       Pb & 2  <- middle button down.
-       Pb & 4  <- left button down.
-       Pb & 8  <- M4 button down.
-     ``row'' and ``column'' parameters are the coordinates of the
-       locator position in the xterm window, encoded as ASCII deci-
-       mal.
-     The ``page'' parameter is not used by xterm, and will be omit-
-     ted.
-  
+   *      Request Locator Position (DECRQLP).
+   *      Valid values for the parameter are:
+   *        Ps = 0 , 1 or omitted -> transmit a single DECLRP locator
+   *        report.
+   *   
+   *      If Locator Reporting has been enabled by a DECELR, xterm will
+   *      respond with a DECLRP Locator Report.  This report is also
+   *      generated on button up and down events if they have been
+   *      enabled with a DECSLE, or when the locator is detected outside
+   *      of a filter rectangle, if filter rectangles have been enabled
+   *      with a DECEFR.
+   *   
+   *        -> CSI Pe ; Pb ; Pr ; Pc ; Pp &  w
+   *   
+   *      Parameters are [event;button;row;column;page].
+   *      Valid values for the event:
+   *        Pe = 0  -> locator unavailable - no other parameters sent.
+   *        Pe = 1  -> request - xterm received a DECRQLP.
+   *        Pe = 2  -> left button down.
+   *        Pe = 3  -> left button up.
+   *        Pe = 4  -> middle button down.
+   *        Pe = 5  -> middle button up.
+   *        Pe = 6  -> right button down.
+   *        Pe = 7  -> right button up.
+   *        Pe = 8  -> M4 button down.
+   *        Pe = 9  -> M4 button up.
+   *        Pe = 1 0  -> locator outside filter rectangle.
+   *      ``button'' parameter is a bitmask indicating which buttons are
+   *        pressed:
+   *        Pb = 0  <- no buttons down.
+   *        Pb & 1  <- right button down.
+   *        Pb & 2  <- middle button down.
+   *        Pb & 4  <- left button down.
+   *        Pb & 8  <- M4 button down.
+   *      ``row'' and ``column'' parameters are the coordinates of the
+   *        locator position in the xterm window, encoded as ASCII deci-
+   *        mal.
+   *      The ``page'' parameter is not used by xterm, and will be omit-
+   *      ted.
+   *   
    */
   requestLocatorPosition(param?: string, callback?: Function): boolean
-  /** requestLocatorPosition */
+  /**
+   * requestLocatorPosition
+   */
   reqmp(param?: string, callback?: Function): boolean
-  /** requestLocatorPosition */
+  /**
+   * requestLocatorPosition
+   */
   req_mouse_pos(param?: string, callback?: Function): boolean
-  /** requestLocatorPosition */
+  /**
+   * requestLocatorPosition
+   */
   decrqlp(param?: string, callback?: Function): boolean
 
-  /** 
- CSI P m SP }
- Insert P s Column(s) (default = 1) (DECIC), VT420 and up.
- NOTE: xterm doesn't enable this code by default. */
+  /**
+   *  CSI P m SP }
+   *  Insert P s Column(s) (default = 1) (DECIC), VT420 and up.
+   *  NOTE: xterm doesn't enable this code by default.
+   */
   insertColumns(...args: string[]): boolean
   decic(...args: string[]): boolean
 
@@ -579,10 +623,14 @@ export namespace Widgets {
     type TMouseAction = 'mousedown' | 'mouseup' | 'mousemove'
 
     interface TBorder extends TStyle {
-      /** Type of border (line or bg). bg by default. */
+      /**
+   * Type of border (line or bg). bg by default.
+   */
       type?: BorderType
 
-      /** Character to use if bg type, default is space.   */
+      /**
+   * Character to use if bg type, default is space.
+   */
       ch?: string
 
       top?: boolean
@@ -623,7 +671,9 @@ export namespace Widgets {
     // }
 
     export interface TStyle {
-      /** artificial type for user custom data (it doesn't exists just a type) */
+      /**
+   * artificial type for user custom data (it doesn't exists just a type)
+   */
       custom?: { [name: string]: any }
 
       // leave it open for custom style properties
@@ -649,23 +699,23 @@ export namespace Widgets {
 
     interface TCursor {
       /**
-       * Have blessed draw a custom cursor and hide the terminal cursor (experimental).
-       */
+   * Have blessed draw a custom cursor and hide the terminal cursor (experimental).
+   */
       artificial: boolean
 
       /**
-       * Shape of the cursor. Can be: block, underline, or line.
-       */
+   * Shape of the cursor. Can be: block, underline, or line.
+   */
       shape: 'block' | 'underline' | 'line'
 
       /**
-       * Whether the cursor blinks.
-       */
+   * Whether the cursor blinks.
+   */
       blink: boolean
 
       /**
-       * Color of the color. Accepts any valid color value (null is default).
-       */
+   * Color of the color. Accepts any valid color value (null is default).
+   */
       color: string
     }
 
@@ -678,45 +728,45 @@ export namespace Widgets {
 
     interface TImage {
       /**
-       * Pixel width.
-       */
+   * Pixel width.
+   */
       width: number
 
       /**
-       * Pixel height.
-       */
+   * Pixel height.
+   */
       height: number
 
       /**
-       * Image bitmap.
-       */
+   * Image bitmap.
+   */
       bmp: any
 
       /**
-       * Image cellmap (bitmap scaled down to cell size).
-       */
+   * Image cellmap (bitmap scaled down to cell size).
+   */
       cellmap: any
     }
 
     interface Cursor {
       /**
-       * Have blessed draw a custom cursor and hide the terminal cursor (experimental).
-       */
+   * Have blessed draw a custom cursor and hide the terminal cursor (experimental).
+   */
       artificial: boolean
 
       /**
-       * Shape of the cursor. Can be: block, underline, or line.
-       */
+   * Shape of the cursor. Can be: block, underline, or line.
+   */
       shape: boolean
 
       /**
-       * Whether the cursor blinks.
-       */
+   * Whether the cursor blinks.
+   */
       blink: boolean
 
       /**
-       * Color of the color. Accepts any valid color value (null is default).
-       */
+   * Color of the color. Accepts any valid color value (null is default).
+   */
       color: string
     }
   }
@@ -766,7 +816,7 @@ export namespace Widgets {
     destroy(): void
   }
 
-  interface IOptions {}
+  interface IOptions { }
 
   interface IHasOptions<T extends IOptions> {
     options: T
@@ -786,8 +836,8 @@ export namespace Widgets {
     constructor(opts: TputsOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: TputsOptions
 
     debug: boolean
@@ -846,8 +896,8 @@ export namespace Widgets {
     parent?: Node
     children?: Node[]
     /**
-     * If true, the node will obtain focus when m
-     */
+   * If true, the node will obtain focus when m
+   */
     focusable?: boolean
   }
 
@@ -869,131 +919,144 @@ export namespace Widgets {
   export abstract class Node extends EventEmitter implements IHasOptions<INodeOptions>, IDestroyable {
     constructor(options: INodeOptions)
 
-    /** Unique identifier for Node instances. @internal */
+    /**
+   * Unique identifier for Node instances. @internal
+   */
     uid: number
 
     focusable: boolean
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: INodeOptions
 
     /**
-     * An object for any miscellanous user data.
-     */
+   * An object for any miscellanous user data.
+   */
     data: { [index: string]: any }
 
     /**
-     * An object for any miscellanous user data.
-     */
+   * An object for any miscellanous user data.
+   */
     _: { [index: string]: any }
 
     /**
-     * An object for any miscellanous user data.
-     */
+   * An object for any miscellanous user data.
+   */
     $: { [index: string]: any }
 
     lpos: PositionCoords
 
     /**
-     * Type of the node (e.g. box).
-     */
+   * Type of the node (e.g. box).
+   */
     type: string
 
     /**
-     * Render index (document order index) of the last render call.
-     */
+   * Render index (document order index) of the last render call.
+   */
     index: number
 
     /**
-     * Parent screen.
-     */
+   * Parent screen.
+   */
     screen: Screen
 
     /**
-     * Parent node.
-     */
+   * Parent node.
+   */
     parent?: Node
 
     /**
-     * Array of node's children.
-     */
+   * Array of node's children.
+   */
     children: Node[]
 
     /**
-     * Prepend a node to this node's children.
-     */
+   * Prepend a node to this node's children.
+   */
     prepend(node: Node): void
 
     /**
-     * Append a node to this node's children.
-     */
+   * Append a node to this node's children.
+   */
     append(node: Node): void
 
     /**
-     * Remove child node from node.
-     */
+   * Remove child node from node.
+   */
     remove(node: Node): void
 
     /**
-     * Insert a node to this node's children at index i.
-     */
+   * Insert a node to this node's children at index i.
+   */
     insert(node: Node, index: number): void
 
     /**
-     * Insert a node to this node's children before the reference node.
-     */
+   * Insert a node to this node's children before the reference node.
+   */
     insertBefore(node: Node, refNode: Node): void
 
     /**
-     * Insert a node from node after the reference node.
-     */
+   * Insert a node from node after the reference node.
+   */
     insertAfter(node: Node, refNode: Node): void
 
     /**
-     * Remove node from its parent.
-     */
+   * Remove node from its parent.
+   */
     detach(): void
     free(): void
     /**
-     * Visit each node's descendants, with [[iter]] function,  parents first. If `s` is provided it will call [[iter]] on self first.
-     */
+   * Visit each node's descendants, with [[iter]] function,  parents first. If `s` is provided it will call
+   * [[iter]] on self first.
+   */
     forDescendants(iter: (node: Node) => void, s?: boolean): void
     forAncestors(iter: (node: Node) => void, s?: boolean): void
     collectDescendants(s?: boolean): void
     collectAncestors(s?: boolean): void
 
     /**
-     * Emit event for element, and recursively emit same event for all descendants. If `s` is provided it will call [[iter]] on self first.
-     */
+   * Emit event for element, and recursively emit same event for all descendants. If `s` is provided it will call
+   * [[iter]] on self first.
+   */
     emitDescendants(type?: string, ...args: any[]): void
     emitAncestors(): void
     hasDescendant<T extends Node = Node>(target: Node): Node
     hasAncestor<T extends Node = Node>(target: Node): Node
     /**
-     * [[detach]]() this node from its parent, and will also detach and destroy each of its descendant nodes each of them emitting [[destory]] event also.
-     */
+   * [[detach]]() this node from its parent, and will also detach and destroy each of its descendant nodes each of
+   * them emitting [[destory]] event also.
+   */
     destroy(): void
 
     /**
-     * Get user property with a potential default value.
-     */
+   * Get user property with a potential default value.
+   */
     get<T>(name: string, def: T): T
 
     /**
-     * Set user property to value.
-     */
+   * Set user property to value.
+   */
     set(name: string, value: any): void
 
-    /** Received when node gains a new parent. If the node was detached from the sreen, newParent will be undefined. */
+    /**
+   * Received when node gains a new parent. If the node was detached from the sreen, newParent will be undefined.
+   */
     on(event: 'reparent', listener: (this: this, newParent?: Node) => void): void
-    /** emitted by a parent node when adding a new chhild node. */
+    /**
+   * emitted by a parent node when adding a new chhild node.
+   */
     on(event: 'adopt', listener: (this: this, newChildren: Node) => void): void
     on(event: 'attach', listener: (this: this, newParent: Node) => void): void
-    /** Emitted by a node that is being detached frmo the screen or ancester. */
+    /**
+   * Emitted by a node that is being detached frmo the screen or ancester.
+   */
     on(event: 'detach', listener: (this: this, newParent: Node) => void): void
-    /** Triggered by a parent node when removing a child node */
+    /**
+   * Triggered by a parent node when removing a child node
+   */
     on(event: 'remove', listener: (this: this, removedChild: Node) => void): void
     on(event: string, listener: (...args: any[]) => void): this
     // on(event: NodeEventType, callback: (arg: Node) => void): this
@@ -1052,585 +1115,603 @@ export namespace Widgets {
   export type KeyEventListener = (ch: string, key: Events.IKeyEventArg) => void
   class NodeWithEvents extends Node {
     /**
-     * Bind a keypress listener for a specific key.
-     */
+   * Bind a keypress listener for a specific key.
+   */
     key(name: string | string[], listener: KeyEventListener): void
 
     /**
-     * Bind a keypress listener for a specific key once.
-     */
+   * Bind a keypress listener for a specific key once.
+   */
     onceKey(name: string, listener: KeyEventListener): void
 
     /**
-     * Remove a keypress listener for a specific key.
-     */
+   * Remove a keypress listener for a specific key.
+   */
     unkey(name: string, listener: KeyEventListener): void
     removeKey(name: string, listener: KeyEventListener): void
 
     on(event: string, listener: (...args: any[]) => void): this
-    /** Received on mouse events. */
+    /**
+   * Received on mouse events.
+   */
     on(event: NodeMouseEventType, callback: (arg: Events.IMouseEventArg) => void): this
 
-    /** Received on key events. */
+    /**
+   * Received on key events.
+   */
     on(event: 'keypress', callback: KeyEventListener): this
     on(event: NodeScreenEventType, callback: (arg: Screen) => void): this
-    /** Received when blessed notices something untoward (output is not a tty, terminfo not found, etc). */
+    /**
+   * Received when blessed notices something untoward (output is not a tty, terminfo not found, etc).
+   */
     on(event: 'warning', callback: (text: string) => void): this
     on(event: NodeGenericEventType, callback: (arg: Events.INodeGenericEventArg) => void): this
   }
 
   interface IScreenOptions extends INodeOptions {
     /**
-     * The blessed Program to be associated with. Will be automatically instantiated if none is provided.
-     */
+   * The blessed Program to be associated with. Will be automatically instantiated if none is provided.
+   */
     program?: BlessedProgram
 
     /**
-     * Attempt to perform CSR optimization on all possible elements (not just full-width ones, elements with
-     * uniform cells to their sides). This is known to cause flickering with elements that are not full-width,
-     * however, it is more optimal for terminal rendering.
-     */
+   * Attempt to perform CSR optimization on all possible elements (not just full-width ones, elements with
+   * uniform cells to their sides). This is known to cause flickering with elements that are not full-width,
+   * however, it is more optimal for terminal rendering.
+   */
     smartCSR?: boolean
 
     /**
-     * Do CSR on any element within 20 cols of the screen edge on either side. Faster than smartCSR,
-     * but may cause flickering depending on what is on each side of the element.
-     */
+   * Do CSR on any element within 20 cols of the screen edge on either side. Faster than smartCSR,
+   * but may cause flickering depending on what is on each side of the element.
+   */
     fastCSR?: boolean
 
     /**
-     * Attempt to perform back_color_erase optimizations for terminals that support it. It will also work
-     * with terminals that don't support it, but only on lines with the default background color. As it
-     * stands with the current implementation, it's uncertain how much terminal performance this adds at
-     * the cost of overhead within node.
-     */
+   * Attempt to perform back_color_erase optimizations for terminals that support it. It will also work
+   * with terminals that don't support it, but only on lines with the default background color. As it
+   * stands with the current implementation, it's uncertain how much terminal performance this adds at
+   * the cost of overhead within node.
+   */
     useBCE?: boolean
 
     /**
-     * Amount of time (in ms) to redraw the screen after the terminal is resized (Default: 300).
-     */
+   * Amount of time (in ms) to redraw the screen after the terminal is resized (Default: 300).
+   */
     resizeTimeout?: number
 
     /**
-     * The width of tabs within an element's content.
-     */
+   * The width of tabs within an element's content.
+   */
     tabSize?: number
 
     /**
-     * Automatically position child elements with border and padding in mind (NOTE: this is a recommended
-     * option. It may become default in the future).
-     */
+   * Automatically position child elements with border and padding in mind (NOTE: this is a recommended
+   * option. It may become default in the future).
+   */
     autoPadding?: boolean
 
     cursor?: Types.TCursor
 
     /**
-     * Create a log file. See log method.
-     */
+   * Create a log file. See log method.
+   */
     log?: string
 
     /**
-     * Dump all output and input to desired file. Can be used together with log option if set as a boolean.
-     */
+   * Dump all output and input to desired file. Can be used together with log option if set as a boolean.
+   */
     dump?: string | boolean
 
     /**
-     * Debug mode. Enables usage of the debug method. Also creates a debug console which will display when
-     * pressing F12. It will display all log and debug messages.
-     */
+   * Debug mode. Enables usage of the debug method. Also creates a debug console which will display when
+   * pressing F12. It will display all log and debug messages.
+   */
     debug?: boolean
 
     /**
-     * Instance of the debug console that is enabled when calling debug options is actuve and key f12 is pressed.
-     * Useful to programmatically access it in case keys don't wonk.
-     * @internal
-     */
+   * Instance of the debug console that is enabled when calling debug options is actuve and key f12 is pressed.
+   * Useful to programmatically access it in case keys don't wonk.
+   * @internal
+   */
     debugLog?: Log
 
     /**
-     * Array of keys in their full format (e.g. C-c) to ignore when keys are locked or grabbed. Useful
-     * for creating a key that will always exit no matter whether the keys are locked.
-     */
+   * Array of keys in their full format (e.g. C-c) to ignore when keys are locked or grabbed. Useful
+   * for creating a key that will always exit no matter whether the keys are locked.
+   */
     ignoreLocked?: boolean
 
     /**
-     * Automatically "dock" borders with other elements instead of overlapping, depending on position
-     * (experimental). For example: These border-overlapped elements:
-     */
+   * Automatically "dock" borders with other elements instead of overlapping, depending on position
+   * (experimental). For example: These border-overlapped elements:
+   */
     dockBorders?: boolean
 
     /**
-     * Normally, dockable borders will not dock if the colors or attributes are different. This option
-     * will allow them to dock regardless. It may produce some odd looking multi-colored borders though.
-     */
+   * Normally, dockable borders will not dock if the colors or attributes are different. This option
+   * will allow them to dock regardless. It may produce some odd looking multi-colored borders though.
+   */
     ignoreDockContrast?: boolean
 
     /**
-     * Allow for rendering of East Asian double-width characters, utf-16 surrogate pairs, and unicode
-     * combining characters. This allows you to display text above the basic multilingual plane. This
-     * is behind an option because it may affect performance slightly negatively. Without this option
-     * enabled, all double-width, surrogate pair, and combining characters will be replaced by '??',
-     * '?', '' respectively. (NOTE: iTerm2 cannot display combining characters properly. Blessed simply
-     * removes them from an element's content if iTerm2 is detected).
-     */
+   * Allow for rendering of East Asian double-width characters, utf-16 surrogate pairs, and unicode
+   * combining characters. This allows you to display text above the basic multilingual plane. This
+   * is behind an option because it may affect performance slightly negatively. Without this option
+   * enabled, all double-width, surrogate pair, and combining characters will be replaced by '??',
+   * '?', '' respectively. (NOTE: iTerm2 cannot display combining characters properly. Blessed simply
+   * removes them from an element's content if iTerm2 is detected).
+   */
     fullUnicode?: boolean
 
     /**
-     * Send focus events after mouse is enabled.
-     */
+   * Send focus events after mouse is enabled.
+   */
     sendFocus?: boolean
 
     /**
-     * Display warnings (such as the output not being a TTY, similar to ncurses).
-     */
+   * Display warnings (such as the output not being a TTY, similar to ncurses).
+   */
     warnings?: boolean
 
     /**
-     * Force blessed to use unicode even if it is not detected via terminfo, env variables, or windows code page.
-     * If value is true unicode is forced. If value is false non-unicode is forced (default: null).
-     */
+   * Force blessed to use unicode even if it is not detected via terminfo, env variables, or windows code page.
+   * If value is true unicode is forced. If value is false non-unicode is forced (default: null).
+   */
     forceUnicode?: boolean
 
     /**
-     * Input and output streams. process.stdin/process.stdout by default, however, it could be a
-     * net.Socket if you want to make a program that runs over telnet or something of that nature.
-     */
+   * Input and output streams. process.stdin/process.stdout by default, however, it could be a
+   * net.Socket if you want to make a program that runs over telnet or something of that nature.
+   */
     input?: stream.Writable
 
     /**
-     * Input and output streams. process.stdin/process.stdout by default, however, it could be a
-     * net.Socket if you want to make a program that runs over telnet or something of that nature.
-     */
+   * Input and output streams. process.stdin/process.stdout by default, however, it could be a
+   * net.Socket if you want to make a program that runs over telnet or something of that nature.
+   */
     output?: stream.Readable
 
     /**
-     * The blessed Tput object (only available if you passed tput: true to the Program constructor.)
-     */
+   * The blessed Tput object (only available if you passed tput: true to the Program constructor.)
+   */
     tput?: Tput
 
     /**
-     * Top of the focus history stack.
-     */
+   * Top of the focus history stack.
+   */
     focused?: BlessedElement
 
     /**
-     * Width of the screen (same as program.cols).
-     */
+   * Width of the screen (same as program.cols).
+   */
     width?: Types.TPosition
 
     /**
-     * Height of the screen (same as program.rows).
-     */
+   * Height of the screen (same as program.rows).
+   */
     height?: Types.TPosition
 
     /**
-     * Same as screen.width.
-     */
+   * Same as screen.width.
+   */
     cols?: number
 
     /**
-     * Same as screen.height.
-     */
+   * Same as screen.height.
+   */
     rows?: number
 
     /**
-     * Relative top offset, always zero.
-     */
+   * Relative top offset, always zero.
+   */
     top?: Types.TTopLeft
 
     /**
-     * Relative left offset, always zero.
-     */
+   * Relative left offset, always zero.
+   */
     left?: Types.TTopLeft
 
     /**
-     * Relative right offset, always zero.
-     */
+   * Relative right offset, always zero.
+   */
     right?: Types.TPosition
 
     /**
-     * Relative bottom offset, always zero.
-     */
+   * Relative bottom offset, always zero.
+   */
     bottom?: Types.TPosition
 
     /**
-     * Absolute top offset, always zero.
-     */
+   * Absolute top offset, always zero.
+   */
     atop?: Types.TTopLeft
 
     /**
-     * Absolute left offset, always zero.
-     */
+   * Absolute left offset, always zero.
+   */
     aleft?: Types.TTopLeft
 
     /**
-     * Absolute right offset, always zero.
-     */
+   * Absolute right offset, always zero.
+   */
     aright?: Types.TPosition
 
     /**
-     * Absolute bottom offset, always zero.
-     */
+   * Absolute bottom offset, always zero.
+   */
     abottom?: Types.TPosition
 
     /**
-     * Whether the focused element grabs all keypresses.
-     */
+   * Whether the focused element grabs all keypresses.
+   */
     grabKeys?: any
 
     /**
-     * Prevent keypresses from being received by any element.
-     */
+   * Prevent keypresses from being received by any element.
+   */
     lockKeys?: boolean
 
     /**
-     * The currently hovered element. Only set if mouse events are bound.
-     */
+   * The currently hovered element. Only set if mouse events are bound.
+   */
     hover?: any
 
     /**
-     * Set or get terminal name. Set calls screen.setTerminal() internally.
-     */
+   * Set or get terminal name. Set calls screen.setTerminal() internally.
+   */
     terminal?: string
 
     /**
-     * Set or get window title.
-     */
+   * Set or get window title.
+   */
     title?: string
   }
 
   /**
-   * The screen on which every other node renders. Can be compared wih the DOM document and manages many aspects of its descendants such as :
-   *
+   * The screen on which every other node renders. Can be compared wih the DOM document and manages many aspects of
+   * its descendants such as :
+   * 
    * ## Focus:
-   *
-   * The focus of all its descendant Elements is managed by the Screen, which adds any [[focusable]] node an index, in order of evaluation.
-   *
-   * Focus can be changed using mehods public methods like [[focusPrevious]], [[focusNext]], Also it support focusing elements in a region and save/restor the focus state.
-   *
-   * Lsteners can be subscribed for focus changes with evenst [[focus]] and [[blur]]. The current focused element, if any, is available in attribtue [[focused]]
-   *
+   * 
+   * The focus of all its descendant Elements is managed by the Screen, which adds any [[focusable]] node an index,
+   * in order of evaluation.
+   * 
+   * Focus can be changed using mehods public methods like [[focusPrevious]], [[focusNext]], Also it support
+   * focusing elements in a region and save/restor the focus state.
+   * 
+   * Lsteners can be subscribed for focus changes with evenst [[focus]] and [[blur]]. The current focused element,
+   * if any, is available in attribtue [[focused]]
+   * 
    * A common scenario is to call focusNext or focusPrev on certain key presses (tab, S-tab).
    */
   class Screen extends NodeWithEvents implements IHasOptions<IScreenOptions> {
     constructor(opts: IScreenOptions)
 
     /**
-     * Parse the sides of an element to determine whether an element has uniform cells on both sides.
-     * If it does, we can use CSR to optimize scrolling on a scrollable element. Not exactly sure how worthwile this is.
-     * This will cause a performance/cpu-usage hit, but will it be less or greater than the performance hit of slow-rendering scrollable boxes with clean sides? */
+   * Parse the sides of an element to determine whether an element has uniform cells on both sides.
+   * If it does, we can use CSR to optimize scrolling on a scrollable element. Not exactly sure how worthwile this
+   * is.
+   * This will cause a performance/cpu-usage hit, but will it be less or greater than the performance hit of
+   * slow-rendering scrollable boxes with clean sides?
+   */
     cleanSides(el: Widgets.BlessedElement): boolean
 
-    /** true is the terminal was destroyed. @internal.  */
+    /**
+   * true is the terminal was destroyed. @internal.
+   */
     destroyed?: boolean
 
-    /** focus history. @internal */
+    /**
+   * focus history. @internal
+   */
     history: BlessedElement[]
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: IScreenOptions
 
     /**
-     * The blessed Program to be associated with. Will be automatically instantiated if none is provided.
-     */
+   * The blessed Program to be associated with. Will be automatically instantiated if none is provided.
+   */
     program: BlessedProgram
 
     /**
-     * Attempt to perform CSR optimization on all possible elements (not just full-width ones, elements with
-     * uniform cells to their sides). This is known to cause flickering with elements that are not full-width,
-     * however, it is more optimal for terminal rendering.
-     */
+   * Attempt to perform CSR optimization on all possible elements (not just full-width ones, elements with
+   * uniform cells to their sides). This is known to cause flickering with elements that are not full-width,
+   * however, it is more optimal for terminal rendering.
+   */
     smartCSR: boolean
 
     /**
-     * Do CSR on any element within 20 cols of the screen edge on either side. Faster than smartCSR,
-     * but may cause flickering depending on what is on each side of the element.
-     */
+   * Do CSR on any element within 20 cols of the screen edge on either side. Faster than smartCSR,
+   * but may cause flickering depending on what is on each side of the element.
+   */
     fastCSR: boolean
 
     /**
-     * Attempt to perform back_color_erase optimizations for terminals that support it. It will also work
-     * with terminals that don't support it, but only on lines with the default background color. As it
-     * stands with the current implementation, it's uncertain how much terminal performance this adds at
-     * the cost of overhead within node.
-     */
+   * Attempt to perform back_color_erase optimizations for terminals that support it. It will also work
+   * with terminals that don't support it, but only on lines with the default background color. As it
+   * stands with the current implementation, it's uncertain how much terminal performance this adds at
+   * the cost of overhead within node.
+   */
     useBCE: boolean
 
     /**
-     * Amount of time (in ms) to redraw the screen after the terminal is resized (Default: 300).
-     */
+   * Amount of time (in ms) to redraw the screen after the terminal is resized (Default: 300).
+   */
     resizeTimeout: number
 
     /**
-     * The width of tabs within an element's content.
-     */
+   * The width of tabs within an element's content.
+   */
     tabSize: number
 
     /**
-     * Automatically position child elements with border and padding in mind (NOTE: this is a recommended
-     * option. It may become default in the future).
-     */
+   * Automatically position child elements with border and padding in mind (NOTE: this is a recommended
+   * option. It may become default in the future).
+   */
     autoPadding: boolean
 
     cursor: Types.TCursor
 
     /**
-     * Dump all output and input to desired file. Can be used together with log option if set as a boolean.
-     */
+   * Dump all output and input to desired file. Can be used together with log option if set as a boolean.
+   */
     dump: string
 
     /**
-     * Array of keys in their full format (e.g. C-c) to ignore when keys are locked or grabbed. Useful
-     * for creating a key that will always exit no matter whether the keys are locked.
-     */
+   * Array of keys in their full format (e.g. C-c) to ignore when keys are locked or grabbed. Useful
+   * for creating a key that will always exit no matter whether the keys are locked.
+   */
     ignoreLocked: boolean
 
     /**
-     * Automatically "dock" borders with other elements instead of overlapping, depending on position
-     * (experimental). For example: These border-overlapped elements:
-     */
+   * Automatically "dock" borders with other elements instead of overlapping, depending on position
+   * (experimental). For example: These border-overlapped elements:
+   */
     dockBorders: boolean
 
     /**
-     * Normally, dockable borders will not dock if the colors or attributes are different. This option
-     * will allow them to dock regardless. It may produce some odd looking multi-colored borders though.
-     */
+   * Normally, dockable borders will not dock if the colors or attributes are different. This option
+   * will allow them to dock regardless. It may produce some odd looking multi-colored borders though.
+   */
     ignoreDockContrast: boolean
 
     /**
-     * Allow for rendering of East Asian double-width characters, utf-16 surrogate pairs, and unicode
-     * combining characters. This allows you to display text above the basic multilingual plane. This
-     * is behind an option because it may affect performance slightly negatively. Without this option
-     * enabled, all double-width, surrogate pair, and combining characters will be replaced by '??',
-     * '?', '' respectively. (NOTE: iTerm2 cannot display combining characters properly. Blessed simply
-     * removes them from an element's content if iTerm2 is detected).
-     */
+   * Allow for rendering of East Asian double-width characters, utf-16 surrogate pairs, and unicode
+   * combining characters. This allows you to display text above the basic multilingual plane. This
+   * is behind an option because it may affect performance slightly negatively. Without this option
+   * enabled, all double-width, surrogate pair, and combining characters will be replaced by '??',
+   * '?', '' respectively. (NOTE: iTerm2 cannot display combining characters properly. Blessed simply
+   * removes them from an element's content if iTerm2 is detected).
+   */
     fullUnicode: boolean
 
     /**
-     * Send focus events after mouse is enabled.
-     */
+   * Send focus events after mouse is enabled.
+   */
     sendFocus: boolean
 
     /**
-     * Display warnings (such as the output not being a TTY, similar to ncurses).
-     */
+   * Display warnings (such as the output not being a TTY, similar to ncurses).
+   */
     warnings: boolean
 
     /**
-     * Force blessed to use unicode even if it is not detected via terminfo, env variables, or windows code page.
-     * If value is true unicode is forced. If value is false non-unicode is forced (default: null).
-     */
+   * Force blessed to use unicode even if it is not detected via terminfo, env variables, or windows code page.
+   * If value is true unicode is forced. If value is false non-unicode is forced (default: null).
+   */
     forceUnicode: boolean
 
     /**
-     * Input and output streams. process.stdin/process.stdout by default, however, it could be a
-     * net.Socket if you want to make a program that runs over telnet or something of that nature.
-     */
+   * Input and output streams. process.stdin/process.stdout by default, however, it could be a
+   * net.Socket if you want to make a program that runs over telnet or something of that nature.
+   */
     input: stream.Writable
 
     /**
-     * Input and output streams. process.stdin/process.stdout by default, however, it could be a
-     * net.Socket if you want to make a program that runs over telnet or something of that nature.
-     */
+   * Input and output streams. process.stdin/process.stdout by default, however, it could be a
+   * net.Socket if you want to make a program that runs over telnet or something of that nature.
+   */
     output: stream.Readable
 
     /**
-     * The blessed Tput object (only available if you passed tput: true to the Program constructor.)
-     */
+   * The blessed Tput object (only available if you passed tput: true to the Program constructor.)
+   */
     tput: Tput
 
     /**
-     * Top of the focus history stack.
-     */
+   * Top of the focus history stack.
+   */
     focused: BlessedElement
 
     /**
-     * Width of the screen (same as program.cols).
-     */
+   * Width of the screen (same as program.cols).
+   */
     width: Types.TPosition
 
     /**
-     * Height of the screen (same as program.rows).
-     */
+   * Height of the screen (same as program.rows).
+   */
     height: Types.TPosition
 
     /**
-     * Same as screen.width.
-     */
+   * Same as screen.width.
+   */
     cols: number
 
     /**
-     * Same as screen.height.
-     */
+   * Same as screen.height.
+   */
     rows: number
 
     /**
-     * Relative top offset, always zero.
-     */
+   * Relative top offset, always zero.
+   */
     top: Types.TTopLeft
 
     /**
-     * Relative left offset, always zero.
-     */
+   * Relative left offset, always zero.
+   */
     left: Types.TTopLeft
 
     /**
-     * Relative right offset, always zero.
-     */
+   * Relative right offset, always zero.
+   */
     right: Types.TPosition
 
     /**
-     * Relative bottom offset, always zero.
-     */
+   * Relative bottom offset, always zero.
+   */
     bottom: Types.TPosition
 
     /**
-     * Absolute top offset, always zero.
-     */
+   * Absolute top offset, always zero.
+   */
     atop: Types.TTopLeft
 
     /**
-     * Absolute left offset, always zero.
-     */
+   * Absolute left offset, always zero.
+   */
     aleft: Types.TTopLeft
 
     /**
-     * Absolute right offset, always zero.
-     */
+   * Absolute right offset, always zero.
+   */
     aright: Types.TPosition
 
     /**
-     * Absolute bottom offset, always zero.
-     */
+   * Absolute bottom offset, always zero.
+   */
     abottom: Types.TPosition
 
     /**
-     * Whether the focused element grabs all keypresses.
-     */
+   * Whether the focused element grabs all keypresses.
+   */
     grabKeys: any
 
     /**
-     * Prevent keypresses from being received by any element.
-     */
+   * Prevent keypresses from being received by any element.
+   */
     lockKeys: boolean
 
     /**
-     * The currently hovered element. Only set if mouse events are bound.
-     */
+   * The currently hovered element. Only set if mouse events are bound.
+   */
     hover: any
 
     /**
-     * Set or get terminal name. Set calls screen.setTerminal() internally.
-     */
+   * Set or get terminal name. Set calls screen.setTerminal() internally.
+   */
     terminal: string
 
     /**
-     * Set or get window title.
-     */
+   * Set or get window title.
+   */
     title: string
 
     /**
-     * Write string to the log file if one was created.
-     */
+   * Write string to the log file if one was created.
+   */
     log(...msg: any[]): void
 
     /**
-     * Same as the log method, but only gets called if the debug option was set.
-     */
+   * Same as the log method, but only gets called if the debug option was set.
+   */
     debug(...msg: string[]): void
 
     /**
-     * Allocate a new pending screen buffer and a new output screen buffer.
-     */
+   * Allocate a new pending screen buffer and a new output screen buffer.
+   */
     alloc(): void
 
     /**
-     * Reallocate the screen buffers and clear the screen.
-     */
+   * Reallocate the screen buffers and clear the screen.
+   */
     realloc(): void
 
     /**
-     * Draw the screen based on the contents of the screen buffer.
-     */
+   * Draw the screen based on the contents of the screen buffer.
+   */
     draw(start: number, end: number): void
 
     /**
-     * Resets the focus, buffers, clear the sreen, alloc new memory, reset the keypad keys, stop listening to the mouse, etc. But won't emit destroy or other events nor unregister any listener. (I guess is like a reset)
-     * @internal
-     */
+   * Resets the focus, buffers, clear the sreen, alloc new memory, reset the keypad keys, stop listening to the
+   * mouse, etc. But won't emit destroy or other events nor unregister any listener. (I guess is like a reset)
+   * @internal
+   */
     leave(): void
 
     /**
-     * @internal
-     */
+   * @internal
+   */
     postEnter(): void
 
     /**
-     * Render all child elements, writing all data to the screen buffer and drawing the screen.
-     */
+   * Render all child elements, writing all data to the screen buffer and drawing the screen.
+   */
     render(): void
 
     /**
-     * Clear any region on the screen.
-     */
+   * Clear any region on the screen.
+   */
     clearRegion(x1: number, x2: number, y1: number, y2: number): void
 
     /**
-     * Fill any region with a character of a certain attribute.
-     */
+   * Fill any region with a character of a certain attribute.
+   */
     fillRegion(attr: string, ch: string, x1: number, x2: number, y1: number, y2: number): void
 
     /**
-     * Focus element by offset of focusable elements.
-     */
+   * Focus element by offset of focusable elements.
+   */
     focusOffset(offset: number): any
 
     /**
-     * Focus previous [[focusable]] element in the index.
-     */
+   * Focus previous [[focusable]] element in the index.
+   */
     focusPrevious(): void
 
     /**
-     * Focus next [[focusable]] element in the index.
-     */
+   * Focus next [[focusable]] element in the index.
+   */
     focusNext(): void
 
     /**
-     * Push element on the focus stack (equivalent to screen.focused = el).
-     */
+   * Push element on the focus stack (equivalent to screen.focused = el).
+   */
     focusPush(element: BlessedElement): void
 
     /**
-     * Pop element off the focus stack.
-     */
+   * Pop element off the focus stack.
+   */
     focusPop(): BlessedElement
 
     /**
-     * Save the focused element.
-     */
+   * Save the focused element.
+   */
     saveFocus(): BlessedElement
 
     /**
-     * Restore the saved focused element.
-     */
+   * Restore the saved focused element.
+   */
     restoreFocus(): BlessedElement
 
     /**
-     * "Rewind" focus to the last visible and attached element.
-     */
+   * "Rewind" focus to the last visible and attached element.
+   */
     rewindFocus(): BlessedElement
 
     /**
-     * Spawn a process in the foreground, return to blessed app after exit.
-     */
+   * Spawn a process in the foreground, return to blessed app after exit.
+   */
     spawn(file: string, args?: string[], options?: NodeChildProcessExecOptions): child_process.ChildProcess
 
     /**
-     * Spawn a process in the foreground, return to blessed app after exit. Executes callback on error or exit.
-     */
+   * Spawn a process in the foreground, return to blessed app after exit. Executes callback on error or exit.
+   */
     exec(
       file: string,
       args: string[],
@@ -1639,101 +1720,101 @@ export namespace Widgets {
     ): child_process.ChildProcess
 
     /**
-     * Read data from text editor.
-     */
+   * Read data from text editor.
+   */
     readEditor(options: any, callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void
     readEditor(callback: (err: NodeJS.ErrnoException, data: Buffer) => void): void
 
     /**
-     * Set effects based on two events and attributes.
-     */
+   * Set effects based on two events and attributes.
+   */
     setEffects(el: BlessedElement, fel: BlessedElement, over: any, out: any, effects: any, temp: any): void
 
     /**
-     * Insert a line into the screen (using csr: this bypasses the output buffer).
-     */
+   * Insert a line into the screen (using csr: this bypasses the output buffer).
+   */
     insertLine(n: number, y: number, top: number, bottom: number): void
 
     /**
-     * Delete a line from the screen (using csr: this bypasses the output buffer).
-     */
+   * Delete a line from the screen (using csr: this bypasses the output buffer).
+   */
     deleteLine(n: number, y: number, top: number, bottom: number): void
 
     /**
-     * Insert a line at the bottom of the screen.
-     */
+   * Insert a line at the bottom of the screen.
+   */
     insertBottom(top: number, bottom: number): void
 
     /**
-     * Insert a line at the top of the screen.
-     */
+   * Insert a line at the top of the screen.
+   */
     insertTop(top: number, bottom: number): void
 
     /**
-     * Delete a line at the bottom of the screen.
-     */
+   * Delete a line at the bottom of the screen.
+   */
     deleteBottom(top: number, bottom: number): void
 
     /**
-     * Delete a line at the top of the screen.
-     */
+   * Delete a line at the top of the screen.
+   */
     deleteTop(top: number, bottom: number): void
 
     /**
-     * Enable mouse events for the screen and optionally an element (automatically called when a form of
-     * on('mouse') is bound).
-     */
+   * Enable mouse events for the screen and optionally an element (automatically called when a form of
+   * on('mouse') is bound).
+   */
     enableMouse(el?: BlessedElement): void
 
     /**
-     * Enable keypress events for the screen and optionally an element (automatically called when a form of
-     * on('keypress') is bound).
-     */
+   * Enable keypress events for the screen and optionally an element (automatically called when a form of
+   * on('keypress') is bound).
+   */
     enableKeys(el?: BlessedElement): void
 
     /**
-     * Enable key and mouse events. Calls bot enableMouse and enableKeys.
-     */
+   * Enable key and mouse events. Calls bot enableMouse and enableKeys.
+   */
     enableInput(el?: BlessedElement): void
 
     /**
-     * Attempt to copy text to clipboard using iTerm2's proprietary sequence. Returns true if successful.
-     */
+   * Attempt to copy text to clipboard using iTerm2's proprietary sequence. Returns true if successful.
+   */
     copyToClipboard(text: string): void
 
     /**
-     * Attempt to change cursor shape. Will not work in all terminals (see artificial cursors for a solution
-     * to this). Returns true if successful.
-     */
+   * Attempt to change cursor shape. Will not work in all terminals (see artificial cursors for a solution
+   * to this). Returns true if successful.
+   */
     cursorShape(shape: boolean, blink: boolean): any
 
     /**
-     * Attempt to change cursor color. Returns true if successful.
-     */
+   * Attempt to change cursor color. Returns true if successful.
+   */
     cursorColor(color: string): void
 
     /**
-     * Attempt to reset cursor. Returns true if successful.
-     */
+   * Attempt to reset cursor. Returns true if successful.
+   */
     cursorReset(): void
 
     /**
-     * Take an SGR screenshot of the screen within the region. Returns a string containing only
-     * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
-     */
+   * Take an SGR screenshot of the screen within the region. Returns a string containing only
+   * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
+   */
     screenshot(xi: number, xl: number, yi: number, yl: number): string
     screenshot(): void
 
     /**
-     * Destroy the screen object and remove it from the global list. Also remove all global events relevant
-     * to the screen object. If all screen objects are destroyed, the node process is essentially reset
-     * to its initial state.
-     */
+   * Destroy the screen object and remove it from the global list. Also remove all global events relevant
+   * to the screen object. If all screen objects are destroyed, the node process is essentially reset
+   * to its initial state.
+   */
     destroy(): void
 
     /**
-     * Reset the terminal to term. Reloads terminfo.
-     */
+   * Reset the terminal to term. Reloads terminfo.
+   */
     setTerminal(term: string): void
   }
 
@@ -1771,65 +1852,65 @@ export namespace Widgets {
     style?: Widgets.Types.TStyle
 
     /**
-     * Border object, see below.
-     */
+   * Border object, see below.
+   */
     border?: Widgets.Types.TBorder | Widgets.Types.BorderType
 
     /**
-     * Element's text content.
-     */
+   * Element's text content.
+   */
     content?: string
 
     /**
-     * Element is clickable.
-     */
+   * Element is clickable.
+   */
     clickable?: boolean
 
     /**
-     * Element is focusable and can receive key input.
-     */
+   * Element is focusable and can receive key input.
+   */
     input?: boolean
     keyable?: boolean
 
     /**
-     * Element is focused.
-     */
+   * Element is focused.
+   */
     focused?: boolean
 
     /**
-     * Whether the element is hidden.
-     */
+   * Whether the element is hidden.
+   */
     hidden?: boolean
 
     /**
-     * A simple text label for the element.
-     */
+   * A simple text label for the element.
+   */
     label?: string
 
     /**
-     * A floating text label for the element which appears on mouseover.
-     */
+   * A floating text label for the element which appears on mouseover.
+   */
     hoverText?: string
 
     /**
-     * Text alignment: left, center, or right.
-     */
+   * Text alignment: left, center, or right.
+   */
     align?: 'left' | 'center' | 'right'
 
     /**
-     * Vertical text alignment: top, middle, or bottom.
-     */
+   * Vertical text alignment: top, middle, or bottom.
+   */
     valign?: 'top' | 'middle' | 'bottom'
 
     /**
-     * Shrink/flex/grow to content and child elements. Width/height during render.
-     */
+   * Shrink/flex/grow to content and child elements. Width/height during render.
+   */
     shrink?: boolean
 
     /**
-     * Amount of padding on the inside of the element. Can be a number or an object containing
-     * the properties: left, right, top, and bottom.
-     */
+   * Amount of padding on the inside of the element. Can be a number or an object containing
+   * the properties: left, right, top, and bottom.
+   */
     padding?: number | Padding
 
     top?: Types.TTopLeft
@@ -1838,41 +1919,41 @@ export namespace Widgets {
     bottom?: Types.TPosition
 
     /**
-     * Width/height of the element, can be a number, percentage (0-100%), or keyword (half or shrink).
-     * Percentages can also have offsets (50%+1, 50%-1).
-     */
+   * Width/height of the element, can be a number, percentage (0-100%), or keyword (half or shrink).
+   * Percentages can also have offsets (50%+1, 50%-1).
+   */
     width?: number | string
 
     /**
-     * Offsets of the element relative to its parent. Can be a number, percentage (0-100%), or
-     * keyword (center). right and bottom do not accept keywords. Percentages can also have
-     * offsets (50%+1, 50%-1).
-     */
+   * Offsets of the element relative to its parent. Can be a number, percentage (0-100%), or
+   * keyword (center). right and bottom do not accept keywords. Percentages can also have
+   * offsets (50%+1, 50%-1).
+   */
     height?: number | string
 
     /**
-     * Can contain the above options.
-     */
+   * Can contain the above options.
+   */
     position?: Position
 
     /**
-     * Whether the element is scrollable or not.
-     */
+   * Whether the element is scrollable or not.
+   */
     scrollable?: boolean
 
     /**
-     * Background character (default is whitespace ).
-     */
+   * Background character (default is whitespace ).
+   */
     ch?: string
 
     /**
-     * Allow the element to be dragged with the mouse.
-     */
+   * Allow the element to be dragged with the mouse.
+   */
     draggable?: boolean
 
     /**
-     * Draw a translucent offset shadow behind the element.
-     */
+   * Draw a translucent offset shadow behind the element.
+   */
     shadow?: boolean
   }
 
@@ -1896,18 +1977,19 @@ export namespace Widgets {
 
   // TODO: scrollable - Note: If the scrollable option is enabled, Element inherits all methods from ScrollableBox.
   /**
-   * Abstract base element. Elements are [[Node]] that are rendered visually so they have dimention, position, content,
+   * Abstract base element. Elements are [[Node]] that are rendered visually so they have dimention, position,
+   * content,
    * border, padding, etc.
-   *
+   * 
    * ## Content Methods
-   *
+   * 
    * * Methods for dealing with text content, line by line. Useful for writing a text editor,
    * irc client, etc.
-   *
+   * 
    * * Note: All of these methods deal with pre-aligned, pre-wrapped text. If you use deleteTop()
    * on a box with a wrapped line at the top, it may remove 3-4 "real" lines (rows) depending
    * on how long the original line was.
-   *
+   * 
    * * The lines parameter can be a string or an array of strings. The line parameter must
    * be a string.
    */
@@ -1916,21 +1998,23 @@ export namespace Widgets {
     constructor(opts: ElementOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: ElementOptions
 
     /**
-     * Name of the element. Useful for form submission.
-     */
+   * Name of the element. Useful for form submission.
+   */
     name: string
 
     /**
-     * Border object.
-     */
+   * Border object.
+   */
     border: Widgets.Types.TBorder
 
-    /** Current element padding */
+    /**
+   * Current element padding
+   */
     padding: Required<Padding>
 
     style: Widgets.Types.TStyle
@@ -1941,71 +2025,71 @@ export namespace Widgets {
     detached: boolean
 
     /**
-     * Border foreground and background, must be numbers (-1 for default).
-     */
+   * Border foreground and background, must be numbers (-1 for default).
+   */
     bg: number
     fg: number
 
     /**
-     * Border attributes.
-     */
+   * Border attributes.
+   */
     bold: string
 
     underline: string
 
     /**
-     * Calculated width.
-     */
+   * Calculated width.
+   */
     width: number
 
     /**
-     * Calculated height.
-     */
+   * Calculated height.
+   */
     height: number
 
     /**
-     * Calculated relative top offset.
-     */
+   * Calculated relative top offset.
+   */
     top: number
 
     /**
-     * Calculated relative left offset.
-     */
+   * Calculated relative left offset.
+   */
     left: number
 
     /**
-     * Calculated relative right offset.
-     */
+   * Calculated relative right offset.
+   */
     right: number
 
     /**
-     * Calculated relative bottom offset.
-     */
+   * Calculated relative bottom offset.
+   */
     bottom: number
 
     /**
-     * Calculated absolute top offset.
-     */
+   * Calculated absolute top offset.
+   */
     atop: number
 
     /**
-     * Calculated absolute left offset.
-     */
+   * Calculated absolute left offset.
+   */
     aleft: number
 
     /**
-     * Calculated absolute right offset.
-     */
+   * Calculated absolute right offset.
+   */
     aright: number
 
     /**
-     * Calculated absolute bottom offset.
-     */
+   * Calculated absolute bottom offset.
+   */
     abottom: number
 
     /**
-     * Whether the element is draggable. Set to true to allow dragging.
-     */
+   * Whether the element is draggable. Set to true to allow dragging.
+   */
     draggable: boolean
 
     itop: Types.TTopLeft
@@ -2014,306 +2098,308 @@ export namespace Widgets {
     iwidth: Types.TPosition
 
     /**
-     * Calculated relative top offset.
-     */
+   * Calculated relative top offset.
+   */
     rtop: Types.TTopLeft
 
     /**
-     * Calculated relative left offset.
-     */
+   * Calculated relative left offset.
+   */
     rleft: Types.TTopLeft
 
     /**
-     * Calculated relative right offset.
-     */
+   * Calculated relative right offset.
+   */
     rright: Types.TPosition
 
     /**
-     * Calculated relative bottom offset.
-     */
+   * Calculated relative bottom offset.
+   */
     rbottom: Types.TPosition
 
     /**
-     * Write content and children to the screen buffer.
-     */
+   * Write content and children to the screen buffer.
+   */
     render(): Coords
 
     /**
-     * Hide element and triggers [[hide]] event
-     */
+   * Hide element and triggers [[hide]] event
+   */
     hide(): void
 
     /**
-     * Show element.
-     */
+   * Show element.
+   */
     show(): void
 
     /**
-     * Toggle hidden/shown.
-     */
+   * Toggle hidden/shown.
+   */
     toggle(): void
 
     /**
-     * Focus element.
-     */
+   * Focus element.
+   */
     focus(): void
 
     /**
-     * @internal parses given content string with no tags before rendering. Removes / transform characters that break the output . For example, double-width chars will eat the next char after render in this case it creates a blank character after it so it doesn't eat the real next char.
-     */
+   * @internal parses given content string with no tags before rendering. Removes / transform characters that break
+   * the output . For example, double-width chars will eat the next char after render in this case it creates a
+   * blank character after it so it doesn't eat the real next char.
+   */
     parseContent(noTags: string): boolean
 
     /**
-     * Same asel.on('screen', ...) except this will automatically keep track of which listeners
-     * are bound to the screen object. For use with removeScreenEvent(), free(), and destroy().
-     */
+   * Same asel.on('screen', ...) except this will automatically keep track of which listeners
+   * are bound to the screen object. For use with removeScreenEvent(), free(), and destroy().
+   */
     onScreenEvent(type: string, handler: (...args: any[]) => void): void
 
     /**
-     * Same asel.removeListener('screen', ...) except this will automatically keep track of which
-     * listeners are bound to the screen object. For use with onScreenEvent(), free(), and destroy().
-     */
+   * Same asel.removeListener('screen', ...) except this will automatically keep track of which
+   * listeners are bound to the screen object. For use with onScreenEvent(), free(), and destroy().
+   */
     removeScreenEvent(type: string, handler: (...args: any[]) => void): void
 
     /**
-     * Free up the element. Automatically unbind all events that may have been bound to the screen
-     * object. This prevents memory leaks. For use with onScreenEvent(), removeScreenEvent(),
-     * and destroy().
-     */
+   * Free up the element. Automatically unbind all events that may have been bound to the screen
+   * object. This prevents memory leaks. For use with onScreenEvent(), removeScreenEvent(),
+   * and destroy().
+   */
 
     free(): void
 
     /**
-     * Same as the detach() method, except this will automatically call free() and unbind any screen
-     * events to prevent memory leaks. for use with onScreenEvent(), removeScreenEvent(), and free().
-     */
+   * Same as the detach() method, except this will automatically call free() and unbind any screen
+   * events to prevent memory leaks. for use with onScreenEvent(), removeScreenEvent(), and free().
+   */
     destroy(): void
 
     /**
-     * Set the z-index of the element (changes rendering order).
-     */
+   * Set the z-index of the element (changes rendering order).
+   */
     setIndex(z: number): void
 
     /**
-     * Put the element in front of its siblings.
-     */
+   * Put the element in front of its siblings.
+   */
     setFront(): void
 
     /**
-     * Put the element in back of its siblings.
-     */
+   * Put the element in back of its siblings.
+   */
     setBack(): void
 
     /**
-     * text/options - Set the label text for the top-left corner. Example options: {text:'foo',side:'left'}
-     */
+   * text/options - Set the label text for the top-left corner. Example options: {text:'foo',side:'left'}
+   */
     setLabel(arg: string | LabelOptions): void
 
     /**
-     * Remove the label completely.
-     */
+   * Remove the label completely.
+   */
     removeLabel(): any
 
     /**
-     * text/options - Set a hover text box to follow the cursor. Similar to the "title" DOM attribute
-     * in the browser. Example options: {text:'foo'}
-     */
+   * text/options - Set a hover text box to follow the cursor. Similar to the "title" DOM attribute
+   * in the browser. Example options: {text:'foo'}
+   */
     setHover(arg: string | LabelOptions): void
 
     /**
-     * Remove the hover label completely.
-     */
+   * Remove the hover label completely.
+   */
     removeHover(): void
 
     /**
-     * Enable mouse events for the element (automatically called when a form of on('mouse') is bound).
-     */
+   * Enable mouse events for the element (automatically called when a form of on('mouse') is bound).
+   */
     enableMouse(): void
 
     /**
-     * Enable keypress events for the element (automatically called when a form of on('keypress') is bound).
-     */
+   * Enable keypress events for the element (automatically called when a form of on('keypress') is bound).
+   */
     enableKeys(): void
 
     /**
-     * Enable key and mouse events. Calls bot enableMouse and enableKeys.
-     */
+   * Enable key and mouse events. Calls bot enableMouse and enableKeys.
+   */
     enableInput(): void
 
     /**
-     * Enable dragging of the element.
-     */
+   * Enable dragging of the element.
+   */
     enableDrag(): void
 
     /**
-     * Disable dragging of the element.
-     */
+   * Disable dragging of the element.
+   */
     disableDrag(): void
 
     /**
-     * Take an SGR screenshot of the screen within the region. Returns a string containing only
-     * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
-     */
+   * Take an SGR screenshot of the screen within the region. Returns a string containing only
+   * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
+   */
     screenshot(xi: number, xl: number, yi: number, yl: number): string
     /**
-     * Take an SGR screenshot of the whole screen. Returns a string containing only
-     * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
-     */
+   * Take an SGR screenshot of the whole screen. Returns a string containing only
+   * characters and SGR codes. Can be displayed by simply echoing it in a terminal.
+   */
     screenshot(): void
 
     /**
-     * Set the content. Note: When text is input, it will be stripped of all non-SGR
-     * escape codes, tabs will be replaced with 8 spaces, and tags will be replaced
-     * with SGR codes (if enabled).
-     */
+   * Set the content. Note: When text is input, it will be stripped of all non-SGR
+   * escape codes, tabs will be replaced with 8 spaces, and tags will be replaced
+   * with SGR codes (if enabled).
+   */
     setContent(text: string): void
 
     /**
-     * Return content, slightly different from el.content. Assume the above formatting.
-     */
+   * Return content, slightly different from el.content. Assume the above formatting.
+   */
     getContent(): string
 
     /**
-     * Similar to setContent, but ignore tags and remove escape codes.
-     */
+   * Similar to setContent, but ignore tags and remove escape codes.
+   */
     setText(text: string): void
 
     /**
-     * Similar to getContent, but return content with tags and escape codes removed.
-     */
+   * Similar to getContent, but return content with tags and escape codes removed.
+   */
     getText(): string
 
     /**
-     * Insert a line into the box's content.
-     */
+   * Insert a line into the box's content.
+   */
     insertLine(i: number, lines: string | string[]): void
 
     /**
-     * Delete a line from the box's content.
-     */
+   * Delete a line from the box's content.
+   */
     deleteLine(i: number): void
 
     /**
-     * Get a line from the box's content.
-     */
+   * Get a line from the box's content.
+   */
     getLine(i: number): string
 
     /**
-     * Get a line from the box's content from the visible top.
-     */
+   * Get a line from the box's content from the visible top.
+   */
     getBaseLine(i: number): string
 
     /**
-     * Set a line in the box's content.
-     */
+   * Set a line in the box's content.
+   */
     setLine(i: number, line: string | string[]): void
 
     /**
-     * Set a line in the box's content from the visible top.
-     */
+   * Set a line in the box's content from the visible top.
+   */
     setBaseLine(i: number, line: string | string[]): void
 
     /**
-     * Clear a line from the box's content.
-     */
+   * Clear a line from the box's content.
+   */
     clearLine(i: number): void
 
     /**
-     * Clear a line from the box's content from the visible top.
-     */
+   * Clear a line from the box's content from the visible top.
+   */
     clearBaseLine(i: number): void
 
     /**
-     * Insert a line at the top of the box.
-     */
+   * Insert a line at the top of the box.
+   */
     insertTop(lines: string | string[]): void
 
     /**
-     * Insert a line at the bottom of the box.
-     */
+   * Insert a line at the bottom of the box.
+   */
     insertBottom(lines: string | string[]): void
 
     /**
-     * Delete a line at the top of the box.
-     */
+   * Delete a line at the top of the box.
+   */
     deleteTop(): void
 
     /**
-     * Delete a line at the bottom of the box.
-     */
+   * Delete a line at the bottom of the box.
+   */
     deleteBottom(): void
 
     /**
-     * Unshift a line onto the top of the content.
-     */
+   * Unshift a line onto the top of the content.
+   */
     unshiftLine(lines: string | string[]): void
 
     /**
-     * Shift a line off the top of the content.
-     */
+   * Shift a line off the top of the content.
+   */
     shiftLine(i: number): void
 
     /**
-     * Push a line onto the bottom of the content.
-     */
+   * Push a line onto the bottom of the content.
+   */
     pushLine(lines: string | string[]): void
 
     /**
-     * Pop a line off the bottom of the content.
-     */
+   * Pop a line off the bottom of the content.
+   */
     popLine(i: number): string
 
     /**
-     * An array containing the content lines.
-     */
+   * An array containing the content lines.
+   */
     getLines(): string[]
 
     /**
-     * An array containing the lines as they are displayed on the screen.
-     */
+   * An array containing the lines as they are displayed on the screen.
+   */
     getScreenLines(): string[]
 
     /**
-     * Get a string's displayed width, taking into account double-width, surrogate pairs,
-     * combining characters, tags, and SGR escape codes.
-     */
+   * Get a string's displayed width, taking into account double-width, surrogate pairs,
+   * combining characters, tags, and SGR escape codes.
+   */
     strWidth(text: string): string
   }
 
   interface ScrollableBoxOptions extends ElementOptions {
     /**
-     * A limit to the childBase. Default is Infinity.
-     */
+   * A limit to the childBase. Default is Infinity.
+   */
     baseLimit?: number
 
     /**
-     * A option which causes the ignoring of childOffset. This in turn causes the
-     * childBase to change every time the element is scrolled.
-     */
+   * A option which causes the ignoring of childOffset. This in turn causes the
+   * childBase to change every time the element is scrolled.
+   */
     alwaysScroll?: boolean
 
     /**
-     * Object enabling a scrollbar.
-     * Style of the scrollbar track if present (takes regular style options).
-     */
+   * Object enabling a scrollbar.
+   * Style of the scrollbar track if present (takes regular style options).
+   */
     scrollbar?: { style?: Widgets.Types.TStyle; track?: Widgets.Types.TStyle; ch?: string } | boolean
   }
 
   interface ScrollableTextOptions extends ScrollableBoxOptions {
     /**
-     * Whether to enable automatic mouse support for this element.
-     * Use pre-defined mouse events (right-click for editor).
-     */
+   * Whether to enable automatic mouse support for this element.
+   * Use pre-defined mouse events (right-click for editor).
+   */
     mouse?: boolean
 
     /**
-     * Use pre-defined keys (i or enter for insert, e for editor, C-e for editor while inserting).
-     */
+   * Use pre-defined keys (i or enter for insert, e for editor, C-e for editor while inserting).
+   */
     keys?: string | string[] | boolean
 
     /**
-     * Use vi keys with the keys option.
-     */
+   * Use vi keys with the keys option.
+   */
     vi?: boolean
   }
 
@@ -2326,60 +2412,60 @@ export namespace Widgets {
    */
   class ScrollableBoxElement extends BlessedElement {
     /**
-     * The offset of the top of the scroll content.
-     */
+   * The offset of the top of the scroll content.
+   */
     childBase: number
 
     /**
-     * The offset of the chosen item/line.
-     */
+   * The offset of the chosen item/line.
+   */
     childOffset: number
 
     /**
-     * Scroll the content by a relative offset.
-     */
+   * Scroll the content by a relative offset.
+   */
     scroll(offset: number, always?: boolean): void
 
     /**
-     * Scroll the content to an absolute index.
-     */
+   * Scroll the content to an absolute index.
+   */
     scrollTo(index: number): void
 
     /**
-     * Same as scrollTo.
-     */
+   * Same as scrollTo.
+   */
     setScroll(index: number): void
 
     /**
-     * Set the current scroll index in percentage (0-100).
-     */
+   * Set the current scroll index in percentage (0-100).
+   */
     setScrollPerc(perc: number): void
 
     /**
-     * Get the current scroll index in lines.
-     */
+   * Get the current scroll index in lines.
+   */
     getScroll(): number
 
     /**
-     * Get the actual height of the scrolling area.
-     */
+   * Get the actual height of the scrolling area.
+   */
     getScrollHeight(): number
 
     /**
-     * Get the current scroll index in percentage.
-     */
+   * Get the current scroll index in percentage.
+   */
     getScrollPerc(): number
 
     /**
-     * Reset the scroll index to its initial state.
-     */
+   * Reset the scroll index to its initial state.
+   */
     resetScroll(): void
 
     on(event: string, listener: (...args: any[]) => void): this
 
     /**
-     * Received when the element is scrolled.
-     */
+   * Received when the element is scrolled.
+   */
     on(event: 'scroll', callback: () => void): this
   }
 
@@ -2388,7 +2474,7 @@ export namespace Widgets {
    * A scrollable text box which can display and scroll text, as well as handle
    * pre-existing newlines and escape codes.
    */
-  class ScrollableTextElement extends ScrollableBoxElement {}
+  class ScrollableTextElement extends ScrollableBoxElement { }
 
   /**
    * A box element which draws a simple box containing content or other elements.
@@ -2397,21 +2483,21 @@ export namespace Widgets {
     constructor(opts: BoxOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: BoxOptions
   }
 
   interface TextOptions extends ElementOptions {
     /**
-     * Fill the entire line with chosen bg until parent bg ends, even if there
-     * is not enough text to fill the entire width.
-     */
+   * Fill the entire line with chosen bg until parent bg ends, even if there
+   * is not enough text to fill the entire width.
+   */
     fill?: boolean
 
     /**
-     * Text alignment: left, center, or right.
-     */
+   * Text alignment: left, center, or right.
+   */
     align?: Types.TAlign
   }
 
@@ -2422,8 +2508,8 @@ export namespace Widgets {
     constructor(opts: TextOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: TextOptions
   }
 
@@ -2432,13 +2518,13 @@ export namespace Widgets {
    */
   interface LineOptions extends BoxOptions {
     /**
-     * Can be vertical or horizontal.
-     */
+   * Can be vertical or horizontal.
+   */
     orientation?: 'vertical' | 'horizontal'
 
     /**
-     * Treated the same as a border object. (attributes can be contained in style).
-     */
+   * Treated the same as a border object. (attributes can be contained in style).
+   */
     type?: string
     bg?: Color
     fg?: Color
@@ -2452,25 +2538,25 @@ export namespace Widgets {
     constructor(opts: LineOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: LineOptions
   }
 
   interface BigTextOptions extends BoxOptions {
     /**
-     * bdf->json font file to use (see ttystudio for instructions on compiling BDFs to JSON).
-     */
+   * bdf->json font file to use (see ttystudio for instructions on compiling BDFs to JSON).
+   */
     font?: string
 
     /**
-     * bdf->json bold font file to use (see ttystudio for instructions on compiling BDFs to JSON).
-     */
+   * bdf->json bold font file to use (see ttystudio for instructions on compiling BDFs to JSON).
+   */
     fontBold?: string
 
     /**
-     * foreground character. (default: ' ')
-     */
+   * foreground character. (default: ' ')
+   */
     fch?: string
   }
 
@@ -2481,8 +2567,8 @@ export namespace Widgets {
     constructor(opts: BigTextOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: BigTextOptions
   }
 
@@ -2493,30 +2579,30 @@ export namespace Widgets {
 
   interface ListOptions<TStyle extends ListElementStyle = {}> extends BoxOptions {
     /**
-     * Style for a selected item. Style for an unselected item.
-     */
+   * Style for a selected item. Style for an unselected item.
+   */
     style?: TStyle
 
     /**
-     * An array of strings which become the list's items.
-     */
+   * An array of strings which become the list's items.
+   */
     items?: string[]
 
     /**
-     * A function that is called when vi mode is enabled and the key / is pressed. This function accepts a
-     * callback function which should be called with the search string. The search string is then used to
-     * jump to an item that is found in items.
-     */
+   * A function that is called when vi mode is enabled and the key / is pressed. This function accepts a
+   * callback function which should be called with the search string. The search string is then used to
+   * jump to an item that is found in items.
+   */
     search?(err: any, value?: string): void
 
     /**
-     * Whether the list is interactive and can have items selected (Default: true).
-     */
+   * Whether the list is interactive and can have items selected (Default: true).
+   */
     interactive?: boolean
 
     /**
-     * Whether to automatically override tags and invert fg of item when selected (Default: true).
-     */
+   * Whether to automatically override tags and invert fg of item when selected (Default: true).
+   */
     invertSelected?: boolean
   }
 
@@ -2535,112 +2621,114 @@ export namespace Widgets {
     constructor(opts: ListOptions<ListElementStyle>)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: ListOptions<ListElementStyle>
 
     /**
-     * Add an item based on a string.
-     */
+   * Add an item based on a string.
+   */
     add(text: string): void
 
     /**
-     * Add an item based on a string.
-     */
+   * Add an item based on a string.
+   */
     addItem(text: string): void
 
     /**
-     * Removes an item from the list. Child can be an element, index, or string.
-     */
+   * Removes an item from the list. Child can be an element, index, or string.
+   */
     removeItem(child: BlessedElement): BlessedElement
 
     /**
-     * Push an item onto the list.
-     */
+   * Push an item onto the list.
+   */
     pushItem(child: BlessedElement): number
 
     /**
-     * Pop an item off the list.
-     */
+   * Pop an item off the list.
+   */
     popItem(): BlessedElement
 
     /**
-     * Unshift an item onto the list.
-     */
+   * Unshift an item onto the list.
+   */
     unshiftItem(child: BlessedElement): number
 
     /**
-     * Shift an item off the list.
-     */
+   * Shift an item off the list.
+   */
     shiftItem(): BlessedElement
 
     /**
-     * Inserts an item to the list. Child can be an element, index, or string.
-     */
+   * Inserts an item to the list. Child can be an element, index, or string.
+   */
     insertItem(i: number, child: BlessedElement): void
 
     /**
-     * Returns the item element. Child can be an element, index, or string.
-     */
+   * Returns the item element. Child can be an element, index, or string.
+   */
     getItem(child: BlessedElement): BlessedElement
 
     /**
-     * Set item to content.
-     */
+   * Set item to content.
+   */
     setItem(child: BlessedElement, content: BlessedElement | string): void
 
     /**
-     * Remove and insert items to the list.
-     */
+   * Remove and insert items to the list.
+   */
     spliceItem(i: number, n: number, ...items: BlessedElement[]): void
 
     /**
-     * Clears all items from the list.
-     */
+   * Clears all items from the list.
+   */
     clearItems(): void
 
     /**
-     * Sets the list items to multiple strings.
-     */
+   * Sets the list items to multiple strings.
+   */
     setItems(items: BlessedElement[]): void
 
     /**
-     * Returns the item index from the list. Child can be an element, index, or string.
-     */
+   * Returns the item index from the list. Child can be an element, index, or string.
+   */
     getItemIndex(child: BlessedElement): number
 
     /**
-     * Select an index of an item.
-     */
+   * Select an index of an item.
+   */
     select(index: number): void
 
     /**
-     * Select item based on current offset.
-     */
+   * Select item based on current offset.
+   */
     move(offset: number): void
 
     /**
-     * Select item above selected.
-     */
+   * Select item above selected.
+   */
     up(amount: number): void
 
     /**
-     * Select item below selected.
-     */
+   * Select item below selected.
+   */
     down(amount: number): void
 
     /**
-     * Show/focus list and pick an item. The callback is executed with the result.
-     */
+   * Show/focus list and pick an item. The callback is executed with the result.
+   */
     pick(callback: () => void): void
 
     /**
-     * Find an item based on its text content.
-     */
+   * Find an item based on its text content.
+   */
     fuzzyFind(arg: string | RegExp | (() => void)): void
 
     on(event: string, listener: (...args: any[]) => void): this
-    /** Received when an item is selected. */
+    /**
+   * Received when an item is selected.
+   */
     on(event: 'select', callback: (item: BoxElement, index: number) => void): this
     on(event: ListElementEventType, callback: () => void): this
     on(event: 'select item', callback: (item: BlessedElement, index: number) => void): this
@@ -2648,8 +2736,8 @@ export namespace Widgets {
 
   interface FileManagerOptions extends ListOptions<ListElementStyle> {
     /**
-     * Current working directory.
-     */
+   * Current working directory.
+   */
     cwd?: string
   }
 
@@ -2657,37 +2745,41 @@ export namespace Widgets {
     constructor(opts: FileManagerOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: FileManagerOptions
 
     /**
-     * Current working directory.
-     */
+   * Current working directory.
+   */
     cwd: string
 
     /**
-     * Refresh the file list (perform a readdir on cwd and update the list items).
-     */
+   * Refresh the file list (perform a readdir on cwd and update the list items).
+   */
     refresh(cwd: string, callback: () => void): void
     refresh(callback?: () => void): void
 
     /**
-     * Pick a single file and return the path in the callback.
-     */
+   * Pick a single file and return the path in the callback.
+   */
     pick(cwd: string, callback: () => void): void
     pick(callback: () => void): void
 
     /**
-     * Reset back to original cwd.
-     */
+   * Reset back to original cwd.
+   */
     reset(cwd: string, callback: () => void): void
     reset(callback?: () => void): void
 
     on(event: string, listener: (...args: any[]) => void): this
-    /** Received when an item is selected. */
+    /**
+   * Received when an item is selected.
+   */
     on(event: 'cd', callback: (file: string, cwd: string) => void): this
-    /** Received when an item is selected. */
+    /**
+   * Received when an item is selected.
+   */
     on(event: 'file', callback: (file: string) => void): this
     on(event: 'error', callback: (err: any, file: string) => void): this
     on(event: 'refresh', callback: () => void): this
@@ -2695,32 +2787,32 @@ export namespace Widgets {
 
   interface StyleListTable extends ListElementStyle {
     /**
-     * Header style.
-     */
+   * Header style.
+   */
     header?: any
 
     /**
-     * Cell style.
-     */
+   * Cell style.
+   */
     cell?: any
   }
 
   interface ListTableOptions extends ListOptions<StyleListTable> {
     /**
-     * Array of array of strings representing rows.
-     */
+   * Array of array of strings representing rows.
+   */
     rows?: string[]
     data?: string[][]
 
     /**
-     * Spaces to attempt to pad on the sides of each cell. 2 by default: one space on each side
-     * (only useful if the width is shrunken).
-     */
+   * Spaces to attempt to pad on the sides of each cell. 2 by default: one space on each side
+   * (only useful if the width is shrunken).
+   */
     pad?: number
 
     /**
-     * Do not draw inner cells.
-     */
+   * Do not draw inner cells.
+   */
     noCellBorders?: boolean
 
     style?: StyleListTable
@@ -2730,32 +2822,32 @@ export namespace Widgets {
     constructor(opts: ListTableOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: ListTableOptions
 
     /**
-     * Set rows in table. Array of arrays of strings.
-     * @example:
-     *
-     * table.setData([
-     *      [ 'Animals',  'Foods'  ],
-     *      [ 'Elephant', 'Apple'  ],
-     *      [ 'Bird',     'Orange' ]
-     *  ]);
-     */
+   * Set rows in table. Array of arrays of strings.
+   * @example:
+   * 
+   * table.setData([
+   *      [ 'Animals',  'Foods'  ],
+   *      [ 'Elephant', 'Apple'  ],
+   *      [ 'Bird',     'Orange' ]
+   *  ]);
+   */
     setRows(rows: string[][]): void
 
     /**
-     * Set rows in table. Array of arrays of strings.
-     * @example:
-     *
-     * table.setData([
-     *      [ 'Animals',  'Foods'  ],
-     *      [ 'Elephant', 'Apple'  ],
-     *      [ 'Bird',     'Orange' ]
-     *  ]);
-     */
+   * Set rows in table. Array of arrays of strings.
+   * @example:
+   * 
+   * table.setData([
+   *      [ 'Animals',  'Foods'  ],
+   *      [ 'Elephant', 'Apple'  ],
+   *      [ 'Bird',     'Orange' ]
+   *  ]);
+   */
     setData(rows: string[][]): void
   }
 
@@ -2763,15 +2855,15 @@ export namespace Widgets {
     style?: ListElementStyle
 
     /**
-     * Set buttons using an object with keys as titles of buttons, containing of objects
-     * containing keys of keys and callback.
-     */
+   * Set buttons using an object with keys as titles of buttons, containing of objects
+   * containing keys of keys and callback.
+   */
     commands: (Types.ListbarCommand[]) | ({ [name: string]: Types.ListbarCommand }) | { [name: string]: () => void }
     items?: Types.ListbarCommand[]
 
     /**
-     * Automatically bind list buttons to keys 0-9.
-     */
+   * Automatically bind list buttons to keys 0-9.
+   */
     autoCommandKeys?: boolean
   }
 
@@ -2779,58 +2871,58 @@ export namespace Widgets {
     constructor(opts: ListbarOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: ListbarOptions
 
     /**
-     * Set commands (see commands option above).
-     */
+   * Set commands (see commands option above).
+   */
     setItems(commands: Types.ListbarCommand[]): void
 
     /**
-     * Append an item to the bar.
-     */
+   * Append an item to the bar.
+   */
     add(item: Types.ListbarCommand, callback: () => void): void
 
     /**
-     * Append an item to the bar.
-     */
+   * Append an item to the bar.
+   */
     addItem(item: Types.ListbarCommand, callback: () => void): void
 
     /**
-     * Append an item to the bar.
-     */
+   * Append an item to the bar.
+   */
     appendItem(item: Types.ListbarCommand, callback: () => void): void
 
     /**
-     * Select an item on the bar.
-     */
+   * Select an item on the bar.
+   */
     select(offset: number): void
 
     /**
-     * Remove item from the bar.
-     */
+   * Remove item from the bar.
+   */
     removeItem(child: BlessedElement): void
 
     /**
-     * Move relatively across the bar.
-     */
+   * Move relatively across the bar.
+   */
     move(offset: number): void
 
     /**
-     * Move left relatively across the bar.
-     */
+   * Move left relatively across the bar.
+   */
     moveLeft(offset: number): void
 
     /**
-     * Move right relatively across the bar.
-     */
+   * Move right relatively across the bar.
+   */
     moveRight(offset: number): void
 
     /**
-     * Select button and execute its callback.
-     */
+   * Select button and execute its callback.
+   */
     selectTab(index: number): void
 
     on(event: string, listener: (...args: any[]) => void): this
@@ -2839,13 +2931,13 @@ export namespace Widgets {
 
   interface FormOptions extends BoxOptions {
     /**
-     * Allow default keys (tab, vi keys, enter).
-     */
+   * Allow default keys (tab, vi keys, enter).
+   */
     keys?: any
 
     /**
-     * Allow vi keys.
-     */
+   * Allow vi keys.
+   */
     vi?: boolean
   }
 
@@ -2853,47 +2945,49 @@ export namespace Widgets {
     constructor(opts: FormOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: FormOptions
 
     /**
-     * Last submitted data.
-     */
+   * Last submitted data.
+   */
     submission: TFormData
 
     /**
-     * Focus next form element.
-     */
+   * Focus next form element.
+   */
     focusNext(): void
 
     /**
-     * Focus previous form element.
-     */
+   * Focus previous form element.
+   */
     focusPrevious(): void
 
     /**
-     * Submit the form.
-     */
+   * Submit the form.
+   */
     submit(): void
 
     /**
-     * Discard the form.
-     */
+   * Discard the form.
+   */
     cancel(): void
 
     /**
-     * Clear the form.
-     */
+   * Clear the form.
+   */
     reset(): void
 
     on(event: string, listener: (this: FormElement, ...args: any[]) => void): this
-    /** Form is submitted. Receives a data object. */
+    /**
+   * Form is submitted. Receives a data object.
+   */
     on(event: 'submit', callback: (this: FormElement, out: TFormData) => void): this
     on(event: 'cancel' | 'reset', callback: (this: FormElement) => void): this
   }
 
-  interface InputOptions extends BoxOptions {}
+  interface InputOptions extends BoxOptions { }
 
   abstract class InputElement extends BoxElement {
     constructor(opts: InputOptions)
@@ -2904,8 +2998,8 @@ export namespace Widgets {
    */
   interface TextareaOptions extends InputOptions {
     /**
-     * Call readInput() when the element is focused. Automatically unfocus.
-     */
+   * Call readInput() when the element is focused. Automatically unfocus.
+   */
     inputOnFocus?: boolean
   }
 
@@ -2923,74 +3017,74 @@ export namespace Widgets {
     constructor(opts: TextareaOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: TextareaOptions
 
     /**
-     * The input text. read-only.
-     */
+   * The input text. read-only.
+   */
     value: string
 
     /**
-     * Submit the textarea (emits submit).
-     */
+   * Submit the textarea (emits submit).
+   */
     submit(): void
 
     /**
-     * Cancel the textarea (emits cancel).
-     */
+   * Cancel the textarea (emits cancel).
+   */
     cancel(): void
 
     /**
-     * Grab key events and start reading text from the keyboard. Takes a callback which receives
-     * the final value.
-     */
+   * Grab key events and start reading text from the keyboard. Takes a callback which receives
+   * the final value.
+   */
     readInput(callback?: (err: any, value?: string) => void): void
 
     /**
-     * Grab key events and start reading text from the keyboard. Takes a callback which receives
-     * the final value.
-     */
+   * Grab key events and start reading text from the keyboard. Takes a callback which receives
+   * the final value.
+   */
     input(callback: (err: any, value?: string) => void): void
 
     /**
-     * Grab key events and start reading text from the keyboard. Takes a callback which receives
-     * the final value.
-     */
+   * Grab key events and start reading text from the keyboard. Takes a callback which receives
+   * the final value.
+   */
     setInput(callback: (err: any, value?: string) => void): void
 
     /**
-     * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
-     * receives the final value.
-     */
+   * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
+   * receives the final value.
+   */
     readEditor(callback: (err: any, value?: string) => void): void
 
     /**
-     * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
-     * receives the final value.
-     */
+   * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
+   * receives the final value.
+   */
     editor(callback: (err: any, value?: string) => void): void
 
     /**
-     * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
-     * receives the final value.
-     */
+   * Open text editor in $EDITOR, read the output from the resulting file. Takes a callback which
+   * receives the final value.
+   */
     setEditor(callback: (err: any, value?: string) => void): void
 
     /**
-     * The same as this.value, for now.
-     */
+   * The same as this.value, for now.
+   */
     getValue(): string
 
     /**
-     * Clear input.
-     */
+   * Clear input.
+   */
     clearValue(): void
 
     /**
-     * Set value.
-     */
+   * Set value.
+   */
     setValue(text: string): void
 
     on(event: string, listener: (...args: any[]) => void): this
@@ -2999,13 +3093,13 @@ export namespace Widgets {
 
   interface TextboxOptions extends TextareaOptions {
     /**
-     * Completely hide text.
-     */
+   * Completely hide text.
+   */
     secret?: boolean
 
     /**
-     * Replace text with asterisks (*).
-     */
+   * Replace text with asterisks (*).
+   */
     censor?: boolean
   }
 
@@ -3013,34 +3107,34 @@ export namespace Widgets {
     constructor(opts: TextboxOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: TextboxOptions
 
     /**
-     * Completely hide text.
-     */
+   * Completely hide text.
+   */
     secret: boolean
 
     /**
-     * Replace text with asterisks (*).
-     */
+   * Replace text with asterisks (*).
+   */
     censor: boolean
   }
 
-  interface ButtonOptions extends BoxOptions {}
+  interface ButtonOptions extends BoxOptions { }
 
   class ButtonElement extends InputElement implements IHasOptions<ButtonOptions> {
     constructor(opts: ButtonOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: ButtonOptions
 
     /**
-     * Press button. Emits press.
-     */
+   * Press button. Emits press.
+   */
     press(): void
 
     on(event: string, listener: (...args: any[]) => void): this
@@ -3049,8 +3143,8 @@ export namespace Widgets {
 
   interface CheckboxOptions extends BoxOptions {
     /**
-     * whether the element is checked or not.
-     */
+   * whether the element is checked or not.
+   */
     checked?: boolean
 
     // /**
@@ -3066,38 +3160,38 @@ export namespace Widgets {
     constructor(options?: CheckboxOptions)
 
     /**
-     * Original options object.
-     */
+   * Original options object.
+   */
     options: CheckboxOptions
 
     /**
-     * the text next to the checkbox (do not use setcontent, use `check.text = ''`).
-     */
+   * the text next to the checkbox (do not use setcontent, use `check.text = ''`).
+   */
     text: string
 
     /**
-     * whether the element is checked or not.
-     */
+   * whether the element is checked or not.
+   */
     checked: boolean
 
     /**
-     * same as `checked`.
-     */
+   * same as `checked`.
+   */
     value: boolean
 
     /**
-     * check the element.
-     */
+   * check the element.
+   */
     check(): void
 
     /**
-     * uncheck the element.
-     */
+   * uncheck the element.
+   */
     uncheck(): void
 
     /**
-     * toggle checked state.
-     */
+   * toggle checked state.
+   */
     toggle(): void
 
     on(event: string, listener: (this: CheckboxElement, ...args: any[]) => void): this
@@ -3105,7 +3199,7 @@ export namespace Widgets {
     on(event: 'uncheck', callback: (this: CheckboxElement) => void): this
   }
 
-  interface RadioSetOptions extends BoxOptions {}
+  interface RadioSetOptions extends BoxOptions { }
 
   /**
    * An element wrapping RadioButtons. RadioButtons within this element will be mutually exclusive
@@ -3115,7 +3209,7 @@ export namespace Widgets {
     constructor(opts: RadioSetOptions)
   }
 
-  interface RadioButtonOptions extends CheckboxOptions {}
+  interface RadioButtonOptions extends CheckboxOptions { }
 
   /**
    * A radio button which can be used in a form element.
@@ -3124,7 +3218,7 @@ export namespace Widgets {
     constructor(opts: RadioButtonOptions)
   }
 
-  interface PromptOptions extends BoxOptions {}
+  interface PromptOptions extends BoxOptions { }
 
   /**
    * A prompt box containing a text input, okay, and cancel buttons (automatically hidden).
@@ -3135,14 +3229,14 @@ export namespace Widgets {
     options: PromptOptions
 
     /**
-     * Show the prompt and wait for the result of the textbox. Set text and initial value.
-     */
+   * Show the prompt and wait for the result of the textbox. Set text and initial value.
+   */
     input(text: string, value: string, callback: (err: any, value: string) => void): void
     setInput(text: string, value: string, callback: (err: any, value: string) => void): void
     readInput(text: string, value: string, callback: (err: any, value: string) => void): void
   }
 
-  interface QuestionOptions extends BoxOptions {}
+  interface QuestionOptions extends BoxOptions { }
 
   /**
    * A question box containing okay and cancel buttons (automatically hidden).
@@ -3153,12 +3247,12 @@ export namespace Widgets {
     options: QuestionOptions
 
     /**
-     * Ask a question. callback will yield the result.
-     */
+   * Ask a question. callback will yield the result.
+   */
     ask(question: string, callback: (err: any, value: string) => void): void
   }
 
-  interface MessageOptions extends BoxOptions {}
+  interface MessageOptions extends BoxOptions { }
 
   /**
    * A box containing a message to be displayed (automatically hidden).
@@ -3169,22 +3263,22 @@ export namespace Widgets {
     options: MessageOptions
 
     /**
-     * Display a message for a time (default is 3 seconds). Set time to 0 for a
-     * perpetual message that is dismissed on keypress.
-     */
+   * Display a message for a time (default is 3 seconds). Set time to 0 for a
+   * perpetual message that is dismissed on keypress.
+   */
     log(text: string, time: number, callback: (err: any) => void): void
     log(text: string, callback: (err: any) => void): void
     display(text: string, time: number, callback: (err: any) => void): void
     display(text: string, callback: (err: any) => void): void
 
     /**
-     * Display an error in the same way.
-     */
+   * Display an error in the same way.
+   */
     error(text: string, time: number, callback: () => void): void
     error(text: string, callback: () => void): void
   }
 
-  interface LoadingOptions extends BoxOptions {}
+  interface LoadingOptions extends BoxOptions { }
 
   /**
    * A box with a spinning line to denote loading (automatically hidden).
@@ -3195,45 +3289,45 @@ export namespace Widgets {
     options: LoadingOptions
 
     /**
-     * Display the loading box with a message. Will lock keys until stop is called.
-     */
+   * Display the loading box with a message. Will lock keys until stop is called.
+   */
     load(text: string): void
 
     /**
-     * Hide loading box. Unlock keys.
-     */
+   * Hide loading box. Unlock keys.
+   */
     stop(): void
   }
 
   interface ProgressBarOptions extends BoxOptions {
     /**
-     * can be `horizontal` or `vertical`.
-     */
+   * can be `horizontal` or `vertical`.
+   */
     orientation: string
 
     /**
-     * the character to fill the bar with (default is space).
-     */
+   * the character to fill the bar with (default is space).
+   */
     pch: string
 
     /**
-     * the amount filled (0 - 100).
-     */
+   * the amount filled (0 - 100).
+   */
     filled: number
 
     /**
-     * same as `filled`.
-     */
+   * same as `filled`.
+   */
     value: number
 
     /**
-     * enable key support.
-     */
+   * enable key support.
+   */
     keys: boolean
 
     /**
-     * enable mouse support.
-     */
+   * enable mouse support.
+   */
     mouse: boolean
   }
 
@@ -3246,18 +3340,18 @@ export namespace Widgets {
     options: ProgressBarOptions
 
     /**
-     * progress the bar by a fill amount.
-     */
+   * progress the bar by a fill amount.
+   */
     progress(amount: number): void
 
     /**
-     * set progress to specific amount.
-     */
+   * set progress to specific amount.
+   */
     setProgress(amount: number): void
 
     /**
-     * reset the bar.
-     */
+   * reset the bar.
+   */
     reset(): void
 
     on(event: string, listener: (...args: any[]) => void): this
@@ -3266,13 +3360,13 @@ export namespace Widgets {
 
   interface LogOptions extends ScrollableTextOptions {
     /**
-     * amount of scrollback allowed. default: Infinity.
-     */
+   * amount of scrollback allowed. default: Infinity.
+   */
     scrollback?: number
 
     /**
-     * scroll to bottom on input even if the user has scrolled up. default: false.
-     */
+   * scroll to bottom on input even if the user has scrolled up. default: false.
+   */
     scrollOnInput?: boolean
   }
 
@@ -3285,50 +3379,51 @@ export namespace Widgets {
     options: LogOptions
 
     /**
-     * amount of scrollback allowed. default: Infinity.
-     */
+   * amount of scrollback allowed. default: Infinity.
+   */
     scrollback: number
 
     /**
-     * scroll to bottom on input even if the user has scrolled up. default: false.
-     */
+   * scroll to bottom on input even if the user has scrolled up. default: false.
+   */
     scrollOnInput: boolean
 
     /**
-     * add a log line.
-     */
+   * add a log line.
+   */
     log(text: string): void
 
     /**
-     * add a log line.
-     */
+   * add a log line.
+   */
     add(text: string): void
   }
 
   interface TableOptions extends BoxOptions {
     /**
-     * array of array of strings representing rows (same as `data`).
-     */
+   * array of array of strings representing rows (same as `data`).
+   */
     rows?: string[][]
 
     /**
-     * array of array of strings representing rows (same as `rows`).
-     */
+   * array of array of strings representing rows (same as `rows`).
+   */
     data?: string[][]
 
     /**
-     * spaces to attempt to pad on the sides of each cell. `2` by default: one space on each side (only useful if the width is shrunken).
-     */
+   * spaces to attempt to pad on the sides of each cell. `2` by default: one space on each side (only useful if the
+   * width is shrunken).
+   */
     pad?: number
 
     /**
-     * do not draw inner cells.
-     */
+   * do not draw inner cells.
+   */
     noCellBorders?: boolean
 
     /**
-     * fill cell borders with the adjacent background color.
-     */
+   * fill cell borders with the adjacent background color.
+   */
     fillCellBorders?: boolean
   }
 
@@ -3341,42 +3436,42 @@ export namespace Widgets {
     options: TableOptions
 
     /**
-     * set rows in table. array of arrays of strings.
-     */
+   * set rows in table. array of arrays of strings.
+   */
     setData(rows: string[][]): void
 
     /**
-     * set rows in table. array of arrays of strings.
-     */
+   * set rows in table. array of arrays of strings.
+   */
     setRows(rows: string[][]): void
   }
 
   interface TerminalOptions extends BoxOptions {
     /**
-     * handler for input data.
-     */
+   * handler for input data.
+   */
     handler?(userInput: Buffer): void
 
     /**
-     * name of shell. $SHELL by default.
-     */
+   * name of shell. $SHELL by default.
+   */
     shell?: string
 
     /**
-     * args for shell.
-     */
+   * args for shell.
+   */
     args?: any
 
     /**
-     * can be line, underline, and block.
-     */
+   * can be line, underline, and block.
+   */
     cursor?: 'line' | 'underline' | 'block'
 
     terminal?: string
 
     /**
-     * Object for process env.
-     */
+   * Object for process env.
+   */
     env?: any
   }
 
@@ -3386,37 +3481,37 @@ export namespace Widgets {
     options: TerminalOptions
 
     /**
-     * reference to the headless term.js terminal.
-     */
+   * reference to the headless term.js terminal.
+   */
     term: any
 
     /**
-     * reference to the pty.js pseudo terminal.
-     */
+   * reference to the pty.js pseudo terminal.
+   */
     pty: any
 
     /**
-     * write data to the terminal.
-     */
+   * write data to the terminal.
+   */
     write(data: string): void
 
     /**
-     * nearly identical to `element.screenshot`, however, the specified region includes the terminal's
-     * _entire_ scrollback, rather than just what is visible on the screen.
-     */
+   * nearly identical to `element.screenshot`, however, the specified region includes the terminal's
+   * _entire_ scrollback, rather than just what is visible on the screen.
+   */
     screenshot(xi?: number, xl?: number, yi?: number, yl?: number): string
   }
 
   interface ImageOptions extends BoxOptions {
     /**
-     * path to image.
-     */
+   * path to image.
+   */
     file: string
 
     /**
-     * path to w3mimgdisplay. if a proper w3mimgdisplay path is not given, blessed will search the
-     * entire disk for the binary.
-     */
+   * path to w3mimgdisplay. if a proper w3mimgdisplay path is not given, blessed will search the
+   * entire disk for the binary.
+   */
     type: 'ansi' | 'overlay' | 'w3m'
   }
 
@@ -3432,50 +3527,50 @@ export namespace Widgets {
 
   interface ANSIImageOptions extends BoxOptions {
     /**
-     * URL or path to PNG/GIF file. Can also be a buffer.
-     */
+   * URL or path to PNG/GIF file. Can also be a buffer.
+   */
     file: string
 
     /**
-     * Scale cellmap down (0-1.0) from its original pixel width/height (Default: 1.0).
-     */
+   * Scale cellmap down (0-1.0) from its original pixel width/height (Default: 1.0).
+   */
     scale: number
 
     /**
-     * This differs from other element's width or height in that only one
-     * of them is needed: blessed will maintain the aspect ratio of the image
-     * as it scales down to the proper number of cells. NOTE: PNG/GIF's are
-     * always automatically shrunken to size (based on scale) if a width or
-     * height is not given.
-     */
+   * This differs from other element's width or height in that only one
+   * of them is needed: blessed will maintain the aspect ratio of the image
+   * as it scales down to the proper number of cells. NOTE: PNG/GIF's are
+   * always automatically shrunken to size (based on scale) if a width or
+   * height is not given.
+   */
     width: number | string
     height: number | string
 
     /**
-     * Add various "density" ASCII characters over the rendering to give the
-     * image more detail, similar to libcaca/libcucul (the library mplayer uses
-     * to display videos in the terminal).
-     */
+   * Add various "density" ASCII characters over the rendering to give the
+   * image more detail, similar to libcaca/libcucul (the library mplayer uses
+   * to display videos in the terminal).
+   */
     ascii: string
 
     /**
-     * Whether to animate if the image is an APNG/animating GIF. If false, only
-     * display the first frame or IDAT (Default: true).
-     */
+   * Whether to animate if the image is an APNG/animating GIF. If false, only
+   * display the first frame or IDAT (Default: true).
+   */
     animate: boolean
 
     /**
-     * Set the speed of animation. Slower: 0.0-1.0. Faster: 1-1000. It cannot go
-     * faster than 1 frame per millisecond, so 1000 is the fastest. (Default: 1.0)
-     */
+   * Set the speed of animation. Slower: 0.0-1.0. Faster: 1-1000. It cannot go
+   * faster than 1 frame per millisecond, so 1000 is the fastest. (Default: 1.0)
+   */
     speed: number
 
     /**
-     * mem or cpu. If optimizing for memory, animation frames will be rendered to
-     * bitmaps as the animation plays, using less memory. Optimizing for cpu will
-     * precompile all bitmaps beforehand, which may be faster, but might also OOM
-     * the process on large images. (Default: mem).
-     */
+   * mem or cpu. If optimizing for memory, animation frames will be rendered to
+   * bitmaps as the animation plays, using less memory. Optimizing for cpu will
+   * precompile all bitmaps beforehand, which may be faster, but might also OOM
+   * the process on large images. (Default: mem).
+   */
     optimization: 'mem' | 'cpu'
   }
 
@@ -3488,57 +3583,57 @@ export namespace Widgets {
     options: ANSIImageOptions
 
     /**
-     * Image object from the png reader.
-     */
+   * Image object from the png reader.
+   */
     img: Types.TImage
 
     /**
-     * set the image in the box to a new path.
-     */
+   * set the image in the box to a new path.
+   */
     setImage(img: string, callback: () => void): void
 
     /**
-     * clear the current image.
-     */
+   * clear the current image.
+   */
     clearImage(callback: () => void): void
 
     /**
-     * Play animation if it has been paused or stopped.
-     */
+   * Play animation if it has been paused or stopped.
+   */
     play(): void
 
     /**
-     * Pause animation.
-     */
+   * Pause animation.
+   */
     pause(): void
 
     /**
-     * Stop animation.
-     */
+   * Stop animation.
+   */
     stop(): void
   }
 
   interface OverlayImageOptions extends BoxOptions {
     /**
-     * Path to image.
-     */
+   * Path to image.
+   */
     file: string
 
     /**
-     * Render the file as ANSI art instead of using w3m to overlay Internally uses the
-     * ANSIImage element. See the ANSIImage element for more information/options. (Default: true).
-     */
+   * Render the file as ANSI art instead of using w3m to overlay Internally uses the
+   * ANSIImage element. See the ANSIImage element for more information/options. (Default: true).
+   */
     ansi: boolean
 
     /**
-     * Path to w3mimgdisplay. If a proper w3mimgdisplay path is not given, blessed will
-     * search the entire disk for the binary.
-     */
+   * Path to w3mimgdisplay. If a proper w3mimgdisplay path is not given, blessed will
+   * search the entire disk for the binary.
+   */
     w3m: string
 
     /**
-     * Whether to search /usr, /bin, and /lib for w3mimgdisplay (Default: true).
-     */
+   * Whether to search /usr, /bin, and /lib for w3mimgdisplay (Default: true).
+   */
     search: string
   }
 
@@ -3551,40 +3646,40 @@ export namespace Widgets {
     options: OverlayImageOptions
 
     /**
-     * set the image in the box to a new path.
-     */
+   * set the image in the box to a new path.
+   */
     setImage(img: string, callback: () => void): void
 
     /**
-     * clear the current image.
-     */
+   * clear the current image.
+   */
     clearImage(callback: () => void): void
 
     /**
-     * get the size of an image file in pixels.
-     */
+   * get the size of an image file in pixels.
+   */
     imageSize(img: string, callback: () => void): void
 
     /**
-     * get the size of the terminal in pixels.
-     */
+   * get the size of the terminal in pixels.
+   */
     termSize(callback: () => void): void
 
     /**
-     * get the pixel to cell ratio for the terminal.
-     */
+   * get the pixel to cell ratio for the terminal.
+   */
     getPixelRatio(callback: () => void): void
   }
 
   interface VideoOptions extends BoxOptions {
     /**
-     * Video to play.
-     */
+   * Video to play.
+   */
     file: string
 
     /**
-     * Start time in seconds.
-     */
+   * Start time in seconds.
+   */
     start: number
   }
 
@@ -3594,8 +3689,8 @@ export namespace Widgets {
     options: VideoOptions
 
     /**
-     * The terminal element running mplayer or mpv.
-     */
+   * The terminal element running mplayer or mpv.
+   */
     tty: any
   }
 
@@ -3605,15 +3700,15 @@ export namespace Widgets {
   ) => any
   interface LayoutOptions extends ElementOptions {
     /**
-     * A callback which is called right before the children are iterated over to be rendered. Should return an
-     * iterator callback which is called on each child element: iterator(el, i).
-     */
+   * A callback which is called right before the children are iterated over to be rendered. Should return an
+   * iterator callback which is called on each child element: iterator(el, i).
+   */
     renderer?(this: LayoutElement, coords: PositionCoords, i: number | undefined): LayoutIterator
     /**
-     * Using the default renderer, it provides two layouts: inline, and grid. inline is the default and will render
-     * akin to inline-block. grid will create an automatic grid based on element dimensions. The grid cells'
-     * width and height are always determined by the largest children in the layout.
-     */
+   * Using the default renderer, it provides two layouts: inline, and grid. inline is the default and will render
+   * akin to inline-block. grid will create an automatic grid based on element dimensions. The grid cells'
+   * width and height are always determined by the largest children in the layout.
+   */
     layout?: 'inline' | 'inline-block' | 'grid'
   }
 
@@ -3623,78 +3718,81 @@ export namespace Widgets {
     options: LayoutOptions
 
     /**
-     * A callback which is called right before the children are iterated over to be rendered. Should return an
-     * iterator callback which is called on each child element: iterator(el, i).
-     */
+   * A callback which is called right before the children are iterated over to be rendered. Should return an
+   * iterator callback which is called on each child element: iterator(el, i).
+   */
     renderer(coords: PositionCoords, i: number | undefined): void
 
     /**
-     * Check to see if a previous child element has been rendered and is visible on screen. This is only useful
-     * for checking child elements that have already been attempted to be rendered! see the example below.
-     */
+   * Check to see if a previous child element has been rendered and is visible on screen. This is only useful
+   * for checking child elements that have already been attempted to be rendered! see the example below.
+   */
     isRendered(el: BlessedElement): boolean
 
     /**
-     * Get the last rendered and visible child element based on an index. This is useful for basing the position
-     * of the current child element on the position of the last child element.
-     */
+   * Get the last rendered and visible child element based on an index. This is useful for basing the position
+   * of the current child element on the position of the last child element.
+   */
     getLast(i: number): BlessedElement
 
     /**
-     * Get the last rendered and visible child element coords based on an index. This is useful for basing the position
-     * of the current child element on the position of the last child element. See the example below.
-     */
+   * Get the last rendered and visible child element coords based on an index. This is useful for basing the
+   * position
+   * of the current child element on the position of the last child element. See the example below.
+   */
     getLastCoords(i: number): PositionCoords
   }
 
   class Program {
     /**
-     * Wrap the given text in terminal formatting codes corresponding to the given attribute
-     * name. The `attr` string can be of the form `red fg` or `52 bg` where `52` is a 0-255
-     * integer color number.
-     */
+   * Wrap the given text in terminal formatting codes corresponding to the given attribute
+   * name. The `attr` string can be of the form `red fg` or `52 bg` where `52` is a 0-255
+   * integer color number.
+   */
     text(text: string, attr: string): string
   }
 }
 
 // publish classes on existin gpaths so users can reference the real values for extending
 export namespace widget {
-  class Node extends Widgets.Node {}
-  class Element extends Widgets.BlessedElement {}
-  class Box extends Widgets.BoxElement {}
-  class List extends Widgets.ListElement {}
-  class Screen extends Widgets.Screen {}
-  class BoxElement extends Widgets.BoxElement {}
-  class TextElement extends Widgets.TextElement {}
-  class LineElement extends Widgets.LineElement {}
-  class BigTextElement extends Widgets.BigTextElement {}
-  class ListElement extends Widgets.ListElement {}
-  class FileManagerElement extends Widgets.FileManagerElement {}
-  class ListTableElement extends Widgets.ListTableElement {}
-  class ListbarElement extends Widgets.ListbarElement {}
-  class FormElement extends Widgets.FormElement {}
-  class InputElement extends Widgets.InputElement {}
-  class TextareaElement extends Widgets.TextareaElement {}
-  class TextboxElement extends Widgets.TextboxElement {}
-  class ButtonElement extends Widgets.ButtonElement {}
-  class CheckboxElement extends Widgets.CheckboxElement {}
-  class RadioSetElement extends Widgets.RadioSetElement {}
-  class RadioButtonElement extends Widgets.RadioButtonElement {}
-  class TableElement extends Widgets.TableElement {}
-  class PromptElement extends Widgets.PromptElement {}
-  class QuestionElement extends Widgets.QuestionElement {}
-  class MessageElement extends Widgets.MessageElement {}
-  class LoadingElement extends Widgets.LoadingElement {}
-  class Log extends Widgets.Log {}
-  class ProgressBarElement extends Widgets.ProgressBarElement {}
-  class TerminalElement extends Widgets.TerminalElement {}
-  class LayoutElement extends Widgets.LayoutElement {}
-  class Terminal extends Widgets.TerminalElement {}
+  class Node extends Widgets.Node { }
+  class Element extends Widgets.BlessedElement { }
+  class Box extends Widgets.BoxElement { }
+  class List extends Widgets.ListElement { }
+  class Screen extends Widgets.Screen { }
+  class BoxElement extends Widgets.BoxElement { }
+  class TextElement extends Widgets.TextElement { }
+  class LineElement extends Widgets.LineElement { }
+  class BigTextElement extends Widgets.BigTextElement { }
+  class ListElement extends Widgets.ListElement { }
+  class FileManagerElement extends Widgets.FileManagerElement { }
+  class ListTableElement extends Widgets.ListTableElement { }
+  class ListbarElement extends Widgets.ListbarElement { }
+  class FormElement extends Widgets.FormElement { }
+  class InputElement extends Widgets.InputElement { }
+  class TextareaElement extends Widgets.TextareaElement { }
+  class TextboxElement extends Widgets.TextboxElement { }
+  class ButtonElement extends Widgets.ButtonElement { }
+  class CheckboxElement extends Widgets.CheckboxElement { }
+  class RadioSetElement extends Widgets.RadioSetElement { }
+  class RadioButtonElement extends Widgets.RadioButtonElement { }
+  class TableElement extends Widgets.TableElement { }
+  class PromptElement extends Widgets.PromptElement { }
+  class QuestionElement extends Widgets.QuestionElement { }
+  class MessageElement extends Widgets.MessageElement { }
+  class LoadingElement extends Widgets.LoadingElement { }
+  class Log extends Widgets.Log { }
+  class ProgressBarElement extends Widgets.ProgressBarElement { }
+  class TerminalElement extends Widgets.TerminalElement { }
+  class LayoutElement extends Widgets.LayoutElement { }
+  class Terminal extends Widgets.TerminalElement { }
 }
 
 // TODO: verify that all these are real classes :   'Node',  'Screen',  'Element',  'Box',  'Text',  'Line',  'ScrollableBox',  'ScrollableText',  'BigText',  'List',  'Form',  'Input',  'Textarea',  'Textbox',  'Button',  'ProgressBar',  'FileManager',  'Checkbox',  'RadioSet',  'RadioButton',  'Prompt',  'Question',  'Message',  'Loading',  'Listbar',  'Log',  'Table',  'ListTable',  'Terminal',  'Image',  'ANSIImage',  'OverlayImage',  'Video',  'Layout'
 
-/** @inheritdoc */
+/**
+ * @inheritdoc
+ */
 export function screen(options?: Widgets.IScreenOptions): Widgets.Screen
 export function box(options?: Widgets.BoxOptions): Widgets.BoxElement
 export function text(options?: Widgets.TextOptions): Widgets.TextElement
@@ -3792,22 +3890,22 @@ interface Unicode {
    */
   chars: {
     /**
-     * All surrogate pair wide chars.
-     */
+   * All surrogate pair wide chars.
+   */
     wide: RegExp
 
     /**
-     * All wide chars including surrogate pairs.
-     */
+   * All wide chars including surrogate pairs.
+   */
     all: RegExp
 
     /**
-     * Regex to detect a surrogate pair.
-     */
+   * Regex to detect a surrogate pair.
+   */
     surrogate: RegExp
     /**
-     * Regex to find combining characters.
-     */
+   * Regex to find combining characters.
+   */
     combining: RegExp
   }
 }

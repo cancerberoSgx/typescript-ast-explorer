@@ -24,13 +24,13 @@ const commonOptions: BoxOptions = {
 }
 
 React.render(
-  <box {...commonOptions} parent={screen} top="0%" label="Contact me">
+  <box {...commonOptions} parent={screen} top='0%' label='Contact me'>
     <textarea
       {...commonOptions}
       focused={true}
-      content="edit me"
-      width="50%"
-      left="center"
+      content='edit me'
+      width='50%'
+      left='center'
       height={9}
       top={0}
       focusable={true}
@@ -49,11 +49,11 @@ React.render(
       {...commonOptions}
       height={3}
       top={20}
-      width="50%"
-      left="center"
-      align="center"
-      valign="middle"
-      content="submit"
+      width='50%'
+      left='center'
+      align='center'
+      valign='middle'
+      content='submit'
       focusable={true}
       clickable={true}
       keys={true}

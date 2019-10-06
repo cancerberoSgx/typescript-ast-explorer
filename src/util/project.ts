@@ -1,14 +1,6 @@
 import { getRelativePath } from 'misc-utils-of-mine-generic'
-import Project, { Node, TypeGuards } from 'ts-morph'
-import {
-  buildAstPath,
-  File,
-  GeneralNode,
-  getChildrenForEachChild,
-  isDirectory,
-  isSourceFile,
-  printAstPath
-} from 'ts-simple-ast-extra'
+import { Node, Project, TypeGuards } from 'ts-morph'
+import { buildAstPath, File, GeneralNode, getChildrenForEachChild, isDirectory, isSourceFile, printAstPath } from 'ts-simple-ast-extra'
 
 export function getGeneralNodeKindName(c: GeneralNode) {
   return isDirectory(c) ? 'Directory' : c.getKindName()
@@ -16,7 +8,7 @@ export function getGeneralNodeKindName(c: GeneralNode) {
 
 export function getGeneralNodeName(c: GeneralNode) {
   try {
-    return isDirectory(c) ? c.getBaseName() : isSourceFile(c) ? c.getBaseName() : c ? getName(c) : ''
+    return isDirectory(c) ? c.getBaseName() : isSourceFile(c) ? c.getBaseName() : c ? getName(c as any) : ''
   } catch (error) {
     console.log(error)
     return ''
@@ -34,17 +26,19 @@ export function getName(n: Node) {
   }
 }
 /**
- * Returns immediate children. In case of Nodes, children are obtained using forEachChild instead of getChildren method
+ * Returns immediate children. In case of Nodes, children are obtained using forEachChild instead of getChildren
+ * method
  */
 export function getGeneralNodeChildren(f: GeneralNode, project: Project): GeneralNode[] {
   return isDirectory(f)
     ? (f.getDirectories().filter(d => project.getDirectory(d.getPath())) as GeneralNode[]).concat(
-        f.getSourceFiles() as GeneralNode[]
-      )
+      f.getSourceFiles() as GeneralNode[]
+    )
     : getChildrenForEachChild(f)
 }
 /**
- * Directories and SourceFile path is given by getPath* methods. For nodes we use AstPath for defining their path.
+ * Directories and SourceFile path is given by getPath* methods. For nodes we use AstPath for defining their
+ * path.
  */
 export function getGeneralNodePath(f: GeneralNode, relativeTo?: string, includeNodeKind = false): string | undefined {
   if (isDirectory(f) || isSourceFile(f)) {

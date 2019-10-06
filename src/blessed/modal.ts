@@ -3,7 +3,7 @@ import { tryTo } from 'misc-utils-of-mine-generic'
 
 /**
  * Easy to use modal: ``` showInModal(screen, anElement)``` or simply:  ``` showInModal(screen, 'some text')```
- *
+ * 
  */
 export function showInModal(
   screen: blessed.Widgets.Screen,
@@ -32,7 +32,7 @@ export function showInModal(
       // },
       // content: 'Drag Me'
     })
-    ;[modalInstance, ...modalInstance.children].forEach(c => c.on('click', data => modalInstance!.hide()))
+      ;[modalInstance, ...modalInstance.children].forEach(c => c.on('click', data => modalInstance!.hide()))
   }
   if (typeof s === 'string') {
     modalInstance.setContent(s)
@@ -65,7 +65,8 @@ export function closeModal(screen: blessed.Widgets.Screen) {
 }
 
 /**
- * Resets this manager. Useful when you are destroying / recreating screen to make sure there are no missing references to forgotten nodes.
+ * Resets this manager. Useful when you are destroying / recreating screen to make sure there are no missing
+ * references to forgotten nodes.
  */
 export function resetModals() {
   tryTo(() => {

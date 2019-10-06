@@ -8,8 +8,8 @@ describe('blessed node', () => {
     testJsx({
       creator: screen => (
         <box parent={screen}>
-          hello <textbox secret={true} content="helelele" />
-          <button content="button123" />
+          hello <textbox secret={true} content='helelele' />
+          <button content='button123' />
         </box>
       ),
       assert: e => {
@@ -37,8 +37,8 @@ describe('blessed node', () => {
     it('should be able test wihotu helpers', async done => {
       const el = React.render(
         <box parent={screen}>
-          hello <textbox secret={true} content="helelele" />
-          <button content="button123" />
+          hello <textbox secret={true} content='helelele' />
+          <button content='button123' />
         </box>
       )
       // const ta = find<Textarea>(React.render(e), c => c.type === 'button')!.getContent()

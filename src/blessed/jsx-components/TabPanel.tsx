@@ -36,20 +36,20 @@ abstract class Base<T = {}, S = {}> extends Component<T, S> {
 }
 
 /**
- This is the idea: 
- ```
-<TabPanel>
-<Tab>
-<Label><Label>
-<Body></Body>
-</Tab>
-</TabPanel>
- ```
+ *  This is the idea: 
+ *  ```
+ * <TabPanel>
+ * <Tab>
+ * <Label><Label>
+ * <Body></Body>
+ * </Tab>
+ * </TabPanel>
+ *  ```
  */
 export class TabPanel extends Base<TabProps, {}> {
   render() {
     return (
-      <Div {...this.optionsBase()} width="100%" height="100%">
+      <Div {...this.optionsBase()} width='100%' height='100%'>
         {/* <listbar {...this.optionsInputBase()}  padding={1}
               top={0}
               align="center"

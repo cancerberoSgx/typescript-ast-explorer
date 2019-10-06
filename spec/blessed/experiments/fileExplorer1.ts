@@ -56,7 +56,7 @@ var explorer = {
       } else {
         result = self.childrenContent
       }
-    } catch (e) {}
+    } catch (e) { }
     return result
   }
 }

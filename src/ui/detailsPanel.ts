@@ -2,9 +2,9 @@ import * as blessed from 'blessed'
 import * as contrib from 'blessed-contrib'
 import { pwd } from 'shelljs'
 import { isNode } from 'ts-simple-ast-extra'
-import { ActionListenerType, ActionType, ACTION_LISTENER } from '../store/actions'
+import { ActionType, ACTION_LISTENER } from '../store/actions'
 import { getCurrentView } from '../store/state'
-import { Store } from '../store/store'
+import { ActionListenerType, Store } from '../store/store'
 import { scrollableOptions } from '../util/common'
 import { getGeneralNodeKindName, getGeneralNodeName, getGeneralNodePath } from '../util/project'
 import { buildNodeActions } from './nodeActions'
@@ -55,9 +55,9 @@ export function detailsPanel(store: Store) {
           'Text',
           isNode(a.node)
             ? a.node
-                .getFullText()
-                .substring(0, Math.max(a.node.getFullText().length, 200))
-                .replace(/\n/gm, '\\n') || ''
+              .getFullText()
+              .substring(0, Math.max(a.node.getFullText().length, 200))
+              .replace(/\n/gm, '\\n') || ''
             : ''
         ]
       ]

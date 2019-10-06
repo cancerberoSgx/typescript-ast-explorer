@@ -1,21 +1,13 @@
 import { RemoveProperties } from '../../util/misc'
 import { BlessedElementOptionsIntersection, Element, Style, WidgetTypesEnum } from '../blessedTypes'
-import {
-  ElementPredicate,
-  filterChildren,
-  filterDescendants,
-  findChildren,
-  findDescendant,
-  visitDescendants,
-  Visitor,
-  VisitorOptions
-} from '../node'
+import { ElementPredicate, filterChildren, filterDescendants, findChildren, findDescendant, visitDescendants, Visitor, VisitorOptions } from '../node'
 
 /**
- * Very simple abstract Component class (like React.Component) but without life cycle methods, or Refs. Has a dummy state that will update the blessed element if changed by default
+ * Very simple abstract Component class (like React.Component) but without life cycle methods, or Refs. Has a
+ * dummy state that will update the blessed element if changed by default
  */
 export abstract class Component<P = {}, S = {}> {
-  constructor(protected props: P, protected state: S) {}
+  constructor(protected props: P, protected state: S) { }
 
   abstract render(): JSX.BlessedJsxNode
 
@@ -31,7 +23,9 @@ export abstract class Component<P = {}, S = {}> {
     return this.blessedElement.type as WidgetTypesEnum
   }
 
-  /** subclasses can override to prevent the blessed element to be rendered when the state changes */
+  /**
+   * subclasses can override to prevent the blessed element to be rendered when the state changes
+   */
   protected dontRenderOnStateChange = false
 
   /**
@@ -64,18 +58,23 @@ export abstract class Component<P = {}, S = {}> {
   //TODO: ancestors, direct children and siblings. nice to have getFirstDescendantOfType, etc
 }
 
-/** esthetic options like color font styles that doesn't change the postiion dimention at all ! (so they can me safely applied in a general manner (declared in a theme)) safely*/
+/**
+ * esthetic options like color font styles that doesn't change the postiion dimention at all ! (so they can me
+ * safely applied in a general manner (declared in a theme)) safely
+ */
 // type VisualNoPositionImpactOptions =TextStyleOptions| 'ColorOptions' EventEStyleOptions ?
 
 interface ComponentWithOptionsProps
   extends Style,
-    RemoveProperties<BlessedElementOptionsIntersection, 'border' | 'scrollbar'> {}
+  RemoveProperties<BlessedElementOptionsIntersection, 'border' | 'scrollbar'> { }
 /**
  * Represent components that can accept Blessed elements options as Properties.
- *
- * Inheriting from this abstract component wil give the change to all components of an app to share and extends  the same option
+ * 
+ * Inheriting from this abstract component wil give the change to all components of an app to share and extends 
+ * the same option
  * semantics, mostly for style coherence. TODO: in the future use advanced theme framework css in jss, etc
- * */
+ * 
+ */
 export abstract class ComponentWithOptions<P extends ComponentWithOptionsProps = {}, S = {}> extends Component<P, S> {
   /** subclasses */
   // abstract elementType: ElementType
@@ -83,12 +82,13 @@ export abstract class ComponentWithOptions<P extends ComponentWithOptionsProps =
   // protected visualOptions: Partial<Style>
 }
 
-interface ComponentWithEffectsProps extends ComponentWithOptionsProps {}
+interface ComponentWithEffectsProps extends ComponentWithOptionsProps { }
 
 /**
- * Component that model bless element effect state like focus, selected, blur, hover , text input, using their internal state. Also understand semantics on how these effects relate with options
+ * Component that model bless element effect state like focus, selected, blur, hover , text input, using their
+ * internal state. Also understand semantics on how these effects relate with options
  */
 export abstract class ComponentWithEffects<
   P extends ComponentWithEffectsProps = {},
   S = {}
-> extends ComponentWithOptions<P, S> {}
+  > extends ComponentWithOptions<P, S> { }

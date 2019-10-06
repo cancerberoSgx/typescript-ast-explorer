@@ -325,7 +325,7 @@ declare namespace BlessedContrib {
       options: DonutOptions
     }
 
-    export interface GaugeListOptions extends CanvasOptions {}
+    export interface GaugeListOptions extends CanvasOptions { }
 
     export class GaugeListElement extends CanvasElement implements IHasOptions<GaugeListOptions> {
       constructor(opts: GaugeListOptions)
@@ -406,7 +406,7 @@ declare namespace BlessedContrib {
       emit(str: any): boolean
     }
 
-    export interface MapOptions extends CanvasOptions {}
+    export interface MapOptions extends CanvasOptions { }
 
     export class MapElement extends CanvasElement implements IHasOptions<MapOptions> {
       constructor(opts: MapOptions)
@@ -414,7 +414,7 @@ declare namespace BlessedContrib {
       options: MapOptions
     }
 
-    export interface SparklineOptions extends CanvasOptions<string[]> {}
+    export interface SparklineOptions extends CanvasOptions<string[]> { }
 
     export class SparklineElement extends CanvasElement<string[]> implements IHasOptions<SparklineOptions> {
       constructor(opts: CanvasOptions)
@@ -426,13 +426,13 @@ declare namespace BlessedContrib {
 
     export interface MarkdownOptions extends CanvasOptions {
       /**
-       * Markdown text to render
-       */
+   * Markdown text to render
+   */
       markdown?: string
 
       /**
-       * Custom Markdown renderer implementation, by default, marked and MarkedTerminal is used.
-       */
+   * Custom Markdown renderer implementation, by default, marked and MarkedTerminal is used.
+   */
       renderer?: (src: string) => string
     }
 
@@ -446,7 +446,7 @@ declare namespace BlessedContrib {
       setMarkdown(markdown: string): void
     }
 
-    export interface PictureOptions extends CanvasOptions {}
+    export interface PictureOptions extends CanvasOptions { }
 
     export class PictureElement extends CanvasElement implements IHasOptions<PictureOptions> {
       constructor(opts: PictureOptions)
@@ -491,36 +491,39 @@ declare namespace BlessedContrib {
 
     export interface TreeElementNode {
       /**
-       * Type : boolean
-Desc : Determine if this node is extended
-No effect when the node have no child
-Default value for each node will be treeInstance.options.extended if the node extended option is not set
-Example : {'Fruit':{ name: 'Fruit', extended: true, children:{ 'Banana': {}, 'Cherry': {}}}}
-       */
+   * Type : boolean
+   * Desc : Determine if this node is extended
+   * No effect when the node have no child
+   * Default value for each node will be treeInstance.options.extended if the node extended option is not set
+   * Example : {'Fruit':{ name: 'Fruit', extended: true, children:{ 'Banana': {}, 'Cherry': {}}}}
+   */
       extended?: boolean
-      /** Type : string
-Desc : Node name
-If the node isn't the root and you don't specify the name, will be set to hash key
-Example : { name: 'Fruit'} */
+      /**
+   * Type : string
+   * Desc : Node name
+   * If the node isn't the root and you don't specify the name, will be set to hash key
+   * Example : { name: 'Fruit'}
+   */
       name?: string
       /**
-       * Type : hash or function(node){ return children }
-Desc : Node children.
-The function must return a hash that could have been used as children property
-If you use a function, the result will be stored in node.childrenContent and children
-Example :
-Hash : {'Fruit':{ name: 'Fruit', children:{ 'Banana': {}, 'Cherry': {}}}}
-Function : see examples/explorer.js
-       */
+   * Type : hash or function(node){ return children }
+   * Desc : Node children.
+   * The function must return a hash that could have been used as children property
+   * If you use a function, the result will be stored in node.childrenContent and children
+   * Example :
+   * Hash : {'Fruit':{ name: 'Fruit', children:{ 'Banana': {}, 'Cherry': {}}}}
+   * Function : see examples/explorer.js
+   */
       children: { [name: string]: TreeNodeElement } | ((name: string) => TreeNodeElement)
       /**
- * Type : hash
-Desc : Children content for internal usage DO NOT MODIFY
-If node.children is a hash, node.children===node.childrenContent
-If node.children is a function, it's used to store the node.children() result
-You can read this property, but you should never write it.
-Usually this will be used to check if(node.childrenContent) in your node.children function to generate children only once
- */
+   * Type : hash
+   * Desc : Children content for internal usage DO NOT MODIFY
+   * If node.children is a hash, node.children===node.childrenContent
+   * If node.children is a function, it's used to store the node.children() result
+   * You can read this property, but you should never write it.
+   * Usually this will be used to check if(node.childrenContent) in your node.children function to generate
+   * children only once
+   */
       childrenContent?: { [name: string]: any }
     }
     export class TreeElement<Node extends TreeElementNode = TreeElementNode> extends BoxElement
@@ -534,46 +537,48 @@ Usually this will be used to check if(node.childrenContent) in your node.childre
 
       options: TreeOptions
 
-      /** set new data in the Tree, i.e dynamic data. call screen.render() after so UI is updated. */
+      /**
+   * set new data in the Tree, i.e dynamic data. call screen.render() after so UI is updated.
+   */
       setData(data: Data): void
     }
   }
 
   export module widget {
-    export class Grid extends Widgets.GridElement {}
+    export class Grid extends Widgets.GridElement { }
 
-    export class Bar extends Widgets.BarElement {}
+    export class Bar extends Widgets.BarElement { }
 
-    export class Line extends Widgets.LineElement {}
+    export class Line extends Widgets.LineElement { }
 
-    export class StackedBar extends Widgets.StackedBarElement {}
+    export class StackedBar extends Widgets.StackedBarElement { }
 
-    export class Canvas extends Widgets.CanvasElement {}
+    export class Canvas extends Widgets.CanvasElement { }
 
-    export class Tree extends Widgets.TreeElement {}
+    export class Tree extends Widgets.TreeElement { }
 
-    export class Table extends Widgets.TableElement {}
+    export class Table extends Widgets.TableElement { }
 
-    export class Picture extends Widgets.PictureElement {}
+    export class Picture extends Widgets.PictureElement { }
 
-    export class Markdown extends Widgets.MarkdownElement {}
+    export class Markdown extends Widgets.MarkdownElement { }
 
-    export class Map extends Widgets.MapElement {}
+    export class Map extends Widgets.MapElement { }
 
-    export class Log extends Widgets.LogElement {}
+    export class Log extends Widgets.LogElement { }
 
-    export class Lcd extends Widgets.LcdElement {}
+    export class Lcd extends Widgets.LcdElement { }
 
-    export class Gauge extends Widgets.GaugeElement {}
+    export class Gauge extends Widgets.GaugeElement { }
 
-    export class GaugeList extends Widgets.GaugeListElement {}
+    export class GaugeList extends Widgets.GaugeListElement { }
 
-    export class Donut extends Widgets.DonutElement {}
+    export class Donut extends Widgets.DonutElement { }
 
-    export class Sparkline extends Widgets.SparklineElement {}
+    export class Sparkline extends Widgets.SparklineElement { }
   }
 
-  export class grid extends Widgets.GridElement {}
+  export class grid extends Widgets.GridElement { }
 
   export function line(options?: Widgets.LineOptions): Widgets.LineElement
 

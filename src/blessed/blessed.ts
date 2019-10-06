@@ -56,7 +56,8 @@ export function onButtonClicked(b: blessed.Widgets.ButtonElement, fn: () => void
 }
 
 /**
- * @param screen install common exit keys on screen taking into account modals and other widgets that could use the same.
+ * @param screen install common exit keys on screen taking into account modals and other widgets that could use
+ * the same.
  */
 export function installExitKeys(screen: blessed.Widgets.Screen) {
   screen.key(['escape', 'q', 'Q', 'C-c'], function(ch, key) {
@@ -119,7 +120,8 @@ export function offValueChange(el: Checkbox) {
 }
 
 /**
- * returns element's internal representation of the label. Warning it uses internal blessed properties that could break in the future.
+ * returns element's internal representation of the label. Warning it uses internal blessed properties that could
+ * break in the future.
  */
 export function getElementLabel(el: Element): Element | undefined {
   return (el as any)._label

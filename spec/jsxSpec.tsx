@@ -34,7 +34,7 @@ describe('jsx', () => {
   it('should render box with one button children', async done => {
     await client.enter('npx ts-node spec/assets/jsxOneChild.tsx')
     const s = await helper.waitForStrippedDataToInclude('click')
-    ;['hello', 'click', 'box', 'content'].forEach(w => expect(s).toContain(w))
+      ;['hello', 'click', 'box', 'content'].forEach(w => expect(s).toContain(w))
     await client.enter('q')
     done()
   })

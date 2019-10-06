@@ -46,21 +46,32 @@ export function toggleCollapsed(el: Element, andRenderScreen = false) {
 }
 
 interface Options {
-  /** if provided, element will be collapsed to this height. by default it will be 3 to support auto: true, border and label */
+  /**
+   * if provided, element will be collapsed to this height. by default it will be 3 to support auto: true, border
+   * and label
+   */
   collapsedHeight?: number | string
   /**
-   * Settings this to true will install a click listener on the element's label to toggle the collapse state. It will make sure there always be a label. Also it will hide/show non-label children when element is collapsed automatically.
-   *
-   * If this property is false, then user is responsible of all of this: implementing handlers for triggering toggle/collapse (like buttons/checkbox), hiding/showing children on collapse, resize the element, etc.
-   *
+   * Settings this to true will install a click listener on the element's label to toggle the collapse state. It
+   * will make sure there always be a label. Also it will hide/show non-label children when element is collapsed
+   * automatically.
+   * 
+   * If this property is false, then user is responsible of all of this: implementing handlers for triggering
+   * toggle/collapse (like buttons/checkbox), hiding/showing children on collapse, resize the element, etc.
+   * 
    * By default the state will change when user left-click element's first line (y==0) .
-   *
-   * Also optionally, collapsed / uncollapsed custom labels can be set with [[collapsedLabel]] , [[uncollapsedLabel]]
+   * 
+   * Also optionally, collapsed / uncollapsed custom labels can be set with [[collapsedLabel]] ,
+   * [[uncollapsedLabel]]
    */
   auto?: boolean
-  /** if provided it will set this label when element is collapsed*/
+  /**
+   * if provided it will set this label when element is collapsed
+   */
   collapsedLabel?: string
-  /** if provided it will set this label when element is uncollapsed*/
+  /**
+   * if provided it will set this label when element is uncollapsed
+   */
   uncollapsedLabel?: string
 }
 

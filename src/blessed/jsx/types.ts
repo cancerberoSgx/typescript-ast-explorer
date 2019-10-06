@@ -1,45 +1,4 @@
-import {
-  BigText,
-  BigTextOptions,
-  Box,
-  BoxOptions,
-  Button,
-  ButtonOptions,
-  CheckboxOptions,
-  Element as BlessedElement,
-  Element,
-  ElementOptions,
-  FileManager,
-  FileManagerOptions,
-  Form,
-  FormOptions,
-  IKeyEventArg,
-  IMouseEventArg,
-  INodeGenericEventArg,
-  Layout,
-  LayoutOptions,
-  Line,
-  LineOptions,
-  List,
-  ListBar,
-  ListbarOptions,
-  ListOptions,
-  ListTable,
-  ListTableOptions,
-  NodeGenericEventType,
-  NodeMouseEventType,
-  NodeWithEvents,
-  RadioButton,
-  RadioButtonOptions,
-  RadioSet,
-  RadioSetOptions,
-  Text,
-  Textarea,
-  TextareaOptions,
-  Textbox,
-  TextboxOptions,
-  TextOptions
-} from '../blessedTypes'
+import { BigText, BigTextOptions, Box, BoxOptions, Button, ButtonOptions, CheckboxOptions, Element as BlessedElement, Element, ElementOptions, FileManager, FileManagerOptions, Form, FormOptions, IKeyEventArg, IMouseEventArg, INodeGenericEventArg, Layout, LayoutOptions, Line, LineOptions, List, ListBar, ListbarOptions, ListOptions, ListTable, ListTableOptions, NodeGenericEventType, NodeMouseEventType, NodeWithEvents, RadioButton, RadioButtonOptions, RadioSet, RadioSetOptions, Text, Textarea, TextareaOptions, Textbox, TextboxOptions, TextOptions } from '../blessedTypes'
 import { Component } from './component'
 
 export enum EventOptionNames {
@@ -56,7 +15,9 @@ export enum ArtificialEventOptionNames {
   onChange = 'onChange'
 }
 
-/** represents event handlers directly supported by blessed element methods (exactly same signature) */
+/**
+ * represents event handlers directly supported by blessed element methods (exactly same signature)
+ */
 export interface BlessedEventOptions {
   [EventOptionNames.key]?: Parameters<NodeWithEvents['key']>
   [EventOptionNames.onceKey]?: Parameters<NodeWithEvents['onceKey']>
@@ -64,7 +25,10 @@ export interface BlessedEventOptions {
   [EventOptionNames.once]?: On<this>
 }
 
-/** represents event handlers that doesn't exist on blessed - more high level and similar to html/react. This imply some manual event registration and mapping to blessed supported ones. */
+/**
+ * represents event handlers that doesn't exist on blessed - more high level and similar to html/react. This
+ * imply some manual event registration and mapping to blessed supported ones.
+ */
 export interface ArtificialEventOptions<T extends Element> {
   [ArtificialEventOptionNames.onClick]?: OnClickHandler<T>
   [ArtificialEventOptionNames.onKeyPress]?: (
@@ -128,7 +92,7 @@ declare global {
 
     type BlessedJsxChild = Element<any> | BlessedJsxText
 
-    export interface ReactNodeArray extends Array<BlessedJsxNode> {}
+    export interface ReactNodeArray extends Array<BlessedJsxNode> { }
 
     export type BlessedJsxFragment = {} | ReactNodeArray
 
@@ -151,7 +115,12 @@ declare global {
   }
 }
 
-/** an intrinsic element wihtout children, that won't be renderd. Can be used by JSXElements that need to declare data markwup that is not supported by blessed optoins . Examplle: listbar buttons are declaren in the same list optoins but I want to declared them as JSX children, . So I do it by returning __Virtual with the informatio in the markup that the parent can consume., */
+/**
+ * an intrinsic element wihtout children, that won't be renderd. Can be used by JSXElements that need to declare
+ * data markwup that is not supported by blessed optoins . Examplle: listbar buttons are declaren in the same
+ * list optoins but I want to declared them as JSX children, . So I do it by returning __Virtual with the
+ * informatio in the markup that the parent can consume.,
+ */
 export type __Virtual<Data = any> = { __virtual: '__virtual'; data: Data }
 
 export function is__Virtual(a: any): a is __Virtual {
@@ -160,15 +129,17 @@ export function is__Virtual(a: any): a is __Virtual {
 
 /**
  * Type of the `React` object as in `React.createElement`.
- *
+ * 
  * Note: it could have another name than React, but if so tsconfig needs to be configured (JSXFactory) so for
  * simplicity we name the instance `React`
  */
 export interface BlessedJsx {
   /**
-   * JSX.Element to blessed node factory method. i.e. `<box>foo</box>` will be translated to `React.createElement('box', {}, ['foo'])`.
-   *
-   * This method should never be called directly by users, although is called internally when users call [[React.createEkenebt]]
+   * JSX.Element to blessed node factory method. i.e. `<box>foo</box>` will be translated to
+   * `React.createElement('box', {}, ['foo'])`.
+   * 
+   * This method should never be called directly by users, although is called internally when users call
+   * [[React.createEkenebt]]
    */
   createElement(tag: JSX.ElementType, attrs: BlessedJsxAttrs, ...children: any[]): JSX.BlessedJsxNode
 
@@ -177,18 +148,29 @@ export interface BlessedJsx {
    */
   render(e: JSX.Element, options?: RenderOptions): Element
 
-  /** add listeners that will be notifies just after the Blessed Element instance is created. Attributes and children have not yet been set, besides blessed options native ones.*/
+  /**
+   * add listeners that will be notifies just after the Blessed Element instance is created. Attributes and
+   * children have not yet been set, besides blessed options native ones.
+   */
   addAfterElementCreatedListener(l: AfterElementCreatedListener): void
 
-  /** add listeners that will be notified just before a child is appended to its parent blessed element even for notes created from JSXText. If any listener return true the notification chain will stop, the children won't be appended to the element. */
+  /**
+   * add listeners that will be notified just before a child is appended to its parent blessed element even for
+   * notes created from JSXText. If any listener return true the notification chain will stop, the children won't
+   * be appended to the element.
+   */
   addBeforeAppendChildListener(l: BeforeAppendChildListener): void
 
   /**
-   * add listeners that will be notified just before the blessed.foo() function is call with all the options as they
-   *  are (normalized and valid).Children are blessed elements unless the TextNodes that are still literals so be careful!.
-   * If any of the listeners returns a blessed element, it will interrupt the listener chain and that instance will be
+   * add listeners that will be notified just before the blessed.foo() function is call with all the options as
+   * they
+   *  are (normalized and valid).Children are blessed elements unless the TextNodes that are still literals so be
+   * careful!.
+   * If any of the listeners returns a blessed element, it will interrupt the listener chain and that instance will
+   * be
    * used instead of calling the blessed function.
-   * */
+   * 
+   */
   addBeforeElementCreatedListener(l: BeforeElementCreatedListener): void
 
   /**
@@ -197,9 +179,13 @@ export interface BlessedJsx {
   addAfterRenderListener(l: AfterRenderListener): void
 }
 
-/** @internal */
+/**
+ * @internal
+ */
 export type AfterElementCreatedListener = (event: AfterElementCreatedEvent) => void
-/** @internal */
+/**
+ * @internal
+ */
 export interface AfterElementCreatedEvent {
   el: Element
   tag: JSX.ElementType
@@ -207,30 +193,42 @@ export interface AfterElementCreatedEvent {
   children: JSX.BlessedJsxNode[]
   component?: Component
 }
-/** @internal */
+/**
+ * @internal
+ */
 export type BeforeAppendChildListener = (event: BeforeAppendChildEvent) => boolean
-/** @internal */
+/**
+ * @internal
+ */
 export interface BeforeAppendChildEvent {
   el: Element
   child: Element
 }
-/** @internal */
+/**
+ * @internal
+ */
 export type BeforeElementCreatedListener = (event: BeforeElementCreatedEvent) => Element | undefined
-/** @internal */
+/**
+ * @internal
+ */
 export interface BeforeElementCreatedEvent<Options extends ElementOptions = BoxOptions> {
   fn: (options: Options) => Element
   options: Options
   name: keyof JSX.IntrinsicElements
   children: (Element | JSX.BlessedJsxText)[]
 }
-/** @internal */
+/**
+ * @internal
+ */
 export interface AfterRenderEvent {
   el: Element
 }
-/** @internal */
+/**
+ * @internal
+ */
 export type AfterRenderListener = (event: AfterRenderEvent) => void
 
-interface RenderOptions {}
+interface RenderOptions { }
 
 export type BlessedJsxAttrs = { [a: string]: any } | undefined
 

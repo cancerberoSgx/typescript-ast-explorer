@@ -37,8 +37,8 @@ export function buildExplorer(store: Store) {
 
   // TODO:the following should be done in a Dispatcher
   tree.rows.style = { ...(tree.rows.style || {}), ...focusStyle }
-  const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0]) }
-  ;(tree as any).setData(rootNode)
+  const rootNode = { extended: true, ...buildTreeNode(project.getRootDirectories()[0] as any) }
+    ; (tree as any).setData(rootNode)
 
   updateTreeNodeStyles(tree)
   tree.on('select', function(n: TreeNode) {
