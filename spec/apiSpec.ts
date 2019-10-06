@@ -1,6 +1,6 @@
 import { blessed, Screen } from 'accursed'
 import { Project } from 'ts-morph'
-import { ProjectView } from '../src/ui/api'
+import { ProjectView } from '../src/api'
 import { expectScreenNotToContain, expectScreenToContain } from './testUtil'
 
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 15000

@@ -1,5 +1,5 @@
 import { main } from './cli'
- 
+
 try {
   main()
 } catch (error) {

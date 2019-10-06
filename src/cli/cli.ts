@@ -5,13 +5,13 @@ export interface Options {
   help?: boolean
 }
 
-export function  main() {
+export function main() {
   const options = require('yargs-parser')(process.argv.slice(2)) as Options
   if (options.help) {
     printHelp()
     process.exit(0)
   }
-    var store = createStore()
+  var store = createStore()
   buildExplorer(store)
   store.state.screen.render()
 }

@@ -9,12 +9,8 @@ export interface State {
   project: Project
   offset?: number
   screen: Screen
-  currentView?: ViewType
-  fileView: View
-  codeView: View
+  view: View
 }
-
-export type ViewType = 'file' | 'code'
 
 export interface View {
   /**
@@ -23,9 +19,4 @@ export interface View {
   verticalOffset: number
   selectedNode?: GeneralNode
   grid: contrib.Widgets.GridElement
-  name: ViewType
-}
-
-export function getCurrentView(state: State) {
-  return state.currentView === 'code' ? state.codeView : state.fileView
 }

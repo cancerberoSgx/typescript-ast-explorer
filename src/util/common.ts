@@ -1,5 +1,5 @@
 const ansi = require('ansi-escape-sequences')
-import { blessed, resetFocusManager, Style, TextareaOptions } from 'accursed'
+import { Style, TextareaOptions } from 'accursed'
 import { GeneralNode, getGeneralNodeChildren, getGeneralNodeKindName, getGeneralNodeName, isDirectory } from 'ts-simple-ast-extra'
 
 
