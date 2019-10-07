@@ -12,7 +12,6 @@ export function mainMenu(store: Store) {
     mouse: true,
     keys: true,
     style: buttonStyle,
-
     commands: {
       Help: {
         keys: ['h'],
@@ -20,7 +19,14 @@ export function mainMenu(store: Store) {
           showInModal(store.state.screen, help())
         }
       },
-      'getChildren()': {
+      'node': {
+        keys: ['n'],
+        callback() {
+          showInModal(store.state.screen, 'TODO: info about selected node')
+        }
+      },
+      'children': {
+        keys: ['c'],
         callback() {
           showInModal(store.state.screen, 'TODO: select ast children mode')
         }

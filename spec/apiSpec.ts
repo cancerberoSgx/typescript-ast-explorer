@@ -20,7 +20,7 @@ describe('apiSpec', () => {
 
   it('ProjectView', async done => {
     const project = new Project({ tsConfigFilePath: 'spec/assets/project1/tsconfig.json' })
-    const labels = ['Project View', 'src', 'v:Code View', 'h:Help']
+    const labels = ['Project View', 'src', 'c:children', 'h:Help']
     expectScreenNotToContain(screen, labels)
     const v = new ProjectView({ project, screen, dontInstallExitKeys: false })
     v.render()

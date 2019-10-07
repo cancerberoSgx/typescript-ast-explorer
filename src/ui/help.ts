@@ -1,4 +1,4 @@
-import * as contrib from 'blessed-contrib'
+import { contrib } from 'accursed'
 
 export function help() {
   const markdown = contrib.markdown({

@@ -13,7 +13,7 @@
     "baseUrl": ".",
     "paths": {
       "blessed-contrib": ["node_modules/accursed/dist/src/declarations/blessed-contrib"],      
-      "blessed": ["node_modules/accursed/dist/src/declarations/blessed"]
+    //   "blessed": ["node_modules/accursed/dist/src/declarations/blessed"]
     },
     "jsx": "React",
     "skipLibCheck": true

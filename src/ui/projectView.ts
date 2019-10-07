@@ -17,8 +17,7 @@ export function buildExplorer(store: Store, o: RenderMainViewOptions = {}) {
   const code = createCodeView(store)
   !o.dontInstallExitKeys && installExitKeys(store.state.screen)
   !o.dontInstallFocusHandler && _installFocusHandler('fileExplorer',
-    [tree, optionsListBar, code].filter(notUndefined),
-    store.state.screen, undefined, true, true
+    [tree, optionsListBar, code], store.state.screen, undefined, true, true
   )
 }
 

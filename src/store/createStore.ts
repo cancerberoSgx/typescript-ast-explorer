@@ -3,6 +3,7 @@ import { Project } from 'ts-morph'
 import { nodeSelectionDispatcher } from './nodeSelection'
 import { State, View } from './state'
 import { Store, StoreImpl } from './store'
+import { ConcreteOptions } from '../cli/cli'
 
 export function createStore(o: Partial<CreateInitialStateOptions> = {}) {
   const allReducers = [nodeSelectionDispatcher]
@@ -13,7 +14,7 @@ export function createStore(o: Partial<CreateInitialStateOptions> = {}) {
   return store
 }
 
-export interface CreateInitialStateOptions {
+export interface CreateInitialStateOptions extends Partial<ConcreteOptions> {
   screen: Screen
   project: Project
   store?: Store
@@ -21,7 +22,10 @@ export interface CreateInitialStateOptions {
 
 export function createInitialState(o: Partial<CreateInitialStateOptions> = {}): State {
   const screen = o.screen || blessed.screen({ smartCSR: true })
-  const project = o.project || new Project({ tsConfigFilePath: './tsconfig.json', addFilesFromTsConfig: true })
+  const project = o.project || new Project({ 
+    tsConfigFilePath: o.tsConfig ||'./tsconfig.json', 
+    addFilesFromTsConfig: true 
+    })
   return {
     project,
     screen,

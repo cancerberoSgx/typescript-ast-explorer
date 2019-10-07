@@ -1,8 +1,15 @@
 import { createStore } from '../store/createStore'
 import { buildExplorer } from '../ui/projectView'
 
-export interface Options {
+export interface ConcreteOptions extends BaseOptions{
+  tsConfig?: string
+}
+
+export interface  Options extends BaseOptions, ConcreteOptions{
+}
+export interface BaseOptions {
   help?: boolean
+  debug?: boolean
 }
 
 export function main() {
@@ -11,7 +18,7 @@ export function main() {
     printHelp()
     process.exit(0)
   }
-  var store = createStore()
+  var store = createStore(options)
   buildExplorer(store)
   store.state.screen.render()
 }

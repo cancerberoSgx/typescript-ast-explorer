@@ -1,4 +1,4 @@
-import { blessed, Element, isBlessedElement } from 'accursed'
+import { blessed, Element, isBlessedElement, Screen } from 'accursed'
 import { focusStyle } from '../util/common'
 
 let lastFocus: { [id: string]: number } = {}
@@ -6,7 +6,7 @@ let lastFocus: { [id: string]: number } = {}
 /**
  * Need this hack function instead of accursed to make the old code work based on contrib.grid/tree/table.
  */
-export function _installFocusHandler(focusId: string, elements: Element[], screen: blessed.Widgets.Screen, keys: [string, string] = ['tab', 'S-tab'], styleChildren = true, focusFirst = false) {
+export function _installFocusHandler(focusId: string, elements: Element[], screen: Screen, keys: [string, string] = ['tab', 'S-tab'], styleChildren = true, focusFirst = false) {
   if (lastFocus[focusId] === -Infinity && typeof lastFocus[focusId] !== 'undefined') {
     throw new Error('Focus handler with key already installed: ' + focusId)
   }
